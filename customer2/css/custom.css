@@ -1,0 +1,32 @@
+.image-cart {
+  min-height: 84px;
+  min-width: 56px;
+}
+
+.logo {
+  max-width: 55px;
+}
+
+.carousel-img {
+  height: 430px;
+}
+
+.category-shadow {
+  box-shadow:
+  0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+  0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+  0 12.5px 10px rgba(0, 0, 0, 0.06),
+  0 100px 80px rgba(0, 0, 0, 0.12)
+}
+
+.card-image {
+  height: 200px;
+}
+
+.text-black {
+  color: #0a0a0a
+}
+
+.pricing {
+  font-size: 2rem;
+}
