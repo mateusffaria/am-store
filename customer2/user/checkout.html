@@ -35,12 +35,14 @@
         <nav
           class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow flex"
         >
-          <div class="m-auto m-md-0 d-flex">
-            <img src="../img/logo.png" class="img-fluid logo" />
-            <div class="m-auto pt-2">
-              <span class="text-center m-auto">A.M Store</span>
+          <a href="../index.html" style='text-decoration: none;' class="text-muted">
+            <div class="m-auto m-md-0 d-flex">
+              <img src="../img/logo.png" class="img-fluid logo" />
+              <div class="m-auto pt-2">
+                <span class="text-center m-auto">A.M Store</span>
+              </div>
             </div>
-          </div>
+          </a>
 
           <!-- Topbar Search -->
           <form
@@ -246,6 +248,16 @@
                   <form class="">
                     <h5 class="text-center">Endereço de Entrega</h5>
                     <hr />
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Selecione um endereço</label>
+                      <select class="custom-select">
+                        <option value="1">End Favorito</option>
+                        <option value="2">End 2</option>
+                        <option value="3">End 3</option>
+                        <option value="3">Cadastrar Novo</option>
+                      </select>
+                    </div>
+
                     <div class="form-group">
                       <label for="exampleInputEmail1">CEP</label>
                       <input
