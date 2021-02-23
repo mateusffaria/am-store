@@ -218,125 +218,130 @@
         <div id="content">
           <!-- Begin Page Content -->
           <div class="container">
-            <div class="d-flex justify-content-around flex-wrap">
+            <div class="col-12 table-responsive">
               <table class="table table-hover mt-4 mb-4">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Nome do Jogo</th>
-                    <th scope="col">Plataforma</th>
-                    <th scope="col">Quantidade</th>
-                    <th scope="col" colspan="2">Valor</th>
+                    <th scope="col">Pedido</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Total</th>
+                    <th scope="col" colspan="2">Solicitar Troca</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <th scope="row">1</th>
-                    <td>Resident Evil 3</td>
-                    <td>PS4</td>
-                    <td>1</td>
-                    <td>R$: 350,00</td>
-                    <td><i class="fas fa-trash"></i>Excluir</td>
+                    <td><a href="#">0000001</a></td>
+                    <td>22/fevereiro/2021 21:40</td>
+                    <td><span class="badge badge-success">Entregue</span></td>
+                    <td>R$: 370,00</td>
+                    <td>
+                      <a
+                        href="#"
+                        data-toggle="modal"
+                        data-target="#exampleModal"
+                        ><i class="fas fa-exchange-alt mr-2"></i>Solicitar
+                        Troca</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td><a href="#">0000002</a></td>
+                    <td>22/fevereiro/2021 21:40</td>
+                    <td><span class="badge badge-warning">Transporte</span></td>
+                    <td>R$: 370,00</td>
+                    <td>
+                      <span>
+                        <i class="fas fa-exchange-alt mr-2"></i>
+                        Produto em envio
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td><a href="#">0000001</a></td>
+                    <td>22/fevereiro/2021 21:40</td>
+                    <td><span class="badge badge-info">Em troca</span></td>
+                    <td>R$: 370,00</td>
+                    <td>
+                      <span>
+                        <i class="fas fa-exchange-alt mr-2"></i>
+                        Troca em andamento
+                      </span>
+                    </td>
                   </tr>
                 </tbody>
               </table>
-
-              <div class="d-flex justify-content-between flex-wrap col-12">
-                <div class="p-4 rounded bg-form col-12 col-md-6">
-                  <form class="">
-                    <h5 class="text-center">Endereço de Entrega</h5>
-                    <hr />
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">CEP</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="exampleInputlogradouto1"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="01234-456"
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Logradouro</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="exampleInputlogradouto1"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="Avenida Orquídeas, 123"
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Bairro</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="exampleInputlogradouto1"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="Bairro"
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Logradouro</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="exampleInputlogradouto1"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="Avenida Orquídeas, 123"
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Cidade</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="exampleInputlogradouto1"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="Mogi das Cruzes"
-                      />
-                    </div>
-                    <div class="d-flex flex-wrap justify-content-between">
-                      <button type="submit" class="btn btn-warning">
-                        Voltar
-                      </button>
-
-                      <button type="submit" class="btn btn-primary">
-                        Próximo
-                      </button>
-                    </div>
-                  </form>
-                </div>
-
-                <div class="p-4 rounded bg-form col-12 col-md-5 mt-5 mt-md-0">
-                  <div class="">
-                    <h5 class="text-center">Resumo do pedido</h5>
-                    <hr />
-                    <div class="d-flex flex-wrap justify-content-between">
-                      <span>1 produto</span>
-                      <span>R$ 350,00</span>
-                    </div>
-                    <div class="d-flex flex-wrap justify-content-between">
-                      <span>Frete</span>
-                      <span>R$ 20,00</span>
-                    </div>
-                    <hr />
-                    <div class="d-flex flex-wrap justify-content-between">
-                      <h5 class="font-weight-bold">Total + frete:</h5>
-                      <span class="font-weight-bold">R$: 370,00</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
           <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
+
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Solicitar Troca
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Motivo da Troca</label>
+                    <textarea
+                      class="form-control"
+                      id="exampleInputEmail1"
+                      aria-describedby="emailHelp"
+                      placeholder="Descreva o motivo brevemente"
+                    ></textarea>
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="exampleInputPassword1"
+                      placeholder="Senha"
+                      hidden
+                    />
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Enviar Solicitação
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
