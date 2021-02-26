@@ -1,0 +1,2 @@
+INSERT INTO public.address_type (id, created_at, description, name) VALUES (1, '2021-02-25 22:31:32.000000', 'Endereço onde será entregue os produtos', 'Entrega');
+INSERT INTO public.address_type (id, created_at, description, name) VALUES (2, '2021-02-25 22:32:19.000000', 'Endereço onde será realizado a cobrança', 'Cobrança');
