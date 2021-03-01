@@ -39,19 +39,34 @@
                     <div class="card-body">
                         <form method="post" th:object="${customer}" th:action="@{new}">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Entre com email" th:field="*{email}" required/>
                             </div>
+
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                <label for="password">Senha:</label>
+                                <input type="password" class="form-control" id="password" placeholder="Senha" th:field="*{password}" required>
                             </div>
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+
+                            <div class="form-group">
+                                <label for="password">Nome:</label>
+                                <input type="text" class="form-control" id="name" placeholder="Nome completo" th:field="*{name}" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                            <div class="form-group mt-2">
+                                <label for="telephone">Telefone:</label>
+                                <input type="telephone" class="form-control" id="telephone" aria-describedby="telephoneHelp" placeholder="(11) 91234-5678" th:field="*{telephone}" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customer-type">Tipo de Cliente:</label>
+                                <select th:field="*{customerType.id}" class="form-control" required id="customer-type">
+                                    <option value="">Selecione</option>
+                                    <option th:each="type : ${customerTypes}" th:value="${type.id}" th:text="${type.title}"
+                                            data-toggle="tooltip" data-placement="top" th:title="${type.description}"></option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
                         </form>
                     </div>
                 </div>

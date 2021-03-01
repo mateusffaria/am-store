@@ -12,6 +12,6 @@ public class City extends DomainEntity{
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="id", insertable = false, updatable = false)
+    @JoinColumn(name="state_id")
     private State state;
 }

@@ -21,7 +21,7 @@ public class Address extends DomainEntity{
     private String complement;
 
     @ManyToOne
-    @JoinColumn(name="id", insertable = false, updatable = false)
+    @JoinColumn(name="customer_id")
     private Customer customer;
 
     @ManyToOne

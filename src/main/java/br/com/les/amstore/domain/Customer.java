@@ -27,11 +27,14 @@ public class Customer extends Person{
     @Length(min = 6)
     private String encryptedPassword;
 
+    @Transient
+    private String password;
+
     @ManyToOne
-    @JoinColumn(name="id", insertable = false, updatable = false)
+    @JoinColumn(name="customer_type_id")
     private CustomerType customerType;
 
     @OneToMany
-    @JoinColumn(name="id")
+    @JoinColumn(name="address_id")
     private List<Address> address;
 }

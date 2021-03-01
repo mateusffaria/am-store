@@ -19,7 +19,5 @@ public class Person extends DomainEntity {
 
     private String name;
 
-    private String gender;
-
     private String telephone;
 }

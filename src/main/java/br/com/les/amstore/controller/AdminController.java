@@ -58,6 +58,7 @@ public class AdminController {
     @GetMapping("/customer/new")
     public ModelAndView newCostumer(Customer customer) {
         ModelAndView mv = new ModelAndView("/admin/newCustumer");
+        mv.addObject("customer", new Customer());
         mv.addObject("documentTypes", documentTypes.findAll());
         mv.addObject("addressTypes", addressTypes.findAll());
         mv.addObject("customerTypes", customerTypes.findAll());
@@ -67,6 +68,18 @@ public class AdminController {
     @PostMapping("/customer/new")
     public ModelAndView createCostumer(Customer customer) {
         ModelAndView mv = new ModelAndView("/admin/newCustumer");
+        mv.addObject("customer", new Customer());
+        mv.addObject("documentTypes", documentTypes.findAll());
+        mv.addObject("addressTypes", addressTypes.findAll());
+        mv.addObject("customerTypes", customerTypes.findAll());
+
+        System.out.println(customer.getCustomerType().getId());
+        System.out.println(customer.getEmail());
+        System.out.println(customer.getPassword());
+        System.out.println(customer.getName());
+        System.out.println(customer.getCreatedAt());
+
+        customers.saveAndFlush(customer);
         return mv;
     }
 }

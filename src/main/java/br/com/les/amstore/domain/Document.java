@@ -16,10 +16,10 @@ public class Document extends DomainEntity{
     private Date validate;
 
     @ManyToOne
-    @JoinColumn(name="id", insertable = false, updatable = false)
+    @JoinColumn(name="person_id")
     private Person person;
 
     @ManyToOne
-    @JoinColumn(name="id", insertable = false, updatable = false)
+    @JoinColumn(name="document_type_id")
     private DocumentType documentType;
 }
