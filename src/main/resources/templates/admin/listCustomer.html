@@ -50,13 +50,13 @@
                                     </thead>
                                     <tbody>
                                         <tr th:each="customer : ${customers}">
-                                            <td th:text="customer.name"></td>
+                                            <td th:text="${customer.name}"></td>
                                             <td th:each="document : ${customer.documents}">
-                                                <span th:text="document.documentType.name"></span>
-                                                <span th:text="document.code"></span>
+                                                <span th:text="${document.documentType.name}"></span>
+                                                <span th:text="${document.code}"></span>
                                             </td>
-                                            <td th:text="customer.email">andreia@gmail.com</td>
-                                            <td th:text="customer.customerType.title">The Sims</td>
+                                            <td th:text="${customer.email}">andreia@gmail.com</td>
+                                            <td th:text="${customer.customerType.title}">The Sims</td>
                                             <td class="m-auto">
                                                 <i class="fas fa-pencil-alt"></i>
                                                 <span> editar</span>

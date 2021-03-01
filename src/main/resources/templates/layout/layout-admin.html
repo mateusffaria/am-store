@@ -6,7 +6,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:fragment="sidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/admin/}">
         <div class="sidebar-brand-icon rotate-n-15">
             <img th:src="@{/images/logo.ico}" width="70px" height="70px"/>
             <!-- <i class="fas fa-laugh-wink"></i> -->
@@ -58,7 +58,7 @@
         <div id="costumer" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Visão geral clientes</h6>
-                <a class="collapse-item" th:href="@{customer/list}">Listar</a>
+                <a class="collapse-item" th:href="@{/admin/customer/list}">Listar</a>
             </div>
         </div>
     </li>

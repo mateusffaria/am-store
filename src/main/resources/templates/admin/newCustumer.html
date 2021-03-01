@@ -34,7 +34,6 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-wrap justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Cliente Novo</h6>
-                        <a class="btn btn-primary" th:href="@{new}">Cadastrar Novo Cliente</a>
                     </div>
                     <div class="card-body">
                         <form method="post" th:object="${customer}" th:action="@{new}">
@@ -55,12 +54,34 @@
 
                             <div class="form-group mt-2">
                                 <label for="telephone">Telefone:</label>
-                                <input type="telephone" class="form-control" id="telephone" aria-describedby="telephoneHelp" placeholder="(11) 91234-5678" th:field="*{telephone}" required/>
+                                <input type="text" class="form-control" id="telephone" aria-describedby="telephoneHelp" placeholder="(11) 91234-5678" th:field="*{telephone}" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Documentos:</label>
+                                <div class="form-check" th:each="documentType : ${documentTypes}">
+                                    <input class="form-check-input" type="checkbox" onclick="my_documents()"
+                                           th:value="${documentType.id}"
+                                           th:data_id="${documentType.name}">
+                                    <label class="form-check-label" th:for="${documentType.name}" th:text="${documentType.name}"></label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div th:each="document, itemStat : ${documents}" class="d-none" th:id="${documentTypes[__${itemStat.index}__].name}">
+                                    <input class='form-control mt-3'
+                                           th:value="${document.documentType.id}"
+                                           th:field="*{documents[__${itemStat.index}__].documentType.id}"/>
+                                    <input class='form-control mt-3'
+                                           th:field="*{documents[__${itemStat.index}__].code}" />
+                                    <input class='form-control mt-3' type="date"
+                                           th:field="*{documents[__${itemStat.index}__].validate}" />
+                                </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="customer-type">Tipo de Cliente:</label>
-                                <select th:field="*{customerType.id}" class="form-control" required id="customer-type">
+                                <select th:field="*{customerType.id}" th:name='customer_type' class="form-control" required id="customer-type">
                                     <option value="">Selecione</option>
                                     <option th:each="type : ${customerTypes}" th:value="${type.id}" th:text="${type.title}"
                                             data-toggle="tooltip" data-placement="top" th:title="${type.description}"></option>
@@ -120,6 +141,24 @@
 
 <script th:replace="layout/layout :: script"></script>
 <script th:replace="layout/layout-admin :: script"></script>
+<script>
+    function my_documents() {
+        var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');
+        markedCheckbox.forEach((checkbox) => {
+            let input_field = $("#" + checkbox.attributes.data_id.value);
+            input_field.removeClass('d-none');
+            input_field.addClass('d-block');
+
+        })
+
+        var unmarkedCheckbox = $("input:checkbox:not(:checked)");
+        for(i = 0; i< unmarkedCheckbox.length; i++) {
+            let input_field = $("#" + unmarkedCheckbox.get(i).attributes.data_id.value);
+            input_field.removeClass('d-block');
+            input_field.addClass('d-none');
+        }
+    }
+</script>
 </body>
 
 </html>
