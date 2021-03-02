@@ -22,10 +22,10 @@ public class Customer extends Person{
     @Email
     private String email;
 
-    @NotBlank
-    @NotNull
     @Length(min = 6)
     private String encryptedPassword;
+    
+    private String hash;
 
     @Transient
     private String password;

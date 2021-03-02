@@ -36,7 +36,18 @@
                         <h6 class="m-0 font-weight-bold text-primary">Cliente Novo</h6>
                     </div>
                     <div class="card-body">
-                        <form method="post" th:object="${customer}" th:action="@{new}">
+                        <form method="post" th:object="${customer}" th:action="@{new}" onsubmit="my_form(form)">
+                            <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()} ">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <th:block th:each="error : ${#fields.detailedErrors()}">
+                                    <div>
+                                        <i class="fa  fa-exclamation-circle mr-3"></i>
+                                        <span th:text="${error.message}"></span>
+                                    </div>
+                                </th:block>
+                            </div>
+
+
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Entre com email" th:field="*{email}" required/>
@@ -68,10 +79,10 @@
                             </div>
 
                             <div class="form-group">
-                                <div th:each="document, itemStat : ${documents}" class="d-none" th:id="${documentTypes[__${itemStat.index}__].name}">
-                                    <input class='form-control mt-3'
+                                <div th:each="document, itemStat : ${customer.documents}" class="d-none" th:id="${documentTypes[__${itemStat.index}__].name}">
+                                    <input class='form-control mt-3 d-none'
                                            th:value="${document.documentType.id}"
-                                           th:field="*{documents[__${itemStat.index}__].documentType.id}"/>
+                                           th:field="*{documents[__${itemStat.index}__].documentType.id}" hidden/>
                                     <input class='form-control mt-3'
                                            th:field="*{documents[__${itemStat.index}__].code}" />
                                     <input class='form-control mt-3' type="date"
@@ -87,7 +98,7 @@
                                             data-toggle="tooltip" data-placement="top" th:title="${type.description}"></option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                            <button type="submit" class="btn btn-primary" onclick="my_form(form)">Cadastrar</button>
                         </form>
                     </div>
                 </div>
@@ -147,17 +158,33 @@
         markedCheckbox.forEach((checkbox) => {
             let input_field = $("#" + checkbox.attributes.data_id.value);
             input_field.removeClass('d-none');
-            input_field.addClass('d-block');
+            input_field.addClass('d-block document-selected');
 
         })
 
         var unmarkedCheckbox = $("input:checkbox:not(:checked)");
         for(i = 0; i< unmarkedCheckbox.length; i++) {
             let input_field = $("#" + unmarkedCheckbox.get(i).attributes.data_id.value);
-            input_field.removeClass('d-block');
+            input_field.removeClass('d-block document-selected');
             input_field.addClass('d-none');
         }
     }
+
+    $(function()
+    {
+        $("form").submit(function()
+        {
+            let selected_documents = $(".document-selected")
+            $(".document-selected").children('input[name*="documents"]')
+            for(i = 0; i < selected_documents.length; i++){
+                selected_documents
+            }
+
+            $('.d-none').children(":input").attr("disabled", "disabled")
+            return true;
+        });
+    });
+
 </script>
 </body>
 

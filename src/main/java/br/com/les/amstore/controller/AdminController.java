@@ -3,15 +3,20 @@ package br.com.les.amstore.controller;
 import br.com.les.amstore.domain.Customer;
 import br.com.les.amstore.domain.Document;
 import br.com.les.amstore.domain.DocumentType;
+import br.com.les.amstore.domain.Person;
 import br.com.les.amstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.print.Doc;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -81,13 +86,12 @@ public class AdminController {
         mv.addObject(customer);
         mv.addObject("documentTypes", docTypes);
         mv.addObject("customerTypes", customerTypes.findAll());
-//        mv.addObject("documents", docs);
 
         return mv;
     }
 
     @PostMapping("/customer/new")
-    public ModelAndView createCostumer(Customer customer) {
+    public ModelAndView createCostumer(@Valid Customer customer, BindingResult result, RedirectAttributes attributes) {
         ModelAndView mv = new ModelAndView("/admin/newCustumer");
 
         mv.addObject("customer", customer);
@@ -95,23 +99,18 @@ public class AdminController {
         mv.addObject("addressTypes", addressTypes.findAll());
         mv.addObject("customerTypes", customerTypes.findAll());
 
-        System.out.println(customer.getCustomerType().getId());
-        System.out.println(customer.getEmail());
-        System.out.println(customer.getPassword());
-        System.out.println(customer.getName());
-        System.out.println(customer.getTelephone());
-        System.out.println(customer.getDocuments().get(0));
-        System.out.println(customer.getCreatedAt());
-
-        for(int i = 0; i<customer.getDocuments().size(); i++) {
-            if(null == customer.getDocuments().get(i).getCode() || customer.getDocuments().get(i).getCode() == "") {
-                customer.getDocuments().remove(i);
-            } else {
-                customer.getDocuments().get(i).setPerson(customer);
+        if(result.hasErrors()){
+            for(ObjectError r : result.getAllErrors()) {
+                System.err.println("Nome do obj: " + r.getObjectName());
+                System.err.println("Código erro: " + r.getCode());
+                System.err.println("Mensagem do erro: " + r.getDefaultMessage());
             }
+
+            return newCostumer(customer);
         }
 
-        System.out.println(customer.getDocuments().size());
+        if(null != customer.getDocuments())
+            customer.getDocuments().forEach(document -> document.setPerson(customer));
 
         customers.saveAndFlush(customer);
         documents.saveAll(customer.getDocuments());
