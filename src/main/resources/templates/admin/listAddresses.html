@@ -34,7 +34,7 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-wrap justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Documentos</h6>
-                        <a class="btn btn-primary" th:href="@{documents/new}">Cadastrar Novo Documento para o Cliente</a>
+                        <a class="btn btn-primary" th:href="@{addresses/new}">Cadastrar Novo Documento para o Cliente</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -42,18 +42,20 @@
                                 <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Código</th>
-                                    <th>Tipo</th>
-                                    <th>Nome do Cliente</th>
+                                    <th>Cidade</th>
+                                    <th>Estado</th>
+                                    <th>Rua</th>
+                                    <th>Número</th>
                                     <th colspan="2"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="document : ${customer.documents}">
-                                    <td th:text="${document.id}"></td>
-                                    <td th:text="${document.code}"></td>
-                                    <td th:text="${document.documentType.name}">andreia@gmail.com</td>
-                                    <td th:text="${document.getPerson().name}">The Sims</td>
+                                <tr th:each="address : ${customer.address}">
+                                    <td th:text="${address.id}"></td>
+                                    <td th:text="${address.city}"></td>
+                                    <td th:text="${address.city.state}">andreia@gmail.com</td>
+                                    <td th:text="${address.street}">The Sims</td>
+                                    <td th:text="${address.number}">The Sims</td>
                                     <td class="m-auto">
                                         <a th:href="@{edit/{id}(id=${customer.id})}">
                                             <i class="fas fa-pencil-alt"></i>
@@ -67,8 +69,8 @@
                                         </a>
                                     </td>
                                 </tr>
-                                <tr th:if="${customer.documents.isEmpty()}">
-                                    <td colspan="6" class="text-center">Nenhum cadastro de Documento</td>
+                                <tr th:if="${customer.address.isEmpty()}">
+                                    <td colspan="6" class="text-center">Nenhum cadastro de Endereço</td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -1,9 +1,6 @@
 package br.com.les.amstore.controller;
 
-import br.com.les.amstore.domain.Customer;
-import br.com.les.amstore.domain.Document;
-import br.com.les.amstore.domain.DocumentType;
-import br.com.les.amstore.domain.Person;
+import br.com.les.amstore.domain.*;
 import br.com.les.amstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -163,4 +160,26 @@ public class AdminController {
         return mv;
     }
 
+    @GetMapping("/customer/edit/{id}/addresses")
+    public ModelAndView listAddress(@PathVariable("id") Customer customer, Address address) {
+        ModelAndView mv = new ModelAndView("/admin/listAddresses");
+
+        mv.addObject(customer);
+        mv.addObject(address);
+
+        return mv;
+    }
+
+    @GetMapping("/customer/edit/{id}/addresses/new")
+    public ModelAndView newAddress(@PathVariable("id") Customer customer, Address address) {
+        ModelAndView mv = new ModelAndView("/admin/newAddress");
+
+        mv.addObject("addressesTypes", addressTypes.findAll());
+        mv.addObject("cities", cities.findAll());
+        mv.addObject("states", states.findAll());
+        mv.addObject(customer);
+        mv.addObject(address);
+
+        return mv;
+    }
 }

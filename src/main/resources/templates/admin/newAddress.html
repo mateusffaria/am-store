@@ -33,20 +33,15 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-wrap justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary" th:text="*{customer.id}? 'Detalhes do Cliente' : 'Cliente Novo'">Cliente Novo</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Cliente Novo</h6>
                         <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
-                            <a th:href="@{'/admin/customer/edit/' + ${customer.id} + '/documents'}">
+                            <a th:href="@{{id}(id=${customer.id})/documents/edit/}">
                                 Documentos
-                            </a>
-                        </h6>
-                        <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
-                            <a th:href="@{'/admin/customer/edit/' + ${customer.id} + '/addresses'}">
-                                Endereços
                             </a>
                         </h6>
                     </div>
                     <div class="card-body">
-                        <form method="post" th:object="${document}">
+                        <form method="post" th:object="${address}">
                             <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()} ">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <th:block th:each="error : ${#fields.detailedErrors()}">
@@ -58,12 +53,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="validate">Data expedição:</label>
-                                <input type="date" class="form-control" id="validate" placeholder="validade" th:field="*{validate}" required>
+                                <input type="date" class="form-control" id="validate" placeholder="validade" th:field="*{postalCode}" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="code">Número:</label>
-                                <input type="text" class="form-control" id="code" placeholder="Número" th:field="*{code}" required>
+                                <input type="text" class="form-control" id="code" placeholder="Número" th:field="*{}" required>
                             </div>
 
                             <div class="form-group">

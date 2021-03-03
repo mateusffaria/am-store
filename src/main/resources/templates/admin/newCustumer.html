@@ -35,8 +35,13 @@
                     <div class="card-header py-3 d-flex flex-wrap justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Cliente Novo</h6>
                         <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
-                            <a th:href="@{documents/edit/}">
+                            <a th:href="@{${customer.id} + '/documents'}">
                                 Documentos
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
+                            <a th:href="@{${customer.id} + '/addresses'}">
+                                Endereços
                             </a>
                         </h6>
                     </div>
