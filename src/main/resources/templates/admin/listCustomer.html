@@ -58,12 +58,16 @@
                                             <td th:text="${customer.email}">andreia@gmail.com</td>
                                             <td th:text="${customer.customerType.title}">The Sims</td>
                                             <td class="m-auto">
-                                                <i class="fas fa-pencil-alt"></i>
-                                                <span> editar</span>
+                                                <a th:href="@{edit/{id}(id=${customer.id})}">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <span> editar</span>
+                                                </a>
                                             </td>
                                             <td class="m-auto">
-                                                <i class="fas fa-trash-alt"></i>
-                                                <span> excluir</span>
+                                                <a>
+                                                    <i class="fas fa-trash-alt"></i>
+                                                    <span> excluir</span>
+                                                </a>
                                             </td>
                                         </tr>
                                         <tr th:if="${customers.isEmpty()}">

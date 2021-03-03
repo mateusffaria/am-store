@@ -17,8 +17,6 @@ import java.util.List;
 @ToString
 public class Person extends DomainEntity {
 
-    @Valid
-    @NotNull(message = "Deve possuir pelo menos 1 Documento")
     @OneToMany(mappedBy = "person", targetEntity = Document.class)
     private List<Document> documents;
 

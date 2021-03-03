@@ -35,13 +35,13 @@
                     <div class="card-header py-3 d-flex flex-wrap justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Cliente Novo</h6>
                         <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
-                            <a th:href="@{documents/edit/}">
+                            <a th:href="@{{id}(id=${customer.id})/documents/edit/}">
                                 Documentos
                             </a>
                         </h6>
                     </div>
                     <div class="card-body">
-                        <form method="post" th:object="${customer}">
+                        <form method="post" th:object="${document}">
                             <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()} ">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <th:block th:each="error : ${#fields.detailedErrors()}">
@@ -51,36 +51,24 @@
                                     </div>
                                 </th:block>
                             </div>
-
-
                             <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Entre com email" th:field="*{email}" required/>
+                                <label for="validate">Data expedição:</label>
+                                <input type="date" class="form-control" id="validate" placeholder="validade" th:field="*{validate}" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="password">Senha:</label>
-                                <input type="password" class="form-control" id="password" placeholder="Senha" th:field="*{password}">
+                                <label for="code">Número:</label>
+                                <input type="text" class="form-control" id="code" placeholder="Número" th:field="*{code}" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="password">Nome:</label>
-                                <input type="text" class="form-control" id="name" placeholder="Nome completo" th:field="*{name}" required>
-                            </div>
-
-                            <div class="form-group mt-2">
-                                <label for="telephone">Telefone:</label>
-                                <input type="text" class="form-control" id="telephone" aria-describedby="telephoneHelp" placeholder="(11) 91234-5678" th:field="*{telephone}" required/>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="customer-type">Tipo de Cliente:</label>
-                                <select th:field="*{customerType.id}" th:name='customer_type' class="form-control" required id="customer-type">
-                                    <option value="">Selecione</option>
-                                    <option th:each="type : ${customerTypes}" th:value="${type.id}" th:text="${type.title}"
-                                            data-toggle="tooltip" data-placement="top" th:title="${type.description}"></option>
+                                <label for="code">Tipo Documento:</label>
+                                <select id="type" class="form-control" th:field="*{documentType}" >
+                                    <option value="">Selecione o tipo</option>
+                                    <option th:each="type : ${documentTypes}" th:value="${type.id}" th:text="${type.name}"></option>
                                 </select>
                             </div>
+
                             <button type="submit" class="btn btn-primary" onclick="my_form(form)">Cadastrar</button>
                         </form>
                     </div>

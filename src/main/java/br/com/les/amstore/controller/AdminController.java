@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -71,20 +69,7 @@ public class AdminController {
     public ModelAndView newCostumer(Customer customer) {
         ModelAndView mv = new ModelAndView("/admin/newCustumer");
 
-        List<Document> docs = new ArrayList<Document>();
-
-        List<DocumentType> docTypes = documentTypes.findAll();
-
-        for(int i = 0; i < docTypes.size(); i++) {
-            Document doc = new Document();
-            doc.setDocumentType(docTypes.get(i));
-            docs.add(doc);
-        }
-
-        customer.setDocuments(docs);
-
         mv.addObject(customer);
-        mv.addObject("documentTypes", docTypes);
         mv.addObject("customerTypes", customerTypes.findAll());
 
         return mv;
@@ -94,26 +79,88 @@ public class AdminController {
     public ModelAndView createCostumer(@Valid Customer customer, BindingResult result, RedirectAttributes attributes) {
         ModelAndView mv = new ModelAndView("/admin/newCustumer");
 
-        mv.addObject("customer", customer);
-        mv.addObject("documentTypes", documentTypes.findAll());
-        mv.addObject("addressTypes", addressTypes.findAll());
-        mv.addObject("customerTypes", customerTypes.findAll());
-
         if(result.hasErrors()){
-            for(ObjectError r : result.getAllErrors()) {
-                System.err.println("Nome do obj: " + r.getObjectName());
-                System.err.println("Código erro: " + r.getCode());
-                System.err.println("Mensagem do erro: " + r.getDefaultMessage());
-            }
-
             return newCostumer(customer);
         }
 
-        if(null != customer.getDocuments())
-            customer.getDocuments().forEach(document -> document.setPerson(customer));
+        mv.addObject("customer", customer);
+        mv.addObject("customerTypes", customerTypes.findAll());
 
         customers.saveAndFlush(customer);
-        documents.saveAll(customer.getDocuments());
         return mv;
     }
+
+    @GetMapping("/customer/edit/{id}")
+    public ModelAndView editCustomer(@PathVariable("id") Customer customer) {
+        ModelAndView mv = new ModelAndView("/admin/newCustumer");
+
+        mv.addObject("customerTypes", customerTypes.findAll());
+        mv.addObject(customer);
+
+        return mv;
+    }
+
+    @PostMapping("/customer/edit/{id}")
+    public ModelAndView updateCustomer(@Valid Customer customer, BindingResult result, RedirectAttributes attributes) {
+        ModelAndView mv = new ModelAndView("/admin/newCustumer");
+
+        if(result.hasErrors()){
+            return editCustomer(customer);
+        }
+
+        mv.addObject("customerTypes", customerTypes.findAll());
+        mv.addObject(customer);
+
+        customers.saveAndFlush(customer);
+        return mv;
+    }
+
+    @GetMapping("/customer/edit/{id}/documents")
+    public ModelAndView customerDocuments(@PathVariable("id") Customer customer) {
+        ModelAndView mv = new ModelAndView("/admin/listCustumerDocuments");
+
+        mv.addObject(customer);
+        return mv;
+    }
+
+    @GetMapping("/customer/edit/{id}/documents/new")
+    public ModelAndView newCustomerDocuments(@PathVariable("id") Customer customer, Document document) {
+        ModelAndView mv = new ModelAndView("/admin/newDocument");
+
+        mv.addObject("documentTypes", documentTypes.findAll());
+        mv.addObject(customer);
+        mv.addObject(document);
+
+        return mv;
+    }
+
+    @PostMapping("/customer/edit/{id}/documents/new")
+    public ModelAndView createCustomerDocument(@Valid Document document, Customer customer, BindingResult result, RedirectAttributes attributes) {
+        ModelAndView mv = new ModelAndView("/admin/newDocument");
+
+        if(result.hasErrors()){
+            return newCustomerDocuments(customer, document);
+        }
+
+        document.setPerson(customer);
+
+        mv.addObject("documentTypes", documentTypes.findAll());
+        mv.addObject(customer);
+        mv.addObject(document);
+
+        documents.saveAndFlush(document);
+        return mv;
+    }
+
+    @GetMapping("/customer/edit/{id}/documents/{id_doc}")
+    public ModelAndView editDocument(@PathVariable("id") Customer customer, @PathVariable("id_doc") Document document) {
+        ModelAndView mv = new ModelAndView("/admin/newDocument");
+
+        mv.addObject("documentTypes", documentTypes.findAll());
+        mv.addObject(customer);
+        mv.addObject(document);
+
+        return mv;
+    }
+
 }

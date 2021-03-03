@@ -4,10 +4,7 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.util.List;
 
 
@@ -37,4 +34,12 @@ public class Customer extends Person{
     @OneToMany
     @JoinColumn(name="address_id")
     private List<Address> address;
+
+//    @AssertTrue(message = "Senha é obrigatória")
+    public boolean hasPassword() {
+        if(null == this.encryptedPassword)
+            if(null == this.password || this.password.length() <= 0)
+                return false;
+        return true;
+    }
 }
