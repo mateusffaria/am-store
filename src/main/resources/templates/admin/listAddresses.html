@@ -52,12 +52,13 @@
                                 <tbody>
                                 <tr th:each="address : ${customer.address}">
                                     <td th:text="${address.id}"></td>
-                                    <td th:text="${address.city}"></td>
-                                    <td th:text="${address.city.state}">andreia@gmail.com</td>
+                                    <td th:text="${address.city.description}"></td>
+                                    <td th:text="${address.city.state.description}">andreia@gmail.com</td>
                                     <td th:text="${address.street}">The Sims</td>
                                     <td th:text="${address.number}">The Sims</td>
                                     <td class="m-auto">
-                                        <a th:href="@{edit/{id}(id=${customer.id})}">
+                                        <a th:href="@{'addresses/' + ${address.id} + '/edit'}">
+<!--                                        <a th:href="@{'/admin/customer/edit/' + ${customer.id} + '/documents'}">-->
                                             <i class="fas fa-pencil-alt"></i>
                                             <span> editar</span>
                                         </a>

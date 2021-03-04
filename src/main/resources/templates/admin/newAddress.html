@@ -33,10 +33,15 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-wrap justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Cliente Novo</h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:text="*{customer.id}? 'Detalhes do Cliente' : 'Cliente Novo'">Cliente Novo</h6>
                         <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
-                            <a th:href="@{{id}(id=${customer.id})/documents/edit/}">
+                            <a th:href="@{'/admin/customer/edit/' + ${customer.id} + '/documents'}">
                                 Documentos
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
+                            <a th:href="@{'/admin/customer/edit/' + ${customer.id} + '/addresses'}">
+                                Endereços
                             </a>
                         </h6>
                     </div>
@@ -52,24 +57,60 @@
                                 </th:block>
                             </div>
                             <div class="form-group">
-                                <label for="validate">Data expedição:</label>
-                                <input type="date" class="form-control" id="validate" placeholder="validade" th:field="*{postalCode}" required>
+                                <label for="postalcode">CEP:</label>
+                                <input type="text" class="form-control" id="postalcode" placeholder="08993-123" th:field="*{postalCode}"
+                                       onchange="cep_retrieve()" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="code">Número:</label>
-                                <input type="text" class="form-control" id="code" placeholder="Número" th:field="*{}" required>
+                                <label for="street">Logradouro:</label>
+                                <input type="text" class="form-control" id="street" placeholder="Av. Orquídeas" th:field="*{street}" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="code">Tipo Documento:</label>
-                                <select id="type" class="form-control" th:field="*{documentType}" >
-                                    <option value="">Selecione o tipo</option>
-                                    <option th:each="type : ${documentTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+                                <label for="number">Número:</label>
+                                <input type="text" class="form-control" id="number" placeholder="Número" th:field="*{number}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="complement">Complemento:</label>
+                                <input type="text" class="form-control" id="complement" placeholder="Casa" th:field="*{complement}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="state">Estado:</label>
+                                <select id="state" class="form-control" th:field="*{city.state}">
+                                    <option value="">Selecione o Estado</option>
+                                    <option data-toggle="tooltip" data-placement="top"
+                                            th:each="state : ${states}"
+                                            th:value="${state.id}"
+                                            th:text="${state.description}"></option>
                                 </select>
                             </div>
 
-                            <button type="submit" class="btn btn-primary" onclick="my_form(form)">Cadastrar</button>
+                            <div class="form-group">
+                                <label for="city">Cidade:</label>
+                                <select id="city" class="form-control" th:field="*{city}">
+                                    <option data-toggle="tooltip" data-placement="top"
+                                            th:value="'0'"
+                                            th:text="'Selecione um Estado Primeiro'"
+                                            th:title="'Selecione um Estado Primeiro'"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address_type">Tipo do Endereço:</label>
+                                <select id="address_type" class="form-control" th:field="*{addressType}" >
+                                    <option value="">Selecione o tipo</option>
+                                    <option data-toggle="tooltip" data-placement="top"
+                                            th:each="type : ${addressesTypes}"
+                                            th:value="${type.id}"
+                                            th:text="${type.name}"
+                                            th:title="${type.description}"></option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
                         </form>
                     </div>
                 </div>
@@ -124,22 +165,22 @@
 <script th:replace="layout/layout :: script"></script>
 <script th:replace="layout/layout-admin :: script"></script>
 <script>
-    function my_documents() {
-        var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');
-        markedCheckbox.forEach((checkbox) => {
-            let input_field = $("#" + checkbox.attributes.data_id.value);
-            input_field.removeClass('d-none');
-            input_field.addClass('d-block document-selected');
+    $('#state').change(function() {
+        $.ajax(window.location.origin + "/address/state/" + this.value).done((resp) => {
+            let cities = $("#city")
+            cities.empty();
+            $.each(resp, (index, item) => {
+                cities.append(
+                    '<option value=' + item.id + '>' +
+                        item.description +
+                    '</option>'
+                )
+            })
 
-        })
-
-        var unmarkedCheckbox = $("input:checkbox:not(:checked)");
-        for(i = 0; i< unmarkedCheckbox.length; i++) {
-            let input_field = $("#" + unmarkedCheckbox.get(i).attributes.data_id.value);
-            input_field.removeClass('d-block document-selected');
-            input_field.addClass('d-none');
-        }
-    }
+        }).fail((resp) => {
+            console.log(resp);
+        });
+    });
 
 </script>
 </body>

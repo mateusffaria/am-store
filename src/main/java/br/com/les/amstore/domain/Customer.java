@@ -31,8 +31,7 @@ public class Customer extends Person{
     @JoinColumn(name="customer_type_id")
     private CustomerType customerType;
 
-    @OneToMany
-    @JoinColumn(name="address_id")
+    @OneToMany(mappedBy = "customer", targetEntity = Address.class)
     private List<Address> address;
 
 //    @AssertTrue(message = "Senha é obrigatória")

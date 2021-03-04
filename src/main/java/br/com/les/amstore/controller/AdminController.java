@@ -3,6 +3,7 @@ package br.com.les.amstore.controller;
 import br.com.les.amstore.domain.*;
 import br.com.les.amstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -175,7 +176,38 @@ public class AdminController {
         ModelAndView mv = new ModelAndView("/admin/newAddress");
 
         mv.addObject("addressesTypes", addressTypes.findAll());
-        mv.addObject("cities", cities.findAll());
+        mv.addObject("states", states.findAll());
+        mv.addObject(customer);
+        mv.addObject(address);
+
+        return mv;
+    }
+
+    @PostMapping("/customer/edit/{id}/addresses/new")
+    public ModelAndView createCustomerDocument(@Valid Address address, Customer customer, BindingResult result, RedirectAttributes attributes) {
+        ModelAndView mv = new ModelAndView("redirect:/admin/listAddresses");
+
+        if(result.hasErrors() && null != customer.getId()){
+            return newAddress(customer, address);
+        }
+
+        customer = customers.findById(customer.getId());
+        address.setCustomer(customer);
+
+        mv.addObject(customer);
+        mv.addObject(address);
+
+        addresses.saveAndFlush(address);
+        customers.saveAndFlush(customer);
+
+        return mv;
+    }
+
+    @GetMapping("/customer/edit/{id}/addresses/{address_id}/edit")
+    public ModelAndView editAddress(@PathVariable("id") Customer customer, @PathVariable("address_id") Address address) {
+        ModelAndView mv = new ModelAndView("/admin/newAddress");
+
+        mv.addObject("addressesTypes", addressTypes.findAll());
         mv.addObject("states", states.findAll());
         mv.addObject(customer);
         mv.addObject(address);
