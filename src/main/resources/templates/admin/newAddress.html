@@ -91,11 +91,22 @@
                             <div class="form-group">
                                 <label for="city">Cidade:</label>
                                 <select id="city" class="form-control" th:field="*{city}">
+                                    <th:block th:if="${null != address.city.id}">
+                                        <option data-toggle="tooltip" data-placement="top"
+                                                th:each="city : *{city.state.cities}"
+                                                th:value="${city.id}"
+                                                th:text="${city.description}"
+                                                th:title="${city.description}">
+                                        </option>
+                                    </th:block>
                                     <option data-toggle="tooltip" data-placement="top"
-                                            th:value="'0'"
-                                            th:text="'Selecione um Estado Primeiro'"
-                                            th:title="'Selecione um Estado Primeiro'"></option>
+                                            th:if="${ null != address.city.id}"
+                                            value="0"
+                                            title="Selecione o Estado primeiro"
+                                    >Selecione o Estado primeiro
+                                    </option>
                                 </select>
+
                             </div>
 
                             <div class="form-group">
