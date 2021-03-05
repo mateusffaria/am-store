@@ -16,6 +16,5 @@ public class State extends DomainEntity{
     private String uf;
 
     @OneToMany(mappedBy = "state", targetEntity = City.class)
-    @JsonIgnore
     private List<City> cities;
 }

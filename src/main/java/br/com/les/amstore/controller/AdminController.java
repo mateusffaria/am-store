@@ -188,10 +188,8 @@ public class AdminController {
     @PostMapping("/customer/edit/{id}/addresses/new")
     public ModelAndView createCustomerDocument(@PathVariable("id") Customer customer, @Valid Address address, BindingResult result, RedirectAttributes attributes) {
 //        ModelAndView mv = new ModelAndView("redirect:/admin/listAddresses");
-        ModelAndView mv = new ModelAndView("/admin/newAddress");
+        ModelAndView mv = new ModelAndView("redirect:/admin/customer/edit/" + customer.getId() + "/addresses/new");
 
-//        System.err.println("Address: " + address.toString());
-//        System.err.println("Address: " + address);
         if(result.hasErrors() || null == customer.getId()){
             System.err.println("Deu erro");
             return newAddress(customer, address);
@@ -202,6 +200,8 @@ public class AdminController {
 
         mv.addObject(customer);
         mv.addObject(address);
+
+        attributes.addFlashAttribute("message", "Endereço criado com sucesso!");
 
         addresses.saveAndFlush(address);
 
@@ -222,7 +222,7 @@ public class AdminController {
 
     @PostMapping(value = "/customer/edit/{customer_id}/addresses/{id}/edit")
     public ModelAndView updateAddress(@PathVariable(value = "customer_id") Customer customer, @Valid Address address, BindingResult result, RedirectAttributes attributes) {
-        ModelAndView mv = new ModelAndView("/admin/newAddress");
+        ModelAndView mv = new ModelAndView("redirect:/admin/customer/edit/" + customer.getId() + "/addresses/" + address.getId() + "/edit");
 
         System.err.println("Endereço: " + address.getId());
         System.err.println("Customer: " + customer.getId());
@@ -237,6 +237,8 @@ public class AdminController {
 
         mv.addObject(customer);
         mv.addObject(address);
+
+        attributes.addFlashAttribute("message", "Endereço atualizado com sucesso!");
 
         addresses.saveAndFlush(address);
         return mv;
