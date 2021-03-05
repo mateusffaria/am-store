@@ -77,7 +77,7 @@ public class AdminController {
 
     @PostMapping("/customer/new")
     public ModelAndView createCostumer(@Valid Customer customer, BindingResult result, RedirectAttributes attributes) {
-        ModelAndView mv = new ModelAndView("redirect:/admin/customer/edit/" + customer.getId() + "/");
+        ModelAndView mv = new ModelAndView("redirect:/admin/customer/list");
 
         if(result.hasErrors()){
             return newCostumer(customer);
@@ -104,7 +104,7 @@ public class AdminController {
 
     @PostMapping("/customer/edit/{id}")
     public ModelAndView updateCustomer(@Valid Customer customer, BindingResult result, RedirectAttributes attributes) {
-        ModelAndView mv = new ModelAndView("redirect:/admin/customer/edit/" + customer.getId() + "/");
+        ModelAndView mv = new ModelAndView("redirect:/admin/customer/list");
 
         if(result.hasErrors()){
             return editCustomer(customer);
