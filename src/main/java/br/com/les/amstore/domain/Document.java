@@ -1,5 +1,6 @@
 package br.com.les.amstore.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,7 +19,7 @@ public class Document extends DomainEntity{
     private String code;
 
     @NotNull(message = "Data de expedição não pode ser nulo")
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     private Date validate;
 

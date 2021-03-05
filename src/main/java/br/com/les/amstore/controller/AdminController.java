@@ -77,7 +77,7 @@ public class AdminController {
 
     @PostMapping("/customer/new")
     public ModelAndView createCostumer(@Valid Customer customer, BindingResult result, RedirectAttributes attributes) {
-        ModelAndView mv = new ModelAndView("/admin/newCustumer");
+        ModelAndView mv = new ModelAndView("redirect:/admin/customer/edit/" + customer.getId() + "/");
 
         if(result.hasErrors()){
             return newCostumer(customer);
@@ -85,6 +85,8 @@ public class AdminController {
 
         mv.addObject("customer", customer);
         mv.addObject("customerTypes", customerTypes.findAll());
+
+        attributes.addFlashAttribute("message", "Usuário criado com sucesso!");
 
         customers.saveAndFlush(customer);
         return mv;
@@ -102,7 +104,7 @@ public class AdminController {
 
     @PostMapping("/customer/edit/{id}")
     public ModelAndView updateCustomer(@Valid Customer customer, BindingResult result, RedirectAttributes attributes) {
-        ModelAndView mv = new ModelAndView("/admin/newCustumer");
+        ModelAndView mv = new ModelAndView("redirect:/admin/customer/edit/" + customer.getId() + "/");
 
         if(result.hasErrors()){
             return editCustomer(customer);
@@ -110,6 +112,8 @@ public class AdminController {
 
         mv.addObject("customerTypes", customerTypes.findAll());
         mv.addObject(customer);
+
+        attributes.addFlashAttribute("message", "Usuário atualizado com sucesso!");
 
         customers.saveAndFlush(customer);
         return mv;
@@ -136,7 +140,7 @@ public class AdminController {
 
     @PostMapping("/customer/edit/{id}/documents/new")
     public ModelAndView createCustomerDocument(@Valid Document document, Customer customer, BindingResult result, RedirectAttributes attributes) {
-        ModelAndView mv = new ModelAndView("/admin/newDocument");
+        ModelAndView mv = new ModelAndView("redirect:/admin/customer/edit/" + customer.getId() + "/documents/");
 
         if(result.hasErrors()){
             return newCustomerDocuments(customer, document);
@@ -148,11 +152,13 @@ public class AdminController {
         mv.addObject(customer);
         mv.addObject(document);
 
+        attributes.addFlashAttribute("message", "Documento criado com sucesso!");
+
         documents.saveAndFlush(document);
         return mv;
     }
 
-    @GetMapping("/customer/edit/{id}/documents/{id_doc}")
+    @GetMapping("/customer/edit/{id}/documents/{id_doc}/edit")
     public ModelAndView editDocument(@PathVariable("id") Customer customer, @PathVariable("id_doc") Document document) {
         ModelAndView mv = new ModelAndView("/admin/newDocument");
 
