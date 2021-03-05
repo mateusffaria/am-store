@@ -14,7 +14,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 public class Person extends DomainEntity {
 
     @OneToMany(mappedBy = "person", targetEntity = Document.class)

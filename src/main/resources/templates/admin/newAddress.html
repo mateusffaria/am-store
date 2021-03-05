@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head th:insert="layout/layout :: head(${'A.M. Admin | Listagem Clientes'})">
+<head th:insert="layout/layout :: head(${'A.M. Admin | Endereços'})">
 </head>
 
 <body id="page-top">
@@ -59,22 +59,22 @@
                             <div class="form-group">
                                 <label for="postalcode">CEP:</label>
                                 <input type="text" class="form-control" id="postalcode" placeholder="08993-123" th:field="*{postalCode}"
-                                       onchange="cep_retrieve()" required>
+                                       onchange="cep_retrieve()" >
                             </div>
 
                             <div class="form-group">
                                 <label for="street">Logradouro:</label>
-                                <input type="text" class="form-control" id="street" placeholder="Av. Orquídeas" th:field="*{street}" required>
+                                <input type="text" class="form-control" id="street" placeholder="Av. Orquídeas" th:field="*{street}" >
                             </div>
 
                             <div class="form-group">
                                 <label for="number">Número:</label>
-                                <input type="text" class="form-control" id="number" placeholder="Número" th:field="*{number}" required>
+                                <input type="text" class="form-control" id="number" placeholder="Número" th:field="*{number}" >
                             </div>
 
                             <div class="form-group">
                                 <label for="complement">Complemento:</label>
-                                <input type="text" class="form-control" id="complement" placeholder="Casa" th:field="*{complement}" required>
+                                <input type="text" class="form-control" id="complement" placeholder="Casa" th:field="*{complement}" >
                             </div>
 
                             <div class="form-group">
@@ -91,7 +91,8 @@
                             <div class="form-group">
                                 <label for="city">Cidade:</label>
                                 <select id="city" class="form-control" th:field="*{city}">
-                                    <th:block th:if="${null != address.city.id}">
+                                    <option value="">Selecione o Estado Primeiro</option>
+                                    <th:block th:if="${null != address.city.state}">
                                         <option data-toggle="tooltip" data-placement="top"
                                                 th:each="city : *{city.state.cities}"
                                                 th:value="${city.id}"
@@ -99,12 +100,6 @@
                                                 th:title="${city.description}">
                                         </option>
                                     </th:block>
-                                    <option data-toggle="tooltip" data-placement="top"
-                                            th:if="${ null != address.city.id}"
-                                            value="0"
-                                            title="Selecione o Estado primeiro"
-                                    >Selecione o Estado primeiro
-                                    </option>
                                 </select>
 
                             </div>
@@ -121,7 +116,7 @@
                                 </select>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                            <button type="submit" class="btn btn-primary" th:text="${null == address.city.id} ? 'Cadastrar' : 'Atualizar'">Cadastrar</button>
                         </form>
                     </div>
                 </div>

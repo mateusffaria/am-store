@@ -3,10 +3,12 @@ package br.com.les.amstore.controller;
 import br.com.les.amstore.domain.*;
 import br.com.les.amstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -184,10 +186,14 @@ public class AdminController {
     }
 
     @PostMapping("/customer/edit/{id}/addresses/new")
-    public ModelAndView createCustomerDocument(@Valid Address address, Customer customer, BindingResult result, RedirectAttributes attributes) {
-        ModelAndView mv = new ModelAndView("redirect:/admin/listAddresses");
+    public ModelAndView createCustomerDocument(@PathVariable("id") Customer customer, @Valid Address address, BindingResult result, RedirectAttributes attributes) {
+//        ModelAndView mv = new ModelAndView("redirect:/admin/listAddresses");
+        ModelAndView mv = new ModelAndView("/admin/newAddress");
 
-        if(result.hasErrors() && null != customer.getId()){
+//        System.err.println("Address: " + address.toString());
+//        System.err.println("Address: " + address);
+        if(result.hasErrors() || null == customer.getId()){
+            System.err.println("Deu erro");
             return newAddress(customer, address);
         }
 
@@ -198,7 +204,6 @@ public class AdminController {
         mv.addObject(address);
 
         addresses.saveAndFlush(address);
-        customers.saveAndFlush(customer);
 
         return mv;
     }
@@ -212,6 +217,28 @@ public class AdminController {
         mv.addObject(customer);
         mv.addObject(address);
 
+        return mv;
+    }
+
+    @PostMapping(value = "/customer/edit/{customer_id}/addresses/{id}/edit")
+    public ModelAndView updateAddress(@PathVariable(value = "customer_id") Customer customer, @Valid Address address, BindingResult result, RedirectAttributes attributes) {
+        ModelAndView mv = new ModelAndView("/admin/newAddress");
+
+        System.err.println("Endereço: " + address.getId());
+        System.err.println("Customer: " + customer.getId());
+        if(result.hasErrors() || null == customer.getId()){
+            System.err.println("Deu erro");
+            return newAddress(customer, address);
+        }
+
+        customer = customers.findById(customer.getId());
+
+        address.setCustomer(customer);
+
+        mv.addObject(customer);
+        mv.addObject(address);
+
+        addresses.saveAndFlush(address);
         return mv;
     }
 }

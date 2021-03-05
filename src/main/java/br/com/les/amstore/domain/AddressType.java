@@ -11,7 +11,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 public class AddressType extends DomainEntity{
     private String description;
     private String name;
