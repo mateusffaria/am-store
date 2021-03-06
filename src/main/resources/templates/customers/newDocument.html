@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="layout/layout :: head(${'A.M. Admin | Listagem Clientes'})">
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:insert="layout/layout :: navbar"></nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Cadastar novo Cliente</h1>
+                <p class="mb-4">Cadastrar novo cliente na plataforma</p>
+
+                <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(message)}">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div>
+                        <i class="fa  fa-exclamation-circle mr-3"></i>
+                        <span th:text="${message}"></span>
+                    </div>
+                </div>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-wrap justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${customer.id.equals(null)}">Cliente Novo</h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:unless="${customer.id.equals(null)}">
+                            <a th:href="@{'/customer/edit/' + ${customer.id}}" th:unless="${customer.id.equals(null)}">
+                                Detalhes do Cliente
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <a th:href="@{'/customer/edit/' + ${customer.id} + '/documents'}">
+                                Documentos
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
+                            <a th:href="@{'/customer/edit/' + ${customer.id} + '/addresses'}">
+                                Endereços
+                            </a>
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" th:object="${document}">
+
+                            <div class="form-group">
+                                <label for="validate">Data expedição:</label>
+                                <input type="date" class="form-control" id="validate" placeholder="validade" th:field="*{validate}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="code">Número:</label>
+                                <input type="text" class="form-control" id="code" placeholder="Número" th:field="*{code}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="code">Tipo Documento:</label>
+                                <select id="type" class="form-control" th:field="*{documentType}" >
+                                    <option value="">Selecione o tipo</option>
+                                    <option th:each="type : ${documentTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" onclick="my_form(form)">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Your Website 2020</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:replace="layout/layout :: script"></script>
+<script th:replace="layout/layout-admin :: script"></script>
+<script>
+    function my_documents() {
+        var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');
+        markedCheckbox.forEach((checkbox) => {
+            let input_field = $("#" + checkbox.attributes.data_id.value);
+            input_field.removeClass('d-none');
+            input_field.addClass('d-block document-selected');
+
+        })
+
+        var unmarkedCheckbox = $("input:checkbox:not(:checked)");
+        for(i = 0; i< unmarkedCheckbox.length; i++) {
+            let input_field = $("#" + unmarkedCheckbox.get(i).attributes.data_id.value);
+            input_field.removeClass('d-block document-selected');
+            input_field.addClass('d-none');
+        }
+    }
+
+</script>
+</body>
+
+</html>

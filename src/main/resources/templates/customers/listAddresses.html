@@ -8,11 +8,6 @@
 
 <!-- Page Wrapper -->
 <div id="wrapper">
-
-    <!-- Sidebar -->
-    <ul th:replace="layout/layout-admin :: sidebar"></ul>
-    <!-- End of Sidebar -->
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -20,21 +15,36 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav th:insert="layout/layout-admin :: navbar"></nav>
+            <nav th:insert="layout/layout :: navbar"></nav>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Lista de Clientes</h1>
-                <p class="mb-4">Controle de clientes cadastrados</p>
+                <h1 class="h3 mb-2 text-gray-800">Lista de Endereços</h1>
+                <hr>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-wrap justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Documentos</h6>
-                        <a class="btn btn-primary" th:href="@{addresses/new}">Cadastrar Novo Documento para o Cliente</a>
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${customer.id.equals(null)}">Cliente Novo</h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:unless="${customer.id.equals(null)}">
+                            <a th:href="@{'/customer/edit/' + ${customer.id}}" th:unless="${customer.id.equals(null)}">
+                                Detalhes do Cliente
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <a th:href="@{'/customer/edit/' + ${customer.id} + '/documents'}">
+                                Documentos
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
+                            <a th:href="@{'/customer/edit/' + ${customer.id} + '/addresses'}">
+                                Endereços
+                            </a>
+                        </h6>
+                        <a class="btn btn-primary" th:href="@{addresses/new}">Cadastrar Novo Endereço para o Cliente</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">

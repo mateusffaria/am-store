@@ -8,11 +8,6 @@
 
 <!-- Page Wrapper -->
 <div id="wrapper">
-
-    <!-- Sidebar -->
-    <ul th:replace="layout/layout-admin :: sidebar"></ul>
-    <!-- End of Sidebar -->
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -20,15 +15,15 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav th:insert="layout/layout-admin :: navbar"></nav>
+            <nav th:insert="layout/layout :: navbar"></nav>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Cadastar novo Cliente</h1>
-                <p class="mb-4">Cadastrar novo cliente na plataforma</p>
+                <h1 class="h3 mb-2 text-gray-800">Criar conta</h1>
+                <hr>
 
                 <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(message)}">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -41,40 +36,60 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-wrap justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary" th:text="*{customer.id}? 'Detalhes do Cliente' : 'Cliente Novo'">Cliente Novo</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Cliente Novo</h6>
                         <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
-                            <a th:href="@{'/admin/customer/edit/' + ${customer.id} + '/documents'}">
+                            <a th:href="@{${customer.id} + '/documents'}">
                                 Documentos
                             </a>
                         </h6>
                         <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
-                            <a th:href="@{'/admin/customer/edit/' + ${customer.id} + '/addresses'}">
+                            <a th:href="@{${customer.id} + '/addresses'}">
                                 Endereços
                             </a>
                         </h6>
                     </div>
                     <div class="card-body">
-                        <form method="post" th:object="${document}">
+                        <form method="post" th:object="${customer}">
+                            <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()} ">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <th:block th:each="error : ${#fields.detailedErrors()}">
+                                    <div>
+                                        <i class="fa  fa-exclamation-circle mr-3"></i>
+                                        <span th:text="${error.message}"></span>
+                                    </div>
+                                </th:block>
+                            </div>
+
 
                             <div class="form-group">
-                                <label for="validate">Data expedição:</label>
-                                <input type="date" class="form-control" id="validate" placeholder="validade" th:field="*{validate}" required>
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Entre com email" th:field="*{email}" required/>
                             </div>
 
                             <div class="form-group">
-                                <label for="code">Número:</label>
-                                <input type="text" class="form-control" id="code" placeholder="Número" th:field="*{code}" required>
+                                <label for="password">Senha:</label>
+                                <input type="password" class="form-control" id="password" placeholder="Senha" th:field="*{password}">
                             </div>
 
                             <div class="form-group">
-                                <label for="code">Tipo Documento:</label>
-                                <select id="type" class="form-control" th:field="*{documentType}" >
-                                    <option value="">Selecione o tipo</option>
-                                    <option th:each="type : ${documentTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+                                <label for="password">Nome:</label>
+                                <input type="text" class="form-control" id="name" placeholder="Nome completo" th:field="*{name}" required>
+                            </div>
+
+                            <div class="form-group mt-2">
+                                <label for="telephone">Telefone:</label>
+                                <input type="text" class="form-control" id="telephone" aria-describedby="telephoneHelp" placeholder="(11) 91234-5678" th:field="*{telephone}" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customer-type">Tipo de Cliente:</label>
+                                <select th:field="*{customerType.id}" th:name='customer_type' class="form-control" required id="customer-type">
+                                    <option value="">Selecione</option>
+                                    <option th:each="type : ${customerTypes}" th:value="${type.id}" th:text="${type.title}"
+                                            data-toggle="tooltip" data-placement="top" th:title="${type.description}"></option>
                                 </select>
                             </div>
-
-                            <button type="submit" class="btn btn-primary" onclick="my_form(form)">Cadastrar</button>
+                            <button type="submit" class="btn btn-primary" th:text="${null == customer.id} ? 'Cadastrar' : 'Atualizar'">Cadastrar</button>
                         </form>
                     </div>
                 </div>
@@ -127,7 +142,6 @@
 </div>
 
 <script th:replace="layout/layout :: script"></script>
-<script th:replace="layout/layout-admin :: script"></script>
 <script>
     function my_documents() {
         var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');

@@ -1,6 +1,7 @@
 package br.com.les.amstore.domain;
 
 import lombok.*;
+import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Where(clause = "deleted_at is null")
 public class Customer extends Person{
 
     @NotNull

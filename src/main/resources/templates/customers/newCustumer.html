@@ -8,11 +8,6 @@
 
 <!-- Page Wrapper -->
 <div id="wrapper">
-
-    <!-- Sidebar -->
-    <ul th:replace="layout/layout-admin :: sidebar"></ul>
-    <!-- End of Sidebar -->
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -20,15 +15,15 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav th:insert="layout/layout-admin :: navbar"></nav>
+            <nav th:insert="layout/layout :: navbar"></nav>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Cadastar novo Cliente</h1>
-                <p class="mb-4">Cadastrar novo cliente na plataforma</p>
+                <h1 class="h3 mb-2 text-gray-800">Criar conta</h1>
+                <hr>
 
                 <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(message)}">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -86,15 +81,7 @@
                                 <input type="text" class="form-control" id="telephone" aria-describedby="telephoneHelp" placeholder="(11) 91234-5678" th:field="*{telephone}" required/>
                             </div>
 
-                            <div class="form-group">
-                                <label for="customer-type">Tipo de Cliente:</label>
-                                <select th:field="*{customerType.id}" th:name='customer_type' class="form-control" required id="customer-type">
-                                    <option value="">Selecione</option>
-                                    <option th:each="type : ${customerTypes}" th:value="${type.id}" th:text="${type.title}"
-                                            data-toggle="tooltip" data-placement="top" th:title="${type.description}"></option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary" onclick="my_form(form)">Cadastrar</button>
+                            <button type="submit" class="btn btn-primary" th:text="${null == customer.id} ? 'Cadastrar' : 'Atualizar'">Cadastrar</button>
                         </form>
                     </div>
                 </div>
@@ -147,7 +134,6 @@
 </div>
 
 <script th:replace="layout/layout :: script"></script>
-<script th:replace="layout/layout-admin :: script"></script>
 <script>
     function my_documents() {
         var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');
