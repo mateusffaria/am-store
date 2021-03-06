@@ -3,6 +3,7 @@ package br.com.les.amstore.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@Where(clause = "deleted_at is null")
 public class Document extends DomainEntity{
     @NotBlank(message = "Número do documento não pode ser estar em branco")
     @NotNull(message = "Número do documento não pode ser nulo")
@@ -31,4 +33,10 @@ public class Document extends DomainEntity{
     @ManyToOne
     @JoinColumn(name="document_type_id")
     private DocumentType documentType;
+
+    private Date deletedAt;
+
+    public void delete() {
+        this.deletedAt = new Date();
+    }
 }

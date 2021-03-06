@@ -21,6 +21,15 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
+                <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(message)}">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div>
+                        <i class="fa  fa-exclamation-circle mr-3"></i>
+                        <span th:text="${message}"></span>
+                    </div>
+                </div>
+
+
                 <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-gray-800">Lista de Endereços</h1>
                 <hr>
@@ -74,10 +83,15 @@
                                         </a>
                                     </td>
                                     <td class="m-auto">
-                                        <a th:href="@{delete/{id}(id=${customer.id})}">
-                                            <i class="fas fa-trash-alt"></i>
-                                            <span> excluir</span>
-                                        </a>
+                                        <form th:object="${customer}" th:method="delete">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <input type="hidden" name="id" th:value="${customer.id}">
+                                            <input type="hidden" name="address_id" th:value="${address.id}">
+                                            <button class="btn btn-outline-danger">
+                                                <i class="fas fa-trash-alt"></i>
+                                                <span> excluir</span>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                                 <tr th:if="${customer.address.isEmpty()}">

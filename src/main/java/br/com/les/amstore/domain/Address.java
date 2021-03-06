@@ -1,15 +1,18 @@
 package br.com.les.amstore.domain;
 
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
+@Where(clause = "deleted_at is null")
 public class Address extends DomainEntity{
 
     @NotBlank(message = "Logradouro não pode estar em branco")
@@ -39,4 +42,10 @@ public class Address extends DomainEntity{
     @ManyToOne
     @JoinColumn(name="city_id")
     private City city;
+
+    private Date deletedAt;
+
+    public void delete() {
+        this.deletedAt = new Date();
+    }
 }

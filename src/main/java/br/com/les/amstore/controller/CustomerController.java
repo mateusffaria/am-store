@@ -8,10 +8,7 @@ import br.com.les.amstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -111,6 +108,22 @@ public class CustomerController {
         return mv;
     }
 
+
+    @DeleteMapping("/edit/{id}/documents")
+    public ModelAndView deleteDocument(@RequestParam String id, @RequestParam String document_id, RedirectAttributes attributes) {
+        Document document = documents.findById(Long.parseLong(document_id));
+        document.delete();
+
+        documents.saveAndFlush(document);
+
+        ModelAndView mv = new ModelAndView("redirect:/customer/edit/" + id + "/documents");
+
+        attributes.addFlashAttribute("message", "Documento excluído com sucesso!");
+
+        return mv;
+    }
+
+
     @GetMapping("/edit/{id}/documents/new")
     public ModelAndView newCustomerDocuments(@PathVariable("id") Customer customer, Document document) {
         ModelAndView mv = new ModelAndView("/customers/newDocument");
@@ -141,16 +154,6 @@ public class CustomerController {
         return mv;
     }
 
-    @GetMapping("/edit/{id}/documents/{id_doc}/edit")
-    public ModelAndView editDocument(@PathVariable("id") Customer customer, @PathVariable("id_doc") Document document) {
-        ModelAndView mv = new ModelAndView("/customers/newDocument");
-
-        mv.addObject("documentTypes", documentTypes.findAll());
-        mv.addObject(customer);
-        mv.addObject(document);
-
-        return mv;
-    }
 
     @GetMapping("/edit/{id}/addresses")
     public ModelAndView listAddress(@PathVariable("id") Customer customer, Address address) {
@@ -229,4 +232,19 @@ public class CustomerController {
         addresses.saveAndFlush(address);
         return mv;
     }
+
+    @DeleteMapping("/edit/{id}/addresses")
+    public ModelAndView deleteAddress(@RequestParam String id, @RequestParam String address_id, RedirectAttributes attributes) {
+        Address address = addresses.findById(Long.parseLong(address_id));
+        address.delete();
+
+        addresses.saveAndFlush(address);
+
+        ModelAndView mv = new ModelAndView("redirect:/customer/edit/" + id + "/addresses");
+
+        attributes.addFlashAttribute("message", "Endereço excluído com sucesso!");
+
+        return mv;
+    }
+
 }
