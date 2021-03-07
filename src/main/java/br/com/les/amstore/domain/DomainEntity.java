@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 @MappedSuperclass
 @Getter
@@ -19,8 +20,11 @@ public abstract class DomainEntity implements Serializable {
     private Long id;
     private Date createdAt;
 
+    private String hash;
+
 
     DomainEntity() {
         this.createdAt = new Date();
+        this.hash = UUID.randomUUID().toString();
     }
 }
