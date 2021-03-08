@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Where(clause = "deleted_at is null")
+@ToString
 public class Customer extends Person{
 
     @NotNull
@@ -35,8 +36,7 @@ public class Customer extends Person{
     @OneToMany(mappedBy = "customer", targetEntity = Address.class)
     private List<Address> address;
 
-//    @AssertTrue(message = "Senha é obrigatória")
-    public boolean hasPassword() {
+    public boolean hasPasswordSet() {
         if(null == this.encryptedPassword)
             if(null == this.password || this.password.length() <= 0)
                 return false;

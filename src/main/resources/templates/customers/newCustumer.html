@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head th:insert="layout/layout :: head(${'A.M. Admin | Listagem Clientes'})">
+<head th:insert="layout/layout :: head(${'A.M. Admin | Clientes'})">
 </head>
 
 <body id="page-top">
@@ -69,17 +69,29 @@
                             <div class="form-group">
                                 <label for="password">Senha:</label>
                                 <input type="password" class="form-control" id="password" placeholder="Senha" th:field="*{password}">
+                                <small th:if="${null != customer.id}" th:text="'Deixe em branco se não quiser alterar a senha'"></small>
                             </div>
 
-                            <div class="form-group">
-                                <label for="password">Nome:</label>
-                                <input type="text" class="form-control" id="name" placeholder="Nome completo" th:field="*{name}" required>
+                            <div class="form-group" th:if="${null == customer.id}">
+                                <label for="password_confirm">Confirme sua Senha:</label>
+                                <input type="password" class="form-control" id="password_confirm" placeholder="Confirme sua Senha" required>
                             </div>
+
+                            <div id="password_group"></div>
+
+                            <div class="form-group">
+                                <label for="name">Nome:</label>
+                                <input type="text" class="form-control" id="name" placeholder="Nome completo" th:field="*{name}" required min="6">
+                            </div>
+
+                            <div id="name_group"></div>
 
                             <div class="form-group mt-2">
                                 <label for="telephone">Telefone:</label>
                                 <input type="text" class="form-control" id="telephone" aria-describedby="telephoneHelp" placeholder="(11) 91234-5678" th:field="*{telephone}" required/>
                             </div>
+
+                            <div id="telephone_group"></div>
 
                             <button type="submit" class="btn btn-primary" th:text="${null == customer.id} ? 'Cadastrar' : 'Atualizar'">Cadastrar</button>
                         </form>
@@ -135,22 +147,53 @@
 
 <script th:replace="layout/layout :: script"></script>
 <script>
-    function my_documents() {
-        var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');
-        markedCheckbox.forEach((checkbox) => {
-            let input_field = $("#" + checkbox.attributes.data_id.value);
-            input_field.removeClass('d-none');
-            input_field.addClass('d-block document-selected');
+    $(document).ready(function(){
+        var SPMaskBehavior = function (val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+            },
+            spOptions = {
+                onKeyPress: function(val, e, field, options) {
+                    field.mask(SPMaskBehavior.apply({}, arguments), options);
+                }
+            };
 
-        })
+        $('#telephone').mask(SPMaskBehavior, spOptions);
+    });
+</script>
+<script th:if="${null == customer.id}">
 
-        var unmarkedCheckbox = $("input:checkbox:not(:checked)");
-        for(i = 0; i< unmarkedCheckbox.length; i++) {
-            let input_field = $("#" + unmarkedCheckbox.get(i).attributes.data_id.value);
-            input_field.removeClass('d-block document-selected');
-            input_field.addClass('d-none');
+    $('#password, #password_confirm').on('keyup', function () {
+        if($("#password_confirm").val() == $("#password").val()) {
+            $("#password_group").empty();
+            $(":submit").attr("disabled", false)
+        } else {
+            $(":submit").attr("disabled", true)
+            $("#password_group").empty();
+            $("#password_group").append("<small class='alert-danger' id='password_alert'>Senhas não conferem</small>");
         }
-    }
+    })
+
+    $("#telephone").on('keyup', function () {
+        if($("#telephone").val().replace(/\D/g, '').length < 10) {
+            $("#telephone_group").empty();
+            $("#telephone_group").append("<small class='alert-danger' id='password_alert'>Telefone inválido</small>");
+            $(":submit").attr("disabled", true)
+        } else {
+            $("#telephone_group").empty();
+            $(":submit").attr("disabled", false)
+        }
+    })
+
+    $("#name").on('keyup', function () {
+        if(this.value.length < 3) {
+            $("#name_group").empty();
+            $("#name_group").append("<small class='alert-danger' id='password_alert'>Nome inválido</small>");
+            $(":submit").attr("disabled", true)
+        } else {
+            $("#name_group").empty();
+            $(":submit").attr("disabled", false)
+        }
+    })
 
 </script>
 </body>

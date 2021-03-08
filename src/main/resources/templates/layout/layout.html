@@ -183,7 +183,7 @@
                     aria-labelledby="userDropdown"
             >
                 <a class="dropdown-item" th:href="@{/customer/new}">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <i class="fas fa-user-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                     Criar Conta
                 </a>
                 <a class="dropdown-item" th:href="@{/customer/edit/72}">
@@ -218,7 +218,8 @@
 <th:block th:fragment="script">
 
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-<!--    <script th:src="@{/vendor/jquery/jquery.validate.min.js}"></script>-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
+    <!--    <script th:src="@{/vendor/jquery/jquery.validate.min.js}"></script>-->
 
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
