@@ -65,6 +65,8 @@ public class CustomerController {
             return newCostumer(customer);
         }
 
+        customer.setCustomerType(customerTypes.findById(Long.parseLong("1")));
+
         customers.saveAndFlush(customer);
 
         ModelAndView mv = new ModelAndView("redirect:/customer/edit/" + customer.getId() + "");
@@ -88,7 +90,7 @@ public class CustomerController {
 
     @PostMapping("/edit/{id}")
     public ModelAndView updateCustomer(@Valid Customer customer, BindingResult result, RedirectAttributes attributes) {
-        customer = customers.findById(customer.getId());
+        customer.setEncryptedPassword(customers.findById(customer.getId()).getEncryptedPassword());
 
         if(!customer.hasPasswordSet())
             result.addError(new ObjectError("customer", "Senha é obrigatória"));
