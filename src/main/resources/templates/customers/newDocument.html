@@ -55,9 +55,20 @@
                     </div>
                     <div class="card-body">
                         <form method="post" th:object="${document}">
+                            <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()} ">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <th:block th:each="error : ${#fields.detailedErrors()}">
+                                    <div>
+                                        <i class="fa  fa-exclamation-circle mr-3"></i>
+                                        <span th:text="${error.message}"></span>
+                                    </div>
+                                </th:block>
+                            </div>
+
+
                             <div class="form-group">
                                 <label for="code">Tipo Documento:</label>
-                                <select id="type" class="form-control" th:field="*{documentType}" >
+                                <select id="type" class="form-control" th:field="*{documentType}" required>
                                     <option value="">Selecione o tipo</option>
                                     <option th:each="type : ${documentTypes}" th:value="${type.id}" th:text="${type.name}"></option>
                                 </select>
@@ -73,7 +84,7 @@
                                 <input type="text" class="form-control" id="code" placeholder="Número" th:field="*{code}" required>
                             </div>
 
-                            <button type="submit" class="btn btn-primary" onclick="my_form(form)">Cadastrar</button>
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
                         </form>
                     </div>
                 </div>
@@ -126,25 +137,23 @@
 </div>
 
 <script th:replace="layout/layout :: script"></script>
-<script th:replace="layout/layout-admin :: script"></script>
 <script>
-    function my_documents() {
-        var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');
-        markedCheckbox.forEach((checkbox) => {
-            let input_field = $("#" + checkbox.attributes.data_id.value);
-            input_field.removeClass('d-none');
-            input_field.addClass('d-block document-selected');
 
-        })
-
-        var unmarkedCheckbox = $("input:checkbox:not(:checked)");
-        for(i = 0; i< unmarkedCheckbox.length; i++) {
-            let input_field = $("#" + unmarkedCheckbox.get(i).attributes.data_id.value);
-            input_field.removeClass('d-block document-selected');
-            input_field.addClass('d-none');
+    $("#type").change(function () {
+        console.log(this.value)
+        switch (this.value){
+            case "1":
+                $("#code").mask('00.000.000-0')
+                break;
+            case "2":
+                $("#code").mask('000.000.000-00')
+                break;
+            case "3":
+                $("#code").mask('00.000.000/0000-00')
+                break;
         }
-    }
 
+    })
 </script>
 </body>
 

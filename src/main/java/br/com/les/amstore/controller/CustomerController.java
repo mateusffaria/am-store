@@ -147,7 +147,7 @@ public class CustomerController {
     }
 
     @PostMapping("/edit/{id}/documents/new")
-    public ModelAndView createCustomerDocument(@Valid Document document, Customer customer, BindingResult result, RedirectAttributes attributes) {
+    public ModelAndView createCustomerDocument(@Valid Document document, BindingResult result, RedirectAttributes attributes, Customer customer) {
         if(result.hasErrors()){
             return newCustomerDocuments(customer, document);
         }
@@ -155,10 +155,7 @@ public class CustomerController {
         document.setPerson(customer);
         documents.saveAndFlush(document);
 
-        ModelAndView mv = new ModelAndView("redirect:/customer/edit/" + customer.getId() + "/documents/");
-        mv.addObject("documentTypes", documentTypes.findAll());
-        mv.addObject(customer);
-        mv.addObject(document);
+        ModelAndView mv = new ModelAndView("redirect:/customer/edit/" + customer.getId() + "/documents");
 
         attributes.addFlashAttribute("message", "Documento criado com sucesso!");
 
@@ -200,9 +197,6 @@ public class CustomerController {
         customer = customers.findById(customer.getId());
         address.setCustomer(customer);
 
-        mv.addObject(customer);
-        mv.addObject(address);
-
         attributes.addFlashAttribute("message", "Endereço criado com sucesso!");
 
         addresses.saveAndFlush(address);
@@ -234,9 +228,6 @@ public class CustomerController {
         address.setCustomer(customer);
 
         ModelAndView mv = new ModelAndView("redirect:/customer/edit/" + customer.getId() + "/addresses/" + address.getId() + "/edit");
-
-        mv.addObject(customer);
-        mv.addObject(address);
 
         attributes.addFlashAttribute("message", "Endereço atualizado com sucesso!");
 

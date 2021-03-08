@@ -1,2 +1,3 @@
-INSERT INTO public.document_type (id, created_at, description, name) VALUES (1, '2021-02-25 22:30:07.000000', 'Registro Geral', 'RG');
-INSERT INTO public.document_type (id, created_at, description, name) VALUES (2, '2021-02-25 22:30:32.000000', 'Cadastro Pessoa Física', 'CPF');
+INSERT INTO public.document_type (id, created_at, description, name) VALUES (1, now(), 'Registro Geral', 'RG');
+INSERT INTO public.document_type (id, created_at, description, name) VALUES (2, now(), 'Cadastro Pessoa Física', 'CPF');
+INSERT INTO public.document_type (id, created_at, description, name) VALUES (3, now(), 'Cadastro Nacional de Pessoa Jurídica', 'CNPJ');
