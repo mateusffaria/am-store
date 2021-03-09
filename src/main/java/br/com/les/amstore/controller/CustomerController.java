@@ -255,4 +255,11 @@ public class CustomerController {
 
         return mv;
     }
+
+    @GetMapping("/{id}/my-orders")
+    public ModelAndView getOrders(@PathVariable("id") Customer customer) {
+        ModelAndView mv = new ModelAndView("customers/myOrders");
+
+        return mv;
+    }
 }
