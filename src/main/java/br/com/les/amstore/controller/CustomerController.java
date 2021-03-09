@@ -249,4 +249,10 @@ public class CustomerController {
         return mv;
     }
 
+    @GetMapping("/{id}/checkout")
+    public ModelAndView getCheckout(@PathVariable("id") Customer customer) {
+        ModelAndView mv = new ModelAndView("customers/checkout");
+
+        return mv;
+    }
 }
