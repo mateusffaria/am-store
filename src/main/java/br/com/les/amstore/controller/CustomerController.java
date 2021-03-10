@@ -252,7 +252,8 @@ public class CustomerController {
     @GetMapping("/{id}/checkout")
     public ModelAndView getCheckout(@PathVariable("id") Customer customer) {
         ModelAndView mv = new ModelAndView("customers/checkout");
-
+        mv.addObject(customer);
+        mv.addObject("documentTypes", documentTypes.findAll());
         return mv;
     }
 

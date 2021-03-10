@@ -71,8 +71,8 @@
                                 <tr th:each="document : ${customer.documents}">
                                     <td th:text="${document.id}"></td>
                                     <td th:text="${document.code}"></td>
-                                    <td th:text="${document.documentType.name}">andreia@gmail.com</td>
-                                    <td th:text="${document.getPerson().name}">The Sims</td>
+                                    <td th:text="${document.documentType.name}"></td>
+                                    <td th:text="${document.getPerson().name}"></td>
                                     <td class="m-auto">
                                         <form th:object="${customer}" th:method="delete">
                                             <input type="hidden" name="_method" value="delete">

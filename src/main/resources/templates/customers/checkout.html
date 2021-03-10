@@ -12,92 +12,186 @@
         <div id="content">
           <!-- Begin Page Content -->
           <div class="container">
-            <div class="d-flex justify-content-around flex-wrap">
-              <table class="table table-hover mt-4 mb-4">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nome do Jogo</th>
-                    <th scope="col">Plataforma</th>
-                    <th scope="col">Quantidade</th>
-                    <th scope="col" colspan="2">Valor</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Resident Evil 3</td>
-                    <td>PS4</td>
-                    <td>1</td>
-                    <td>R$: 350,00</td>
-                    <td><i class="fas fa-trash"></i>Excluir</td>
-                  </tr>
-                </tbody>
-              </table>
+            <table class="table-responsive w-100 table d-block d-md-table table-hover mt-4 mb-4">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome do Jogo</th>
+                <th scope="col">Plataforma</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col" colspan="2">Valor</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Resident Evil 3</td>
+                <td>PS4</td>
+                <td>1</td>
+                <td>R$: 350,00</td>
+                <td><i class="fas fa-trash"></i> Excluir</td>
+              </tr>
+              </tbody>
+          </table>
 
+            <div class="d-flex justify-content-around flex-wrap">
               <div class="d-flex justify-content-between flex-wrap col-12">
-                <div
-                  class="p-4 rounded bg-form col-12 col-md-6 d-none"
-                  id="endereco"
-                >
+                <div class="p-4 rounded bg-form col-12 col-md-6" id="usuario">
+                  <form class="">
+                    <h5 class="text-center">Dados Pessoais</h5>
+                    <hr />
+
+                    <small th:class="${customer.documents.isEmpty() || customer.address.isEmpty()} ? 'd-block text-justify text-info' : 'd-none'">
+                      Para darmos sequência no pagamento é necessários alguns dados, será rapidinho, prometo :D
+                    </small>
+
+                    <div class="form-group">
+                      <label for="document">Documento</label>
+                      <select id="document" class="form-control" required>
+                        <option value="">Selecione o documento</option>
+                        <option th:each="document : ${customer.documents}" th:value="${document.id}" th:text="${document.documentType.name} + ': ' + ${document.code}"></option>
+                        <option value="-1">Cadastre um novo</option>
+                      </select>
+                    </div>
+
+                    <fieldset id="new_document_form" class="d-none">
+                      <div class="form-group mt-2">
+                        <label for="document_type">Tipo Documento:</label>
+                        <select id="document_type" class="form-control" required>
+                          <option value="">Selecione o tipo</option>
+                          <option th:each="type : ${documentTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="new_validate">Data expedição:</label>
+                        <input type="date" class="form-control" id="new_validate" placeholder="validade" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="new_document_code">Número:</label>
+                        <input type="text" class="form-control" id="new_document_code" placeholder="Número" required>
+                      </div>
+                      <div class="form-group">
+                        <button class="btn btn-success">Salvar Documento</button>
+                      </div>
+                    </fieldset>
+
+                    <div class="form-group">
+                      <label for="name">Nome Completo</label>
+                      <input
+                              type="text"
+                              class="form-control"
+                              id="name"
+                              aria-describedby="logradoutoHelp"
+                              placeholder="Nome exemplo"
+                              th:value="${customer.name}"
+                              disabled
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="telephone"
+                      >Telefone para contato</label
+                      >
+                      <input
+                              type="text"
+                              class="form-control"
+                              id="telephone"
+                              aria-describedby="logradoutoHelp"
+                              placeholder="(11) 91234-5678"
+                              th:value="${customer.telephone}"
+                              disabled
+                      />
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+                      <button type="submit" class="btn btn-warning">
+                        Voltar
+                      </button>
+
+                      <button
+                              type="submit"
+                              class="btn btn-primary"
+                              onClick="proximoPasso(event)"
+                      >
+                        Próximo
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="p-4 rounded bg-form col-12 col-md-6 d-none" id="delivery_address">
                   <form class="">
                     <h5 class="text-center">Endereço de Entrega</h5>
                     <hr />
                     <div class="form-group">
-                      <label for="address"
+                      <label for="delivery_address_selector"
                         >Selecione um endereço</label
                       >
-                      <select class="custom-select" id="address">
-                        <option value="1">End Favorito</option>
-                        <option value="2">End 2</option>
-                        <option value="3">End 3</option>
-                        <option value="3">Cadastrar Novo</option>
+                      <select id="delivery_address_selector" class="form-control" th:field="${customer.address}" >
+                        <option value="">Escolha um endereço de entrega</option>
+                        <th:block th:if="${!customer.address.isEmpty()}">
+                          <option data-toggle="tooltip" data-placement="top"
+                                  th:each="address : ${customer.address}"
+                                  th:value="${address.id}"
+                                  th:text="${address.street}"
+                                  th:title="${address.street}"
+                                  th:if="${address.addressType.getId() == 1}"
+                          >
+                          </option>
+                        </th:block>
+                        <option value="-1">
+                          Cadastre um novo endereço
+                        </option>
                       </select>
                     </div>
 
-                    <div class="form-group">
-                      <label for="postalcode">CEP</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="postalcode"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="01234-456"
-                      />
-                    </div>
+                    <fieldset id="new_delivery_address" class="d-none">
+                      <div class="form-group">
+                        <label for="new_delivery_postalcode">CEP</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="new_delivery_postalcode"
+                          aria-describedby="logradoutoHelp"
+                          placeholder="01234-456"
+                        />
+                      </div>
 
-                    <div class="form-group">
-                      <label for="street">Logradouro</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="street"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="Avenida Orquídeas, 123"
-                      />
-                    </div>
+                      <div class="form-group">
+                        <label for="new_delivery_street">Logradouro</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="new_delivery_street"
+                          aria-describedby="logradoutoHelp"
+                          placeholder="Avenida Orquídeas, 123"
+                        />
+                      </div>
 
-                    <div class="form-group">
-                      <label for="city">Cidade</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="city"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="Mogi das Cruzes"
-                      />
-                    </div>
+                      <div class="form-group">
+                        <label for="new_delivery_city">Cidade</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="new_delivery_city"
+                          aria-describedby="logradoutoHelp"
+                          placeholder="Mogi das Cruzes"
+                        />
+                      </div>
 
-                    <div class="form-group">
-                      <label for="state">Estado</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="state"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="São Paulo"
-                      />
-                    </div>
+                      <div class="form-group">
+                        <label for="new_delivery_state">Estado</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="new_delivery_state"
+                          aria-describedby="logradoutoHelp"
+                          placeholder="São Paulo"
+                        />
+                      </div>
+                    </fieldset>
 
                     <div class="d-flex flex-wrap justify-content-between">
                       <button type="submit" class="btn btn-warning">
@@ -115,60 +209,6 @@
                   </form>
                 </div>
 
-                <div class="p-4 rounded bg-form col-12 col-md-6" id="usuario">
-                  <form class="">
-                    <h5 class="text-center">Dados Pessoais</h5>
-                    <hr />
-                    <div class="form-group">
-                      <label for="code">Documento</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="code"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="123456789"
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="name">Nome Completo</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="name"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="Nome exemplo"
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="telephone"
-                        >Telefone para contato</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="telephone"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="(11) 91234-5678"
-                      />
-                    </div>
-
-                    <div class="d-flex flex-wrap justify-content-between">
-                      <button type="submit" class="btn btn-warning">
-                        Voltar
-                      </button>
-
-                      <button
-                        type="submit"
-                        class="btn btn-primary"
-                        onClick="proximoPasso(event)"
-                      >
-                        Próximo
-                      </button>
-                    </div>
-                  </form>
-                </div>
 
                 <div
                   class="p-4 rounded bg-form col-12 col-md-6 d-none"
@@ -275,7 +315,6 @@
         </div>
         <!-- End of Main Content -->
 
-
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
           <div class="container my-auto">
@@ -303,23 +342,57 @@
     function proximoPasso(event) {
       event.preventDefault();
       document.getElementById("usuario").addEventListener("click", function () {
-        document.getElementById("endereco").classList.remove("d-none");
-        document.getElementById("endereco").classList.add("d-flex");
+        document.getElementById("delivery_address").classList.remove("d-none");
+        document.getElementById("delivery_address").classList.add("d-block");
         this.classList.add("d-none");
-        this.classList.remove("d-flex");
+        this.classList.remove("d-block");
       });
     }
 
     function proximoPasso2(event) {
       event.preventDefault();
       document
-        .getElementById("endereco")
+        .getElementById("delivery_address")
         .addEventListener("click", function () {
           document.getElementById("cartao").classList.remove("d-none");
-          document.getElementById("cartao").classList.add("d-flex");
+          document.getElementById("cartao").classList.add("d-block");
           this.classList.add("d-none");
-          this.classList.remove("d-flex");
+          this.classList.remove("d-block");
         });
     }
+
+    $("#document_type").change(function () {
+      switch (this.value){
+        case "1":
+          $("#new_document_code").mask('00.000.000-0')
+          break;
+        case "2":
+          $("#new_document_code").mask('000.000.000-00')
+          break;
+        case "3":
+          $("#new_document_code").mask('00.000.000/0000-00')
+          break;
+      }
+    })
+
+    $("#document").change(function () {
+      if(this.value == "-1") {
+        $("#new_document_form").removeClass('d-none');
+        $("#new_document_form").addClass('d-block');
+      } else {
+        $("#new_document_form").removeClass('d-block');
+        $("#new_document_form").addClass('d-none');
+      }
+    })
+
+    $("#delivery_address_selector").change(function () {
+      if(this.value == '-1') {
+        $("#new_delivery_address").removeClass('d-none')
+        $("#new_delivery_address").addClass('d-block')
+      } else {
+        $("#new_delivery_address").removeClass('d-block')
+        $("#new_delivery_address").addClass('d-none')
+      }
+    })
   </script>
 </html>

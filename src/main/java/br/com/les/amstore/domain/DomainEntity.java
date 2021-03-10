@@ -20,11 +20,7 @@ public abstract class DomainEntity implements Serializable {
     private Long id;
     private Date createdAt;
 
-    private String hash;
-
-
     DomainEntity() {
         this.createdAt = new Date();
-        this.hash = UUID.randomUUID().toString();
     }
 }
