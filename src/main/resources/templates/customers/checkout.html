@@ -36,14 +36,13 @@
 
             <div class="d-flex justify-content-around flex-wrap">
               <div class="d-flex justify-content-between flex-wrap col-12">
+                <small th:class="${customer.documents.isEmpty() || customer.address.isEmpty()} ? 'd-block text-justify text-info' : 'd-none'">
+                  Para darmos sequência no pagamento é necessários alguns dados, será rapidinho, prometo :D
+                </small>
                 <div class="p-4 rounded bg-form col-12 col-md-6" id="usuario">
                   <form class="">
                     <h5 class="text-center">Dados Pessoais</h5>
                     <hr />
-
-                    <small th:class="${customer.documents.isEmpty() || customer.address.isEmpty()} ? 'd-block text-justify text-info' : 'd-none'">
-                      Para darmos sequência no pagamento é necessários alguns dados, será rapidinho, prometo :D
-                    </small>
 
                     <div class="form-group">
                       <label for="document">Documento</label>
@@ -54,7 +53,7 @@
                       </select>
                     </div>
 
-                    <fieldset id="new_document_form" class="d-none">
+                    <fieldset id="new_document_form" class="d-none" disabled>
                       <div class="form-group mt-2">
                         <label for="document_type">Tipo Documento:</label>
                         <select id="document_type" class="form-control" required>
@@ -106,7 +105,7 @@
                     </div>
 
                     <div class="d-flex flex-wrap justify-content-between">
-                      <button type="submit" class="btn btn-warning">
+                      <button type="submit" class="btn btn-warning" disabled>
                         Voltar
                       </button>
 
@@ -114,6 +113,8 @@
                               type="submit"
                               class="btn btn-primary"
                               onClick="proximoPasso(event)"
+                              id="document_step"
+                              disabled
                       >
                         Próximo
                       </button>
@@ -129,7 +130,7 @@
                       <label for="delivery_address_selector"
                         >Selecione um endereço</label
                       >
-                      <select id="delivery_address_selector" class="form-control" th:field="${customer.address}" >
+                      <select id="delivery_address_selector" class="form-control" required>
                         <option value="">Escolha um endereço de entrega</option>
                         <th:block th:if="${!customer.address.isEmpty()}">
                           <option data-toggle="tooltip" data-placement="top"
@@ -147,7 +148,7 @@
                       </select>
                     </div>
 
-                    <fieldset id="new_delivery_address" class="d-none">
+                    <fieldset id="new_delivery_address" class="d-none" disabled>
                       <div class="form-group">
                         <label for="new_delivery_postalcode">CEP</label>
                         <input
@@ -156,6 +157,7 @@
                           id="new_delivery_postalcode"
                           aria-describedby="logradoutoHelp"
                           placeholder="01234-456"
+                          required
                         />
                       </div>
 
@@ -167,6 +169,7 @@
                           id="new_delivery_street"
                           aria-describedby="logradoutoHelp"
                           placeholder="Avenida Orquídeas, 123"
+                          required
                         />
                       </div>
 
@@ -178,6 +181,7 @@
                           id="new_delivery_city"
                           aria-describedby="logradoutoHelp"
                           placeholder="Mogi das Cruzes"
+                          required
                         />
                       </div>
 
@@ -189,12 +193,16 @@
                           id="new_delivery_state"
                           aria-describedby="logradoutoHelp"
                           placeholder="São Paulo"
+                          required
                         />
+                      </div>
+                      <div class="form-group">
+                        <button class="btn btn-success">Cadastrar endereço de entrega</button>
                       </div>
                     </fieldset>
 
                     <div class="d-flex flex-wrap justify-content-between">
-                      <button type="submit" class="btn btn-warning">
+                      <button type="submit" class="btn btn-warning" onclick="backStep1(event)">
                         Voltar
                       </button>
 
@@ -202,6 +210,8 @@
                         type="submit"
                         class="btn btn-primary"
                         onclick="proximoPasso2(event)"
+                        id="delivery_address_step"
+                        disabled
                       >
                         Próximo
                       </button>
@@ -209,81 +219,198 @@
                   </form>
                 </div>
 
+                <div class="p-4 rounded bg-form col-12 col-md-6 d-none" id="billing_address">
+                  <form class="">
+                    <h5 class="text-center">Endereço de Cobrança</h5>
+                    <hr />
+                    <div class="form-group">
+                      <label for="delivery_address_selector"
+                      >Selecione um endereço</label
+                      >
+                      <select id="billing_address_selector" class="form-control" required>
+                        <option value="">Escolha um endereço de entrega</option>
+                        <th:block th:if="${!customer.address.isEmpty()}">
+                          <option data-toggle="tooltip" data-placement="top"
+                                  th:each="address : ${customer.address}"
+                                  th:value="${address.id}"
+                                  th:text="${address.street}"
+                                  th:title="${address.street}"
+                                  th:if="${address.addressType.getId() == 2}"
+                          >
+                          </option>
+                        </th:block>
+                        <option value="-1">
+                          Cadastre um novo endereço
+                        </option>
+                      </select>
+                    </div>
 
-                <div
-                  class="p-4 rounded bg-form col-12 col-md-6 d-none"
-                  id="cartao"
-                >
+                    <fieldset id="new_billing_address" class="d-none" disabled>
+                      <div class="form-group">
+                        <label for="new_delivery_postalcode">CEP</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="new_billing_postalcode"
+                                aria-describedby="logradoutoHelp"
+                                placeholder="01234-456"
+                                required
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="new_billing_street">Logradouro</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="new_billing_street"
+                                aria-describedby="logradoutoHelp"
+                                placeholder="Avenida Orquídeas, 123"
+                                required
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="new_billing_city">Cidade</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="new_billing_city"
+                                aria-describedby="logradoutoHelp"
+                                placeholder="Mogi das Cruzes"
+                                required
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="new_billing_state">Estado</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="new_billing_state"
+                                aria-describedby="logradoutoHelp"
+                                placeholder="São Paulo"
+                                required
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <button class="btn btn-success">Cadastrar endereço de cobrança</button>
+                      </div>
+                    </fieldset>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+                      <button type="submit" class="btn btn-warning" onclick="backStep2(event)">
+                        Voltar
+                      </button>
+
+                      <button
+                              type="submit"
+                              class="btn btn-primary"
+                              onclick="proximoPasso3(event)"
+                              id="billing_address_step"
+                              disabled
+                      >
+                        Próximo
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="p-4 rounded bg-form col-12 col-md-6 d-none" id="cartao">
                   <form class="">
                     <h5 class="text-center">Cartões</h5>
                     <hr />
                     <div class="form-group">
-                      <label for="card"
+                      <label for="credit_card_selector"
                         >Selecione um cartão</label
                       >
-                      <select class="custom-select" id="card">
-                        <option value="1">Cartão Favorito</option>
-                        <option value="2">cart 2</option>
-                        <option value="3">cart 3</option>
-                        <option value="3">Cadastrar Novo</option>
+                      <select class="custom-select" id="credit_card_selector" required>
+                        <option value="">Selecione um cartão</option>
+                        <option value="2">cart 1</option>
+                        <option value="3">cart 2</option>
+                        <option value="-1">Cadastrar Novo</option>
                       </select>
                     </div>
 
-                    <div class="form-group">
-                      <label for="card_number">Número</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="card_number"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="0000-0000-0000-0000"
-                      />
-                    </div>
+                    <fieldset id="new_credit_card" class="d-none" disabled>
 
-                    <div class="form-group">
-                      <label for="card_name">Nome Impresso</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="card_name"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="Mateus J Faria"
-                      />
-                    </div>
+                      <div class="form-group">
+                        <label for="card_number">Número</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="card_number"
+                          aria-describedby="logradoutoHelp"
+                          placeholder="0000-0000-0000-0000"
+                          required
+                        />
+                      </div>
 
-                    <div class="form-group">
-                      <label for="card_flag">Bandeira</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="card_flag"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="MasterCard"
-                      />
-                    </div>
+                      <div class="form-group">
+                        <label for="card_name">Nome Impresso</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="card_name"
+                          aria-describedby="logradoutoHelp"
+                          placeholder="Mateus J Faria"
+                          required
+                        />
+                      </div>
 
-                    <div class="form-group">
-                      <label for="card_cc">Validade</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="card_cc"
-                        aria-describedby="logradoutoHelp"
-                        placeholder="12/29"
-                      />
-                    </div>
+                      <div class="form-group">
+                        <label for="card_cvv">CVV</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="card_cvv"
+                                aria-describedby="logradoutoHelp"
+                                placeholder="123"
+                                required
+                        />
+                      </div>
 
+                      <div class="form-group">
+                        <label for="card_cc">Validade</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="card_cc"
+                                aria-describedby="logradoutoHelp"
+                                placeholder="12/29"
+                                required
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="card_flag">Bandeira</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="card_flag"
+                          aria-describedby="logradoutoHelp"
+                          placeholder="MasterCard"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <button class="btn btn-success">Salvar Cartão de Crédito</button>
+                      </div>
+                    </fieldset>
                     <div class="d-flex flex-wrap justify-content-between">
-                      <button type="submit" class="btn btn-warning">
+                      <button class="btn btn-warning" onclick="backStep3(event)">
                         Voltar
                       </button>
 
                       <button
                         type="submit"
-                        class="btn btn-primary"
-                        onclick="proximoPasso2(event)"
+                        class="btn btn-success"
+                        onclick="finalizarCompra()"
+                        id="final_step"
+                        disabled
                       >
-                        Próximo
+                        Finalizar Compra
                       </button>
                     </div>
                   </form>
@@ -341,24 +468,55 @@
   <script>
     function proximoPasso(event) {
       event.preventDefault();
-      document.getElementById("usuario").addEventListener("click", function () {
-        document.getElementById("delivery_address").classList.remove("d-none");
-        document.getElementById("delivery_address").classList.add("d-block");
-        this.classList.add("d-none");
-        this.classList.remove("d-block");
-      });
+      $("#usuario").removeClass('d-block')
+      $("#usuario").addClass('d-none')
+
+      $("#delivery_address").removeClass('d-none')
+      $("#delivery_address").addClass('d-block')
     }
 
     function proximoPasso2(event) {
       event.preventDefault();
-      document
-        .getElementById("delivery_address")
-        .addEventListener("click", function () {
-          document.getElementById("cartao").classList.remove("d-none");
-          document.getElementById("cartao").classList.add("d-block");
-          this.classList.add("d-none");
-          this.classList.remove("d-block");
-        });
+      $("#billing_address").removeClass("d-none");
+      $("#billing_address").addClass("d-block");
+
+      $("#delivery_address").removeClass("d-block");
+      $("#delivery_address").addClass("d-none");
+    }
+
+    function proximoPasso3(event) {
+      event.preventDefault();
+      $("#cartao").removeClass("d-none");
+      $("#cartao").addClass("d-block");
+      $("#billing_address").addClass("d-none");
+      $("#billing_address").removeClass("d-block");
+    }
+
+    function backStep3(event) {
+      event.preventDefault();
+      $("#cartao").removeClass("d-block");
+      $("#cartao").addClass("d-none");
+
+      $("#billing_address").addClass("d-block");
+      $("#billing_address").removeClass("d-none");
+    }
+
+    function backStep2(event) {
+      event.preventDefault();
+      $("#billing_address").addClass("d-none");
+      $("#billing_address").removeClass("d-block");
+
+      $("#delivery_address").addClass("d-block");
+      $("#delivery_address").removeClass("d-none");
+    }
+
+    function backStep1(event) {
+      event.preventDefault();
+      $("#delivery_address").addClass("d-none");
+      $("#delivery_address").removeClass("d-block");
+
+      $("#usuario").addClass("d-block");
+      $("#usuario").removeClass("d-none");
     }
 
     $("#document_type").change(function () {
@@ -379,20 +537,80 @@
       if(this.value == "-1") {
         $("#new_document_form").removeClass('d-none');
         $("#new_document_form").addClass('d-block');
+
+        $("#new_document_form").prop('disabled', false);
+        $("#document_step").prop('disabled', true);
       } else {
         $("#new_document_form").removeClass('d-block');
         $("#new_document_form").addClass('d-none');
+
+        $("#new_document_form").prop('disabled', true);
+        $("#document_step").prop('disabled', false);
       }
+
+      if(this.value == "") $("#document_step").prop('disabled', true);
     })
 
     $("#delivery_address_selector").change(function () {
+      $('#new_delivery_postalcode').mask('00000-000');
+
       if(this.value == '-1') {
         $("#new_delivery_address").removeClass('d-none')
         $("#new_delivery_address").addClass('d-block')
+
+        $("#new_delivery_address").prop('disabled', false)
+        $("#delivery_address_step").prop('disabled', true)
       } else {
         $("#new_delivery_address").removeClass('d-block')
         $("#new_delivery_address").addClass('d-none')
+
+        $("#new_delivery_address").prop('disabled', true)
+        $("#delivery_address_step").prop('disabled', false)
       }
+
+      if(this.value == "") $("#delivery_address_step").prop('disabled', true);
+    })
+
+    $("#billing_address_selector").change(function () {
+      $('#new_billing_postalcode').mask('00000-000');
+
+      if(this.value == '-1') {
+        $("#new_billing_address").removeClass('d-none')
+        $("#new_billing_address").addClass('d-block')
+
+        $("#new_billing_address").prop('disabled', false)
+        $("#billing_address_step").prop('disabled', true);
+      } else {
+        $("#new_billing_address").removeClass('d-block')
+        $("#new_billing_address").addClass('d-none')
+
+        $("#new_billing_address").prop('disabled', true)
+        $("#billing_address_step").prop('disabled', false);
+      }
+
+      if(this.value == "") $("#billing_address_step").prop('disabled', true);
+    })
+
+    $("#credit_card_selector").change(function () {
+      if(this.value == '-1') {
+        $("#new_credit_card").removeClass('d-none')
+        $("#new_credit_card").addClass('d-block')
+
+        $("#card_number").mask('9999 9999 9999 9999')
+        $("#card_cvv").mask('999')
+        $("#card_cc").mask('99/99')
+
+        $("#new_credit_card").prop('disabled', false)
+        $("#final_step").prop('disabled', true)
+      } else {
+        $("#new_credit_card").removeClass('d-block')
+        $("#new_credit_card").addClass('d-none')
+
+        $("#new_credit_card").prop('disabled', true)
+        $("#final_step").prop('disabled', false)
+      }
+
+      if(this.value == "") $("#final_step").prop('disabled', true);
     })
   </script>
 </html>
