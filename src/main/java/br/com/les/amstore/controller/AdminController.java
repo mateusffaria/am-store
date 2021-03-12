@@ -46,4 +46,10 @@ public class AdminController {
         return mv;
     }
 
+    @GetMapping("/games/new")
+    public ModelAndView newGame() {
+        ModelAndView mv = new ModelAndView("/admin/newGame");
+
+        return mv;
+    }
 }

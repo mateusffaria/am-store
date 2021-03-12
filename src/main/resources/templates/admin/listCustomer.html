@@ -45,13 +45,14 @@
                             <a class="btn btn-primary" th:href="@{new}">Cadastrar Novo Cliente</a>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="table-responsive table-hover">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>#</th>
                                             <th>Nome</th>
                                             <th>Documentos</th>
+                                            <th>Endereços</th>
                                             <th>Email</th>
                                             <th>Título Cliente</th>
                                             <th colspan="2"></th>
@@ -62,9 +63,13 @@
                                             <td th:text="${customer.id}"></td>
                                             <td th:text="${customer.name}"></td>
                                             <td th:if="${customer.documents.isEmpty()}">Sem Documentos Cadastrados</td>
-                                            <td th:each="document : ${customer.documents}">
-                                                <span th:text="${document.documentType.name}"></span>
-                                                <span th:text="${document.code}"></span>
+                                            <td th:if="${!customer.documents.isEmpty()}">
+                                                <span th:text="${customer.documents.get(0).documentType.name}"></span>
+                                                <span th:text="${customer.documents.get(0).code}"></span>
+                                            </td>
+                                            <td th:if="${customer.address.isEmpty()}">Sem Endereços Cadastrados</td>
+                                            <td th:if="${!customer.address.isEmpty()}">
+                                                <span th:text="${customer.address.get(0).city.state.description}"></span>
                                             </td>
                                             <td th:text="${customer.email}">andreia@gmail.com</td>
                                             <td th:text="${customer.customerType.title}">The Sims</td>
@@ -136,7 +141,6 @@
     </div>
 
     <script th:replace="layout/layout :: script"></script>
-    <script th:replace="layout/layout-admin :: script"></script>
 </body>
 
 </html>

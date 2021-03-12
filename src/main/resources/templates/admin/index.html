@@ -245,7 +245,9 @@
     </div>
 
     <script th:replace="layout/layout :: script"></script>
-    <script th:replace="layout/layout-admin :: script"></script>
+    <script th:src="@{/vendor/chart.js/Chart.min.js}"></script>
+    <script th:src="@{/javascripts/demo/chart-area-demo.js}"></script>
+    <script th:src="@{/javascripts/demo/chart-pie-demo.js}"></script>
 </body>
 
 </html>

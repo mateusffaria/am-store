@@ -42,7 +42,7 @@
         <div id="games" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Visão geral produtos</h6>
-                <a class="collapse-item" href="createGames.html">Cadastrar</a>
+                <a class="collapse-item" th:href="@{/admin/games/new}">Cadastrar</a>
                 <a class="collapse-item" href="listGames.html">Listar</a>
             </div>
         </div>
@@ -76,34 +76,6 @@
                 <a class="collapse-item" href="listDevolution.html">Listar</a>
             </div>
         </div>
-    </li>
-
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-           aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Usuários</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Admins:</h6>
-                <a class="collapse-item" href="login.html">Cadastrar</a>
-                <a class="collapse-item" href="register.html">Listar</a>
-                <!-- <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Other Pages:</h6>
-                <a class="collapse-item" href="404.html">404 Page</a>
-                <a class="collapse-item" href="blank.html">Blank Page</a> -->
-            </div>
-        </div>
-    </li>
-
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Gráficos</span></a>
     </li>
 
     <!-- Divider -->
@@ -197,106 +169,13 @@
             </div>
         </li>
 
-        <!-- Nav Item - Alerts -->
-        <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
-            </a>
-            <!-- Dropdown - Alerts -->
-            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                 aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
-                    Alertas
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                        <div class="icon-circle bg-primary">
-                            <i class="fas fa-file-alt text-white"></i>
-                        </div>
-                    </div>
-
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                        <div class="icon-circle bg-success">
-                            <i class="fas fa-donate text-white"></i>
-                        </div>
-                    </div>
-
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                        <div class="icon-circle bg-warning">
-                            <i class="fas fa-exclamation-triangle text-white"></i>
-                        </div>
-                    </div>
-
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Mostrar todos Alertas</a>
-            </div>
-        </li>
-
-        <!-- Nav Item - Messages -->
-        <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-envelope fa-fw"></i>
-                <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">7</span>
-            </a>
-            <!-- Dropdown - Messages -->
-            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                 aria-labelledby="messagesDropdown">
-                <h6 class="dropdown-header">
-                    Mensagens
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="dropdown-list-image mr-3">
-                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                             alt="">
-                        <div class="status-indicator bg-success"></div>
-                    </div>
-
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="dropdown-list-image mr-3">
-                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                             alt="">
-                        <div class="status-indicator"></div>
-                    </div>
-
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="dropdown-list-image mr-3">
-                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                             alt="">
-                        <div class="status-indicator bg-warning"></div>
-                    </div>
-
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="dropdown-list-image mr-3">
-                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                             alt="">
-                        <div class="status-indicator bg-success"></div>
-                    </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Ler mais Mensagens</a>
-            </div>
-        </li>
-
-        <div class="topbar-divider d-none d-sm-block"></div>
-
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Mateus Faria</span>
                 <img class="img-profile rounded-circle"
-                     src="img/undraw_profile.svg">
+                     th:src="@{/images/undraw_profile.svg}">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -325,14 +204,5 @@
 
 </nav>
 
-<th:block th:fragent="script">
-    <!-- Page level plugins -->
-
-    <script th:src="@{/vendor/chart.js/Chart.min.js}"></script>
-    <!-- Page level custom scripts -->
-    <script th:src="@{/javascripts/demo/chart-area-demo.js}"></script>
-    <script th:src="@{/javascripts/demo/chart-pie-demo.js}"></script>
-
-</th:block>
 </body>
 </html>
