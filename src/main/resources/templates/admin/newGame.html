@@ -47,12 +47,12 @@
                                 </div>
                                 <div class="col-12 mt-4">
                                         <form>
-                                            <div class="form-group row">
-                                              <div class="col-lg-4">
-                                                <label for="nameGame">Nome:</label>
+                                            <div class="row">
+                                              <div class="col-lg-4 form-group">
+                                                <label for="nameGame">Título:</label>
                                                 <input type="text" class="form-control" placeholder="Whatch Dogs" required>
                                               </div>
-                                              <div class="col-lg-4">
+                                              <div class="col-lg-4 form-group">
                                                 <label for="nameGame">Valor:</label>
                                               <div class="input-group mb-3">
                                                   <div class="input-group-prepend">
@@ -61,29 +61,80 @@
                                                   <input type="text" class="form-control" placeholder="180,00" id="game_price" required>
                                               </div>
                                               </div>
-                                                <div class="col-lg-4">
+                                                <div class="col-lg-4 form-group">
                                                     <label for="nameGame">Quantidade:</label>
                                                     <input type="text" class="form-control" placeholder="100" required>
                                                 </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-lg-4">
-                                                  <label for="nameGame">Genêro</label>
-                                                  <input type="text" class="form-control" placeholder="Ação" required>
+                                                <div class="col-lg-4 form-group">
+                                                    <label for="nameGame">Genêro:</label>
+                                                    <select class="form-control" required>
+                                                        <option value="">Selecione um gênero</option>
+                                                        <option>Ação</option>
+                                                        <option>Aventura</option>
+                                                        <option>Corrida</option>
+                                                        <option>FPS</option>
+                                                    </select>
                                                 </div>
-                                                <div class="col-lg-4">
-                                                  <label for="nameGame">Distribuidora</label>
+                                                <div class="col-lg-4 form-group">
+                                                  <label for="nameGame">Distribuidora:</label>
                                                   <input type="text" class="form-control" placeholder="Ubsoft" required>
                                                 </div>
-                                                <div class="col-lg-4">
-                                                    <label for="nameGame">Lançamento</label>
+                                                <div class="col-lg-4 form-group">
+                                                    <label for="nameGame">Lançamento:</label>
                                                     <input type="text" class="form-control" placeholder="2010" required>
-                                                  </div>
-                                              </div>
-                                              <div>
+                                                </div>
+                                                <div class="col-lg-4 form-group">
+                                                    <label for="nameGame">Multi-Plataforma:</label>
+                                                    <select class="form-control" required>
+                                                        <option value="">Seleciona uma opção</option>
+                                                        <option>Sim</option>
+                                                        <option>Não</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-4 form-group">
+                                                    <label for="nameGame">Requer internet:</label>
+                                                    <select class="form-control" required>
+                                                        <option value="">Seleciona uma opção</option>
+                                                        <option>Sim</option>
+                                                        <option>Não</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-4 form-group">
+                                                    <label for="nameGame">Idioma:</label>
+                                                    <select class="form-control" required multiple size="1">
+                                                        <option>Português Brasil</option>
+                                                        <option>Português Portugal</option>
+                                                        <option>Inglês</option>
+                                                        <option>Alemão</option>
+                                                        <option>Japonês</option>
+                                                        <option>Coreano</option>
+                                                        <option>Coreano</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-4 form-group">
+                                                    <label for="nameGame">Faixa etária:</label>
+                                                    <select class="form-control" required>
+                                                        <option value="">Seleciona uma opção</option>
+                                                        <option>Livre</option>
+                                                        <option>10</option>
+                                                        <option>12</option>
+                                                        <option>14</option>
+                                                        <option>16</option>
+                                                        <option>18</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-12 form-group">
+                                                    <label for="nameGame">Sinopse:</label>
+                                                    <textarea type="text" class="form-control" placeholder="Sinopse" required ></textarea>
+                                                </div>
+                                              <div class="form-group col-12">
                                                 <button type="submit" class="btn btn-primary">Cadastrar</button>
                                               </div>
-
+                                            </div>
                                           </form>
                                 </div>
                             </div>

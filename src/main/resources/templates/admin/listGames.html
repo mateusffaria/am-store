@@ -27,64 +27,48 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Lista de Clientes</h1>
-                    <p class="mb-4">Controle de clientes cadastrados</p>
-
-                    <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(message)}">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <div>
-                            <i class="fa  fa-exclamation-circle mr-3"></i>
-                            <span th:text="${message}"></span>
-                        </div>
-                    </div>
+                    <h1 class="h3 mb-2 text-gray-800">Lista de Jogos</h1>
+                    <p class="mb-4">Controle de estoque dos jogos disponiveis</p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex flex-wrap justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Clientes</h6>
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Jogos</h6>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive table-hover">
+                            <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
                                             <th>Nome</th>
-                                            <th>Documentos</th>
-                                            <th>Endereços</th>
-                                            <th>Email</th>
-                                            <th>Título Cliente</th>
-                                            <th colspan="2"></th>
+                                            <th>Valor</th>
+                                            <th>Genêro</th>
+                                            <th>Distribuidora</th>
+                                            <th>Lançamento</th>
+                                            <th>Edição</th>
+                                            <th>Exclusão</th>
+                                    
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="customer : ${customers}">
-                                            <td th:text="${customer.id}"></td>
-                                            <td th:text="${customer.name}"></td>
-                                            <td th:if="${customer.documents.isEmpty()}">Sem Documentos Cadastrados</td>
-                                            <td th:if="${!customer.documents.isEmpty()}">
-                                                <span th:text="${customer.documents.get(0).documentType.name}"></span>
-                                                <span th:text="${customer.documents.get(0).code}"></span>
-                                            </td>
-                                            <td th:if="${customer.address.isEmpty()}">Sem Endereços Cadastrados</td>
-                                            <td th:if="${!customer.address.isEmpty()}">
-                                                <span th:text="${customer.address.get(0).city.state.description}"></span>
-                                            </td>
-                                            <td th:text="${customer.email}">andreia@gmail.com</td>
-                                            <td th:text="${customer.customerType.title}">The Sims</td>
+                                        <tr>
+                                            <td>Cyberpunk</td>
+                                            <td>R$320.80</td>
+                                            <td>RPG</td>
+                                            <td>CDPROJECT</td>
+                                            <td>2021/06/06</td>
                                             <td class="m-auto">
-                                                <form th:object="${customer}" th:method="delete">
-                                                    <input type="hidden" name="_method" value="delete">
-                                                    <input type="hidden" name="id" th:value="${customer.id}">
-                                                    <button class="btn btn-outline-danger">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                        <span> excluir</span>
-                                                    </button>
-                                                </form>
+                                                <a th:href="@{/admin/games/new}" class="btn btn-outline-info">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <span> editar</span>
+                                                </a>
                                             </td>
-                                        </tr>
-                                        <tr th:if="${customers.isEmpty()}">
-                                            <td colspan="6" class="text-center">Nenhum cadastro de Cliente</td>
+                                            <td class="m-auto">
+                                                <a class="btn btn-outline-danger">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                    <span>excluir</span>
+                                                </a>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

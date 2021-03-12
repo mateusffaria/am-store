@@ -52,4 +52,11 @@ public class AdminController {
 
         return mv;
     }
+
+    @GetMapping("/games/list")
+    public ModelAndView listGames() {
+        ModelAndView mv = new ModelAndView("/admin/listGames");
+
+        return mv;
+    }
 }
