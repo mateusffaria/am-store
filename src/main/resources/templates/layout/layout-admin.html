@@ -78,6 +78,20 @@
         </div>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#orders"
+           aria-expanded="true" aria-controls="devolution">
+            <i class="fas fa-list"></i>
+            <span>Pedidos</span>
+        </a>
+        <div id="orders" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Visão geral pedidos</h6>
+                <a class="collapse-item" th:href="@{/admin/orders}">Listar</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

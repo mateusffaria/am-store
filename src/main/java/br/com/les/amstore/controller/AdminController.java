@@ -77,4 +77,11 @@ public class AdminController {
 
         return mv;
     }
+
+    @GetMapping("/orders")
+    public ModelAndView listOrders() {
+        ModelAndView mv = new ModelAndView("/admin/listOrders");
+
+        return mv;
+    }
 }
