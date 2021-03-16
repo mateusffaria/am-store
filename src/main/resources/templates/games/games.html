@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+  <head th:insert="layout/layout :: head(${'A.M. Store | Jogos'})">
+  </head>
+
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="container-fluid">
+      <div id="content-wrapper" class="d-flex flex-column">
+        <nav th:replace="layout/layout :: navbar"></nav>
+
+        <!-- Main Content -->
+        <div id="content">
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <div class="d-flex flex-wrap">
+              <div class="col-12 col-md-3 mb-4">
+                <div class="card shadow">
+                  <div class="card-header py-3 d-flex flex-wrap justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Filtro</h6>
+                  </div>
+                  <div class="card-body">
+                    <form>
+                      <div class="form-group">
+                        <label>Título:</label>
+                        <input class="form-control" placeholder="Mortal Kombat 11">
+                      </div>
+
+                      <div class="form-group">
+                        <label>Plataforma:</label>
+                        <select class="form-control">
+                          <option>Selecione</option>
+                          <option>PS4</option>
+                          <option>PC</option>
+                          <option>Xbox</option>
+                          <option>Nintendo Switch</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Preço:</label>
+                        <input class="form-control" type="number">
+                      </div>
+
+                      <div class="form-group">
+                        <label>Multiplayer:</label>
+                        <select class="form-control">
+                          <option>Selecione</option>
+                          <option>Sim</option>
+                          <option>Não</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Distribuidora:</label>
+                        <input class="form-control" placeholder="Ubisoft"/>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Data de lançamento:</label>
+                        <input class="form-control" type="date"/>
+                      </div>
+
+                      <button class="btn btn-block btn-success">Pesquisar</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-wrap justify-content-around col-12 col-md-9">
+                <div class="mb-3 justify-self-center col-12 col-md-4">
+                  <div class="card col-10 m-auto m-md-0 h-100 col-12">
+                    <img
+                            class="card-img-top mt-4 card-image"
+                            th:src="@{/images/resident-evil-3-remake-ps4-cover-600x600.jpg}"
+                            alt="Card image cap"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title text-black font-bold">
+                        Resident Evil 3 - PS4
+                      </h5>
+                      <p class="card-text text-success text-bold">R$: 300,00</p>
+                    </div>
+                    <a
+                            th:href="@{games/detail/1}"
+                            class="btn btn-outline-success btn-block mb-4"
+                    >Comprar</a
+                    >
+                  </div>
+                </div>
+
+                <div class="mb-3 justify-self-center col-12 col-md-4">
+                  <div class="card col-10 m-auto m-md-0 h-100 col-12">
+                    <img
+                            class="card-img-top mt-4 card-image"
+                            th:src="@{/images/sucrilhos.jpg}"
+                            alt="Card image cap"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title text-black font-bold">
+                        Sekiro - PS4
+                      </h5>
+                      <p class="card-text text-success text-bold">R$: 300,00</p>
+                    </div>
+                    <a href="#" class="btn btn-outline-success btn-block mb-4"
+                    >Comprar</a
+                    >
+                  </div>
+                </div>
+
+                <div class="mb-3 justify-self-center col-12 col-md-4">
+                  <div class="card col-10 m-auto m-md-0 h-100 col-12">
+                    <img
+                            class="card-img-top mt-4 card-image"
+                            th:src="@{/images/mk11.jpg}"
+                            alt="Card image cap"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title text-black font-bold">
+                        Mortal Kombat 10 - PS4
+                      </h5>
+                      <p class="card-text text-success text-bold">R$: 50,00</p>
+                    </div>
+                    <a href="#" class="btn btn-outline-success btn-block mb-4"
+                    >Comprar</a
+                    >
+                  </div>
+                </div>
+
+                <div class="mb-3 justify-self-center col-12 col-md-4">
+                  <div class="card col-10 m-auto m-md-0 h-100 col-12">
+                    <img
+                            class="card-img-top mt-4 card-image"
+                            th:src="@{/images/tomraider.jpg}"
+                            alt="Card image cap"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title text-black font-bold">
+                        Tom Raider - PS4
+                      </h5>
+                      <p class="card-text text-success text-bold">R$: 300,00</p>
+                    </div>
+                    <a href="#" class="btn btn-outline-success btn-block mb-4"
+                    >Comprar</a
+                    >
+                  </div>
+                </div>
+
+                <div class="mb-3 justify-self-center col-12 col-md-4">
+                  <div class="card col-10 m-auto m-md-0 h-100 col-12">
+                    <img
+                            class="card-img-top mt-4 card-image"
+                            th:src="@{/images/metro.png}"
+                            alt="Card image cap"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title text-black font-bold">Metro - PS4</h5>
+                      <p class="card-text text-success text-bold">R$: 280,00</p>
+                    </div>
+                    <a href="#" class="btn btn-outline-success btn-block mb-4"
+                    >Comprar</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright &copy; A.M Store 2021</span>
+            </div>
+          </div>
+        </footer>
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div
+      class="modal fade"
+      id="logoutModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Deseja Sair?</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Clique no botão abaixo para encerrar sua sessão.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <a class="btn btn-primary" href="login.html">Sair</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script th:replace="layout/layout :: script"></script>
+  </body>
+</html>

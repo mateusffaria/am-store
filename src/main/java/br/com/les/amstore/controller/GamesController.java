@@ -9,6 +9,11 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/games")
 public class GamesController {
 
+    @GetMapping("/")
+    public ModelAndView games() {
+        return new ModelAndView("games/games");
+    }
+
     @GetMapping("/detail/{id}")
     public ModelAndView gameDetail() {
         return new ModelAndView("games/gameDetail");

@@ -70,4 +70,11 @@ public class AdminController {
 
         return mv;
     }
+
+    @GetMapping("/order_return/{id}/edit")
+    public ModelAndView updateOrderReturned() {
+        ModelAndView mv = new ModelAndView("/admin/updateOrderReturned");
+
+        return mv;
+    }
 }
