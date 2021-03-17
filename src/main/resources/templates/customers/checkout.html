@@ -424,18 +424,30 @@
                       <span>1 produto</span>
                       <span>R$ 300,00</span>
                     </div>
+
                     <div class="d-flex flex-wrap justify-content-between">
                       <span>Frete</span>
                       <span>R$ 20,00</span>
                     </div>
+
                     <div class="d-flex flex-wrap justify-content-between">
                       <span>Saldo na carteira:</span>
                       <span>R$ 0,00</span>
                     </div>
+
+                    <div class="flex-wrap justify-content-between d-none" id="cupom_div">
+                      <span>Cupom de desconto:</span>
+                      <div id="cupon_layer"></div>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between mt-4">
+                      <input class="form-control col-8 mr-3" placeholder="Insira seu cupom aqui" id="cupom_input"/>
+                      <button class="btn btn-outline-success col-3" onclick="cupomVerify()">Aplicar</button>
+                    </div>
                     <hr />
                     <div class="d-flex flex-wrap justify-content-between">
-                      <h5 class="font-weight-bold">Total + frete:</h5>
-                      <span class="font-weight-bold">R$: 320,00</span>
+                      <h5 class="font-weight-bold">Total:</h5>
+                      <span class="font-weight-bold">R$: 310,00</span>
                     </div>
                   </div>
                 </div>
@@ -616,5 +628,18 @@
 
       if(this.value == "") $("#final_step").prop('disabled', true);
     })
+
+    function cupomVerify() {
+      console.log($("#cupom_input").get(0).value)
+      if($("#cupom_input").get(0).value == 12345) {
+        $("#cupom_div").addClass('d-flex')
+        $("#cupom_div").removeClass('d-none')
+        $("#cupon_layer").append("<span>R$ -" + 10 + "</span>");
+      } else {
+        $("#cupom_div").removeClass('d-flex')
+        $("#cupom_div").addClass('d-none')
+      }
+
+    }
   </script>
 </html>
