@@ -91,4 +91,11 @@ public class AdminController {
 
         return mv;
     }
+
+    @GetMapping("/coupons/new")
+    public ModelAndView newCoupons() {
+        ModelAndView mv = new ModelAndView("/admin/newCoupom");
+
+        return mv;
+    }
 }

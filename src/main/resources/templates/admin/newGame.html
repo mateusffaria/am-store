@@ -49,25 +49,25 @@
                                         <form>
                                             <div class="row">
                                               <div class="col-lg-4 form-group">
-                                                <label for="nameGame">Título:</label>
-                                                <input type="text" class="form-control" placeholder="Whatch Dogs" required>
+                                                <label for="title">Título:</label>
+                                                <input type="text" class="form-control" placeholder="Whatch Dogs" required id="title">
                                               </div>
                                               <div class="col-lg-4 form-group">
-                                                <label for="nameGame">Valor:</label>
+                                                <label for="value">Valor:</label>
                                               <div class="input-group mb-3">
                                                   <div class="input-group-prepend">
                                                       <span class="input-group-text">R$</span>
                                                   </div>
-                                                  <input type="text" class="form-control" placeholder="180,00" id="game_price" required>
+                                                  <input type="text" class="form-control" placeholder="180,00" id="game_price" required id="value">
                                               </div>
                                               </div>
                                                 <div class="col-lg-4 form-group">
-                                                    <label for="nameGame">Quantidade:</label>
-                                                    <input type="text" class="form-control" placeholder="100" required>
+                                                    <label for="amount">Quantidade:</label>
+                                                    <input type="text" class="form-control" placeholder="100" required id="amount">
                                                 </div>
                                                 <div class="col-lg-4 form-group">
-                                                    <label for="nameGame">Genêro:</label>
-                                                    <select class="form-control" required>
+                                                    <label for="gender">Genêro:</label>
+                                                    <select class="form-control" required id="gender">
                                                         <option value="">Selecione um gênero</option>
                                                         <option>Ação</option>
                                                         <option>Aventura</option>
@@ -76,16 +76,16 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-4 form-group">
-                                                  <label for="nameGame">Distribuidora:</label>
-                                                  <input type="text" class="form-control" placeholder="Ubsoft" required>
+                                                  <label for="publisher">Distribuidora:</label>
+                                                  <input type="text" class="form-control" placeholder="Ubsoft" required  id="publisher">
                                                 </div>
                                                 <div class="col-lg-4 form-group">
-                                                    <label for="nameGame">Lançamento:</label>
-                                                    <input type="text" class="form-control" placeholder="2010" required>
+                                                    <label for="launch_date">Lançamento:</label>
+                                                    <input type="text" class="form-control" placeholder="2010" required id="launch_date">
                                                 </div>
                                                 <div class="col-lg-4 form-group">
-                                                    <label for="nameGame">Multi-Plataforma:</label>
-                                                    <select class="form-control" required>
+                                                    <label for="multi_platform">Multi-Plataforma:</label>
+                                                    <select class="form-control" required id="multi_platform">
                                                         <option value="">Seleciona uma opção</option>
                                                         <option>Sim</option>
                                                         <option>Não</option>
@@ -93,8 +93,8 @@
                                                 </div>
 
                                                 <div class="col-lg-4 form-group">
-                                                    <label for="nameGame">Requer internet:</label>
-                                                    <select class="form-control" required>
+                                                    <label for="internet">Requer internet:</label>
+                                                    <select class="form-control" required id="internet">
                                                         <option value="">Seleciona uma opção</option>
                                                         <option>Sim</option>
                                                         <option>Não</option>
@@ -102,8 +102,8 @@
                                                 </div>
 
                                                 <div class="col-lg-4 form-group">
-                                                    <label for="nameGame">Idioma:</label>
-                                                    <select class="form-control" required multiple size="2">
+                                                    <label for="language">Idioma:</label>
+                                                    <select class="form-control" required multiple size="2" id="language">
                                                         <option>Português Brasil</option>
                                                         <option>Português Portugal</option>
                                                         <option>Inglês</option>
@@ -115,8 +115,8 @@
                                                 </div>
 
                                                 <div class="col-lg-4 form-group">
-                                                    <label for="nameGame">Faixa etária:</label>
-                                                    <select class="form-control" required>
+                                                    <label for="age">Faixa etária:</label>
+                                                    <select class="form-control" required id="age">
                                                         <option value="">Seleciona uma opção</option>
                                                         <option>Livre</option>
                                                         <option>10</option>
@@ -128,8 +128,8 @@
                                                 </div>
 
                                                 <div class="col-lg-4 form-group">
-                                                    <label for="nameGame">Status:</label>
-                                                    <select class="form-control" required>
+                                                    <label for="status">Status:</label>
+                                                    <select class="form-control" required id="status">
                                                         <option value="">Seleciona uma opção</option>
                                                         <option>Ativo</option>
                                                         <option>Inativo</option>
@@ -137,13 +137,13 @@
                                                 </div>
 
                                                 <div class="col-lg-4 form-group">
-                                                    <label for="nameGame">Motivo:</label>
-                                                    <input placeholder="Breve descrição do motivo da ativação/desativação" class="form-control"/>
+                                                    <label for="reason">Motivo:</label>
+                                                    <input placeholder="Breve descrição do motivo da ativação/desativação" class="form-control" id="reason"/>
                                                 </div>
 
                                                 <div class="col-12 form-group">
-                                                    <label for="nameGame">Sinopse:</label>
-                                                    <textarea type="text" class="form-control" placeholder="Sinopse" required ></textarea>
+                                                    <label for="synopsis">Sinopse:</label>
+                                                    <textarea type="text" class="form-control" placeholder="Sinopse" required id="synopsis"></textarea>
                                                 </div>
                                               <div class="form-group col-12">
                                                 <button type="submit" class="btn btn-primary">Cadastrar</button>
