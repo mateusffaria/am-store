@@ -85,6 +85,7 @@
                                                 <th>Data de criação</th>
                                                 <th>Validade</th>
                                                 <th>Vezes utilizada</th>
+                                                <th colspan="2"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -94,6 +95,18 @@
                                                 <td>20/02/2021 10:53</td>
                                                 <td>25/02/2021 10:53</td>
                                                 <td>10</td>
+                                                <td class="m-auto">
+                                                    <a th:href="@{/admin/coupons/new}" class="btn btn-outline-info">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                        <span> editar</span>
+                                                    </a>
+                                                </td>
+                                                <td class="m-auto">
+                                                    <a class="btn btn-outline-danger">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                        <span>excluir</span>
+                                                    </a>
+                                                </td>
                                             </tr>
                                             </tbody>
                                         </table>
