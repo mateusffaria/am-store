@@ -60,7 +60,6 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>Id</th>
                                     <th>Código</th>
                                     <th>Tipo</th>
                                     <th>Nome do Cliente</th>
@@ -69,7 +68,6 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="document : ${customer.documents}">
-                                    <td th:text="${document.id}"></td>
                                     <td th:text="${document.code}"></td>
                                     <td th:text="${document.documentType.name}"></td>
                                     <td th:text="${document.getPerson().name}"></td>

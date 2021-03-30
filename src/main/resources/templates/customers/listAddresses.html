@@ -60,7 +60,6 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>Id</th>
                                     <th>Cidade</th>
                                     <th>Estado</th>
                                     <th>Rua</th>
@@ -70,7 +69,6 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="address : ${customer.address}">
-                                    <td th:text="${address.id}"></td>
                                     <td th:text="${address.city.description}"></td>
                                     <td th:text="${address.city.state.description}">andreia@gmail.com</td>
                                     <td th:text="${address.street}">The Sims</td>
