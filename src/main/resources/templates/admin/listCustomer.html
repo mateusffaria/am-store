@@ -49,27 +49,27 @@
                                     <form>
                                         <div class="form-group">
                                             <label>Nome</label>
-                                            <input class="form-control" placeholder="Mateus">
+                                            <input class="form-control" placeholder="Mateus" id="name">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Documento</label>
-                                            <input class="form-control" placeholder="123456789">
+                                            <input class="form-control" placeholder="123456789" id="document">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Estado</label>
-                                            <input class="form-control" placeholder="São Paulo">
+                                            <input class="form-control" placeholder="São Paulo" id="state">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Email</label>
-                                            <input class="form-control" placeholder="email@exemplo.com">
+                                            <input class="form-control" placeholder="email@exemplo.com" id="email">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Título do Cliente</label>
-                                            <select id="type" class="form-control" >
+                                            <select id="type" class="form-control" th:id="customer_type">
                                                 <option value="">Selecione o tipo</option>
                                                 <option th:each="type : ${customerTypes}" th:value="${type.id}" th:text="${type.title}"></option>
                                             </select>
