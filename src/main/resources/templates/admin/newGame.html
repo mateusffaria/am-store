@@ -58,38 +58,12 @@
                                                   <div class="input-group-prepend">
                                                       <span class="input-group-text">R$</span>
                                                   </div>
-                                                  <input type="text" class="form-control" placeholder="180,00" id="game_price" required id="price">
+                                                  <input type="text" class="form-control" placeholder="180,00" id="value" required>
                                               </div>
                                               </div>
                                                 <div class="col-lg-4 form-group">
                                                     <label for="amount">Quantidade:</label>
                                                     <input type="text" class="form-control" placeholder="100" required id="amount">
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="gender">Genêro:</label>
-                                                    <select class="form-control" required id="gender">
-                                                        <option value="">Selecione um gênero</option>
-                                                        <option>Ação</option>
-                                                        <option>Aventura</option>
-                                                        <option>Corrida</option>
-                                                        <option>FPS</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                  <label for="publisher">Distribuidora:</label>
-                                                  <input type="text" class="form-control" placeholder="Ubsoft" required  id="publisher">
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="launchDate">Lançamento:</label>
-                                                    <input type="text" class="form-control" placeholder="2010" required id="launchDate">
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="multiPlatform">Multi-Plataforma:</label>
-                                                    <select class="form-control" required id="multiPlatform">
-                                                        <option value="">Seleciona uma opção</option>
-                                                        <option>Sim</option>
-                                                        <option>Não</option>
-                                                    </select>
                                                 </div>
 
                                                 <div class="col-lg-4 form-group">
@@ -102,8 +76,26 @@
                                                 </div>
 
                                                 <div class="col-lg-4 form-group">
+                                                  <label for="publisher">Distribuidora:</label>
+                                                  <input type="text" class="form-control" placeholder="Ubsoft" required  id="publisher">
+                                                </div>
+                                                <div class="col-lg-4 form-group">
+                                                    <label for="launchDate">Lançamento:</label>
+                                                    <input type="text" class="form-control" placeholder="2010" required id="launchDate">
+                                                </div>
+                                                <div class="col-lg-4 form-group">
+                                                    <label for="platform">Plataforma:</label>
+                                                    <select class="form-control" required id="platform" multiple>
+                                                        <option>PS4</option>
+                                                        <option>PC</option>
+                                                        <option>Xbox</option>
+                                                        <option>Nintendo Switch</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-4 form-group">
                                                     <label for="language">Idioma:</label>
-                                                    <select class="form-control" required multiple size="2" id="language">
+                                                    <select class="form-control" required id="language" multiple>
                                                         <option>Português Brasil</option>
                                                         <option>Português Portugal</option>
                                                         <option>Inglês</option>
@@ -111,6 +103,16 @@
                                                         <option>Japonês</option>
                                                         <option>Coreano</option>
                                                         <option>Coreano</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-4 form-group">
+                                                    <label for="gender">Genêro:</label>
+                                                    <select class="form-control" required id="gender" multiple>
+                                                        <option>Ação</option>
+                                                        <option>Aventura</option>
+                                                        <option>Corrida</option>
+                                                        <option>FPS</option>
                                                     </select>
                                                 </div>
 
@@ -204,7 +206,7 @@
 
     <script th:replace="layout/layout :: script"></script>
     <script>
-        $('#game_price').mask("#.##0,00", {reverse: true});
+        $('#value').mask("#.##0,00", {reverse: true});
 
         $('#inputGroupFile04').change(function() {
             var i = $(this).prev('label').clone();

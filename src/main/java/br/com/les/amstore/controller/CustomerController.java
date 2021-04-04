@@ -51,7 +51,6 @@ public class CustomerController {
         customer.setCustomerType(customerTypes.findById(Long.parseLong("1")));
 
         mv.addObject(customer);
-        mv.addObject("customerTypes", customerTypes.findAll());
 
         return mv;
     }
@@ -71,7 +70,6 @@ public class CustomerController {
 
         ModelAndView mv = new ModelAndView("redirect:/customer/edit/" + customer.getId() + "");
 
-        mv.addObject("customerTypes", customerTypes.findAll());
 
         attributes.addFlashAttribute("message", "Usuário criado com sucesso!");
 
@@ -99,11 +97,12 @@ public class CustomerController {
             return editCustomer(customer);
         }
 
+        customer.setCustomerType(customerTypes.findById(Long.parseLong("1")));
+
         customers.saveAndFlush(customer);
 
         ModelAndView mv = new ModelAndView("redirect:/customer/edit/" + customer.getId());
 
-        mv.addObject("customerTypes", customerTypes.findAll());
         mv.addObject(customer);
 
         attributes.addFlashAttribute("message", "Usuário atualizado com sucesso!");
