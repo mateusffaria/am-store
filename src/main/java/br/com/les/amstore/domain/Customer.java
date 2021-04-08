@@ -3,9 +3,12 @@ package br.com.les.amstore.domain;
 import lombok.*;
 import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -14,21 +17,7 @@ import java.util.List;
 @Setter
 @Where(clause = "deleted_at is null")
 @ToString
-public class Customer extends Person{
-
-    @NotNull
-    @NotBlank
-    @Email
-    private String email;
-
-    @Length(min = 6)
-    private String encryptedPassword;
-    
-    private String hash;
-
-    @Transient
-    private String password;
-
+public class Customer extends Person {
     @ManyToOne
     @JoinColumn(name="customer_type_id")
     private CustomerType customerType;
@@ -36,10 +25,8 @@ public class Customer extends Person{
     @OneToMany(mappedBy = "customer", targetEntity = Address.class)
     private List<Address> address;
 
-    public boolean hasPasswordSet() {
-        if(null == this.encryptedPassword)
-            if(null == this.password || this.password.length() <= 0)
-                return false;
-        return true;
+    public Customer() {
+        this.setRoles("ROLE_CUSTOMER");
+        this.setActive(true);
     }
 }

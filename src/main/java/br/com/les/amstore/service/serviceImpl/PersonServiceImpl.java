@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonServiceImpl implements IPersonService {
@@ -27,5 +28,10 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public Person saveAndFlush(Person person) {
         return people.saveAndFlush(person);
+    }
+
+    @Override
+    public Optional<Person> findByEmail(String email) {
+        return people.findByEmail(email);
     }
 }

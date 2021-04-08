@@ -4,10 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -18,6 +22,27 @@ import java.util.List;
 @Setter
 @Where(clause = "deleted_at is null")
 public class Person extends DomainEntity {
+
+    @NotNull
+    @NotBlank
+    @UniqueElements
+    @Email
+    private String email;
+
+    @Length(min = 6)
+    private String encryptedPassword;
+
+    @Transient
+    private String password;
+
+    private boolean active;
+
+    public boolean hasPasswordSet() {
+        if(null == this.encryptedPassword)
+            if(null == this.password || this.password.length() <= 0)
+                return false;
+        return true;
+    }
 
     @OneToMany(mappedBy = "person", targetEntity = Document.class)
     private List<Document> documents;
@@ -31,6 +56,8 @@ public class Person extends DomainEntity {
     private String telephone;
 
     private Date deletedAt;
+
+    private String roles;
 
     public void delete() {
         this.deletedAt = new Date();
