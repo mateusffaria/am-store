@@ -59,7 +59,7 @@
     </form>
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto" th:if="${null != customer && null != customer.id}">
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown no-arrow d-sm-none">
             <a
@@ -185,10 +185,6 @@
                     class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                     aria-labelledby="userDropdown"
             >
-                <a class="dropdown-item" th:href="@{/customer/new}">
-                    <i class="fas fa-user-plus fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Criar Conta
-                </a>
                 <a class="dropdown-item" th:href="@{/customer/edit/131}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Perfil
@@ -211,6 +207,15 @@
                     Sair
                 </a>
             </div>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto" th:unless="${null != customer && null != customer.id}">
+        <li>
+            <a class="dropdown-item" th:href="@{/login}">
+                <i class="fas fa-user-plus fa-sm fa-fw mr-2 text-gray-400"></i>
+                Faça Login ou Cadastre-se
+            </a>
         </li>
     </ul>
 </nav>

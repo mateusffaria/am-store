@@ -8,5 +8,5 @@ public interface ICustomersService {
     public List<Customer> findAll();
     public Customer findById(Long id);
     public Customer saveAndFlush(Customer customer);
-
+    Customer findByEmail(String email);
 }

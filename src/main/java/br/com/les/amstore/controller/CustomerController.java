@@ -25,25 +25,7 @@ public class CustomerController {
     private ICustomerTypeService customerTypes;
 
     @Autowired
-    private IDocumentService documents;
-
-    @Autowired
     private IDocumentTypeService documentTypes;
-
-    @Autowired
-    private IPersonService people;
-
-    @Autowired
-    private IStateService states;
-
-    @Autowired
-    private IAddressService addresses;
-
-    @Autowired
-    private IAddressTypeService addressTypes;
-
-    @Autowired
-    private ICityService cities;
 
     @GetMapping("/new")
     public ModelAndView newCostumer(Customer customer) {
@@ -69,7 +51,6 @@ public class CustomerController {
         customers.saveAndFlush(customer);
 
         ModelAndView mv = new ModelAndView("redirect:/customer/edit/" + customer.getId() + "");
-
 
         attributes.addFlashAttribute("message", "Usuário criado com sucesso!");
 

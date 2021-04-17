@@ -34,4 +34,9 @@ public class CustomerServiceImpl implements ICustomersService {
         }
         return customers.saveAndFlush(customer);
     }
+
+    @Override
+    public Customer findByEmail(String email) {
+        return customers.findByEmail(email).get();
+    }
 }
