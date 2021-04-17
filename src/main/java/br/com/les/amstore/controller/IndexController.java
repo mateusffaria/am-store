@@ -14,4 +14,8 @@ public class IndexController {
         return mv;
     }
 
+    @RequestMapping("login")
+    public ModelAndView login() {
+        return new ModelAndView("/login");
+    }
 }

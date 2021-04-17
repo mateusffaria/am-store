@@ -165,7 +165,7 @@
     });
 
     $('#state').change(function() {
-        $.ajax(window.location.origin + "/address/state/" + this.value).done((resp) => {
+        $.ajax(window.location.origin + "/customer/edit/state/" + this.value).done((resp) => {
             let cities = $("#city")
             cities.empty();
             $.each(resp, (index, item) => {
