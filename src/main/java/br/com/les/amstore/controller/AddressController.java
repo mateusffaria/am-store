@@ -100,7 +100,7 @@ public class AddressController {
         return mv;
     }
 
-    @PostMapping(value = "/customer/edit/{customer_id}/addresses/{id}/edit")
+    @PostMapping(value = "/{customer_id}/addresses/{id}/edit")
     public ModelAndView updateAddress(@PathVariable(value = "customer_id") Customer customer, @Valid Address address, BindingResult result, RedirectAttributes attributes) {
         if(result.hasErrors() || null == customer.getId()){
             System.err.println("Deu erro");

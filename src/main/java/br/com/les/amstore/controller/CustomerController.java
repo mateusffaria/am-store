@@ -96,12 +96,14 @@ public class CustomerController {
         ModelAndView mv = new ModelAndView("customers/checkout");
         mv.addObject(customer);
         mv.addObject("documentTypes", documentTypes.findAll());
+
         return mv;
     }
 
     @GetMapping("/{id}/my-orders")
     public ModelAndView getOrders(@PathVariable("id") Customer customer) {
         ModelAndView mv = new ModelAndView("customers/myOrders");
+        mv.addObject(customer);
 
         return mv;
     }

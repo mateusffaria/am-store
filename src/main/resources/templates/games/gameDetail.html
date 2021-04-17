@@ -75,10 +75,8 @@
                     value=1
                   />
                   <a
-                    th:href="@{/customer/131/checkout}"
-                    class="btn btn-outline-success mb-4"
-                    >Adicionar ao Carrinho</a
-                  >
+                    th:href="@{${null != customer ? '/customer/' + customer.id + '/checkout' : '/login'}}"
+                    class="btn btn-outline-success mb-4">Adicionar ao Carrinho</a>
                 </div>
               </div>
             </div>

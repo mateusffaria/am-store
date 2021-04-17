@@ -9,4 +9,5 @@ public interface ICustomersService {
     public Customer findById(Long id);
     public Customer saveAndFlush(Customer customer);
     Customer findByEmail(String email);
+    Customer currentUserLoggedIn();
 }

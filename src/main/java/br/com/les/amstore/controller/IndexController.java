@@ -20,14 +20,10 @@ public class IndexController {
     public ModelAndView index() {
         ModelAndView mv = new ModelAndView("/index");
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
+        Customer customer = customerService.currentUserLoggedIn();
 
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-            Customer customer = customerService.findByEmail(username);
+        if(null != customer)
             mv.addObject(customer);
-        }
 
         return mv;
     }
