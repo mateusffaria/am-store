@@ -1,10 +1,12 @@
 package br.com.les.amstore.domain;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
-import javax.validation.Valid;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;

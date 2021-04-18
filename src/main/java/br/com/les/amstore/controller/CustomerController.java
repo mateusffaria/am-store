@@ -1,15 +1,18 @@
 package br.com.les.amstore.controller;
 
 
-import br.com.les.amstore.domain.Address;
 import br.com.les.amstore.domain.Customer;
-import br.com.les.amstore.domain.Document;
-import br.com.les.amstore.service.*;
+import br.com.les.amstore.service.ICustomerTypeService;
+import br.com.les.amstore.service.ICustomersService;
+import br.com.les.amstore.service.IDocumentTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -61,6 +64,8 @@ public class CustomerController {
     public ModelAndView editCustomer(@PathVariable("id") Customer customer) {
         ModelAndView mv = new ModelAndView("/customers/newCustumer");
 
+        customers.isCurrentUserLoggedIn(customer.getId(), mv);
+
         mv.addObject("customerTypes", customerTypes.findAll());
         mv.addObject(customer);
 
@@ -70,6 +75,9 @@ public class CustomerController {
     @PostMapping("/edit/{id}")
     public ModelAndView updateCustomer(@Valid Customer customer, BindingResult result, RedirectAttributes attributes) {
         customer.setEncryptedPassword(customers.findById(customer.getId()).getEncryptedPassword());
+
+        if(!customers.isCurrentUserLoggedIn(customer.getId()))
+            result.addError(new ObjectError("customer", "Você não está autorizado a executar essa ação"));
 
         if(!customer.hasPasswordSet())
             result.addError(new ObjectError("customer", "Senha é obrigatória"));
@@ -84,6 +92,8 @@ public class CustomerController {
 
         ModelAndView mv = new ModelAndView("redirect:/customer/edit/" + customer.getId());
 
+        customers.isCurrentUserLoggedIn(customer.getId(), mv);
+
         mv.addObject(customer);
 
         attributes.addFlashAttribute("message", "Usuário atualizado com sucesso!");
@@ -97,6 +107,7 @@ public class CustomerController {
         mv.addObject(customer);
         mv.addObject("documentTypes", documentTypes.findAll());
 
+        customers.isCurrentUserLoggedIn(customer.getId(), mv);
         return mv;
     }
 
@@ -105,6 +116,7 @@ public class CustomerController {
         ModelAndView mv = new ModelAndView("customers/myOrders");
         mv.addObject(customer);
 
+        customers.isCurrentUserLoggedIn(customer.getId(), mv);
         return mv;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class CustomerServiceImpl implements ICustomersService {
     public Customer findByEmail(String email) {
         return customers.findByEmail(email).get();
     }
-
+    @Override
     public Customer currentUserLoggedIn() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
@@ -53,5 +54,17 @@ public class CustomerServiceImpl implements ICustomersService {
         }
 
         return null;
+    }
+    @Override
+    public void isCurrentUserLoggedIn(Long id, ModelAndView mv) {
+        Customer customer = this.currentUserLoggedIn();
+
+        if(!customer.getId().equals(id))
+            mv.setViewName("redirect:/");
+    }
+
+    @Override
+    public boolean isCurrentUserLoggedIn(Long id) {
+        return this.currentUserLoggedIn().getId().equals(id);
     }
 }

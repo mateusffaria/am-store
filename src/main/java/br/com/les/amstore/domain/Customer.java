@@ -1,14 +1,14 @@
 package br.com.les.amstore.domain;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Where;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.util.Collection;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 

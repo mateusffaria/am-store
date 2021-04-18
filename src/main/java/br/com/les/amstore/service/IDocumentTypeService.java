@@ -1,6 +1,5 @@
 package br.com.les.amstore.service;
 
-import br.com.les.amstore.domain.Document;
 import br.com.les.amstore.domain.DocumentType;
 
 import java.util.List;

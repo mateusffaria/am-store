@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 @MappedSuperclass
 @Getter

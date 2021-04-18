@@ -1,6 +1,5 @@
 package br.com.les.amstore.service;
 
-import br.com.les.amstore.domain.Customer;
 import br.com.les.amstore.domain.CustomerType;
 
 import java.util.List;
