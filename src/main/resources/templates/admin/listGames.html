@@ -30,6 +30,14 @@
                     <h1 class="h3 mb-2 text-gray-800">Lista de Jogos</h1>
                     <p class="mb-4">Controle de estoque dos jogos disponiveis</p>
 
+                    <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(message)}">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div>
+                            <i class="fa  fa-exclamation-circle mr-3"></i>
+                            <span th:text="${message}"></span>
+                        </div>
+                    </div>
+
                     <div class="d-flex flex-wrap">
                         <div class="col-12 col-md-3 mb-3">
                             <div class="card shadow">
@@ -117,28 +125,24 @@
                                                 <th>Lançamento</th>
                                                 <th>Estoque</th>
                                                 <th>Edição</th>
-                                                <th>Exclusão</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Cyberpunk</td>
-                                                <td>R$320.80</td>
-                                                <td>RPG</td>
-                                                <td>CDPROJECT</td>
-                                                <td>2021/06/06</td>
+                                            <tr th:each="game : ${games}">
+                                                <td th:text="${game.title}">Cyberpunk</td>
+                                                <td th:text="'R$' + ${game.price}">R$320.80</td>
+                                                <td>
+                                                    <ul th:each="gender: ${game.genders}" class="list-group list-group-flush">
+                                                        <li th:text="${gender.name}" class="list-group-item"></li>
+                                                    </ul>
+                                                </td>
+                                                <td th:text="${game.publisher.name}">CDPROJECT</td>
+                                                <td th:text="${game.releaseDate}">2021/06/06</td>
                                                 <td>100</td>
                                                 <td class="m-auto">
-                                                    <a th:href="@{/admin/games/new}" class="btn btn-outline-info">
+                                                    <a th:href="@{'/admin/games/' + ${game.id} + '/edit'}" class="btn btn-outline-info">
                                                         <i class="fas fa-pencil-alt"></i>
-                                                        <span> editar</span>
-                                                    </a>
-                                                </td>
-                                                <td class="m-auto">
-                                                    <a class="btn btn-outline-danger">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                        <span>excluir</span>
+                                                        <span> Editar</span>
                                                     </a>
                                                 </td>
                                             </tr>

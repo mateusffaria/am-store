@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Game extends DomainEntity {
     private String title;
 
     @NotNull(message = "O valor não pode ser nulo")
-    private Double price;
+    private BigDecimal price;
 
     @NotNull(message = "O Jogo deve especificar se possui multiplayer")
     private boolean multiplayer;
@@ -61,7 +62,10 @@ public class Game extends DomainEntity {
         if(title.trim().length() < 2)
             stringBuilder.append("Título do jogo inválido, ");
 
-        if(price <= 10)
+        if(image.trim().length() <= 0)
+            stringBuilder.append("Insira uma url válida, ");
+
+        if(price.doubleValue() <= 10)
             stringBuilder.append("Preço do jogo deve ser maior que 10, ");
 
         if(sinopsis.trim().length() < 5)

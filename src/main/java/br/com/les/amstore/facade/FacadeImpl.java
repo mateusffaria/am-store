@@ -35,9 +35,8 @@ public class FacadeImpl implements IFacade {
         if(stringBuilder.length() == 0){
             JpaRepository dao = daos.get(domainEntity.getClass().getName());
             dao.save(domainEntity);
-            result = "Success";
         } else {
-            result = "Falha na operação";
+            result = stringBuilder.toString();
         }
 
 
@@ -56,9 +55,8 @@ public class FacadeImpl implements IFacade {
         if(stringBuilder.length() == 0){
             JpaRepository dao = daos.get(domainEntity.getClass().getName());
             dao.save(domainEntity);
-            result = "Success";
         } else {
-            result = "Falha na operação";
+            result = stringBuilder.toString();
         }
 
 
@@ -77,7 +75,6 @@ public class FacadeImpl implements IFacade {
         if(stringBuilder.length() == 0){
             JpaRepository dao = daos.get(domainEntity.getClass().getName());
             dao.save(domainEntity);
-            result = "Success";
         } else {
             result = "Falha na operação";
         }
