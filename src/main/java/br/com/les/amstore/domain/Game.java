@@ -2,6 +2,7 @@ package br.com.les.amstore.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -54,6 +55,8 @@ public class Game extends DomainEntity {
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
 
+    private boolean active;
+
     @Transient
     @Override
     public String validate(){
@@ -75,5 +78,9 @@ public class Game extends DomainEntity {
             stringBuilder.append("Faixa etária inválida, ");
 
         return stringBuilder.toString();
+    }
+
+    public Game() {
+        this.active = false;
     }
 }

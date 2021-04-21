@@ -1,0 +1,12 @@
+INSERT INTO public.gender (id, created_at, name) VALUES (1, '2021-04-21 15:47:52.145119', 'Ação');
+INSERT INTO public.gender (id, created_at, name) VALUES (2, '2021-04-21 18:33:20.000000', 'Aventura');
+INSERT INTO public.gender (id, created_at, name) VALUES (3, '2021-04-21 18:33:27.000000', 'FPS');
+INSERT INTO public.gender (id, created_at, name) VALUES (4, '2021-04-21 18:33:38.000000', 'Corrida');
+INSERT INTO public.gender (id, created_at, name) VALUES (5, '2021-04-21 18:33:51.000000', 'Puzzle');
+INSERT INTO public.gender (id, created_at, name) VALUES (6, '2021-04-21 18:33:58.000000', 'Horror');
+INSERT INTO public.gender (id, created_at, name) VALUES (7, '2021-04-21 18:34:01.000000', 'Terror');
+INSERT INTO public.gender (id, created_at, name) VALUES (8, '2021-04-21 18:34:06.000000', 'Indie');
+INSERT INTO public.gender (id, created_at, name) VALUES (9, '2021-04-21 18:35:34.000000', 'Terceira Pessoa');
+INSERT INTO public.gender (id, created_at, name) VALUES (10, '2021-04-21 18:35:40.000000', 'Simulador');
+INSERT INTO public.gender (id, created_at, name) VALUES (11, '2021-04-21 18:35:51.000000', 'Visual Novel');
+INSERT INTO public.gender (id, created_at, name) VALUES (12, '2021-04-21 18:36:51.000000', 'Luta');

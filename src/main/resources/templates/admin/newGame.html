@@ -36,7 +36,7 @@
                             <div class="row">
                                 <div class="col-12 d-lg-block">
                                     <div class="text-center">
-                                        <img th:src="@{/images/image.jpg}"  width="200px" height="200px" class="mb-4" id="image_preview">
+                                        <img th:src="${game.image ?: ''}"  width="200px" height="200px" class="mb-4" id="image_preview">
                                     </div>
 <!--                                    <div class="input-group">-->
 <!--                                        <div class="custom-file">-->
@@ -93,7 +93,7 @@
 
                                             <div class="col-lg-4 form-group">
                                               <label for="publisher">Distribuidora:</label>
-                                              <select class="form-control" required id="publisher" multiple th:field="*{publisher}">
+                                              <select class="form-control" required id="publisher" th:field="*{publisher}">
                                                 <option data-toggle="tooltip" data-placement="top"
                                                         th:each="publisher : ${publisherList}"
                                                         th:value="${publisher.id}"
@@ -147,10 +147,9 @@
 
                                             <div class="col-lg-4 form-group" th:if="*{null != id}">
                                                 <label for="status">Status:</label>
-                                                <select class="form-control" id="status">
-                                                    <option value="">Seleciona uma opção</option>
-                                                    <option>Ativo</option>
-                                                    <option>Inativo</option>
+                                                <select class="form-control" id="status" th:field="*{active}">
+                                                    <option value="1">Ativo</option>
+                                                    <option value="0">Inativo</option>
                                                 </select>
                                             </div>
 
