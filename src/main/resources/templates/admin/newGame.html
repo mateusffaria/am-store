@@ -36,122 +36,138 @@
                             <div class="row">
                                 <div class="col-12 d-lg-block">
                                     <div class="text-center">
-                                        <img th:src="@{/images/image.jpg}"  width="200px" height="200px" class="mb-4">
+                                        <img th:src="@{/images/image.jpg}"  width="200px" height="200px" class="mb-4" id="image_preview">
                                     </div>
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <label class="custom-file-label" for="inputGroupFile04">Escolha uma imagem</label>
-                                            <input type="file" class="custom-file-input d-none" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" accept="image/*" required>
-                                        </div>
-                                    </div>
+<!--                                    <div class="input-group">-->
+<!--                                        <div class="custom-file">-->
+<!--                                            <label class="custom-file-label" for="inputGroupFile04">Escolha uma imagem</label>-->
+<!--                                            <input type="file" class="custom-file-input d-none" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" accept="image/*" required>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                 </div>
                                 <div class="col-12 mt-4">
-                                        <form>
-                                            <div class="row">
-                                              <div class="col-lg-4 form-group">
-                                                <label for="title">Título:</label>
-                                                <input type="text" class="form-control" placeholder="Whatch Dogs" required id="title">
-                                              </div>
-                                              <div class="col-lg-4 form-group">
-                                                <label for="value">Valor:</label>
+                                    <form method="post" th:object="${game}">
+                                        <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()} ">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <th:block th:each="error : ${#fields.detailedErrors()}">
+                                                <div>
+                                                    <i class="fa  fa-exclamation-circle mr-3"></i>
+                                                    <span th:text="${error.message}"></span>
+                                                </div>
+                                            </th:block>
+                                        </div>
+
+                                        <div class="row">
+                                          <div class="col-lg-12 form-group">
+                                            <label for="image">Imagem:</label>
+                                            <input type="text" class="form-control" placeholder="https://shuttershock" required id="image" th:field="*{image}">
+                                          </div>
+
+                                          <div class="col-lg-4 form-group">
+                                            <label for="title">Título:</label>
+                                            <input type="text" class="form-control" placeholder="Watch Dogs" required id="title" th:field="*{title}">
+                                          </div>
+
+                                          <div class="col-lg-4 form-group">
+                                            <label for="price">Valor:</label>
                                               <div class="input-group mb-3">
                                                   <div class="input-group-prepend">
                                                       <span class="input-group-text">R$</span>
                                                   </div>
-                                                  <input type="text" class="form-control" placeholder="180,00" id="value" required>
+                                                  <input type="text" class="form-control" placeholder="180,00" id="price" required th:field="*{price}">
                                               </div>
-                                              </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="amount">Quantidade:</label>
-                                                    <input type="text" class="form-control" placeholder="100" required id="amount">
-                                                </div>
+                                          </div>
 
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="internet">Requer internet:</label>
-                                                    <select class="form-control" required id="internet">
-                                                        <option value="">Seleciona uma opção</option>
-                                                        <option>Sim</option>
-                                                        <option>Não</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-lg-4 form-group">
-                                                  <label for="publisher">Distribuidora:</label>
-                                                  <input type="text" class="form-control" placeholder="Ubsoft" required  id="publisher">
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="launchDate">Lançamento:</label>
-                                                    <input type="text" class="form-control" placeholder="2010" required id="launchDate">
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="platform">Plataforma:</label>
-                                                    <select class="form-control" required id="platform" multiple>
-                                                        <option>PS4</option>
-                                                        <option>PC</option>
-                                                        <option>Xbox</option>
-                                                        <option>Nintendo Switch</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="language">Idioma:</label>
-                                                    <select class="form-control" required id="language" multiple>
-                                                        <option>Português Brasil</option>
-                                                        <option>Português Portugal</option>
-                                                        <option>Inglês</option>
-                                                        <option>Alemão</option>
-                                                        <option>Japonês</option>
-                                                        <option>Coreano</option>
-                                                        <option>Coreano</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="gender">Genêro:</label>
-                                                    <select class="form-control" required id="gender" multiple>
-                                                        <option>Ação</option>
-                                                        <option>Aventura</option>
-                                                        <option>Corrida</option>
-                                                        <option>FPS</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="age">Faixa etária:</label>
-                                                    <select class="form-control" required id="age">
-                                                        <option value="">Seleciona uma opção</option>
-                                                        <option>Livre</option>
-                                                        <option>10</option>
-                                                        <option>12</option>
-                                                        <option>14</option>
-                                                        <option>16</option>
-                                                        <option>18</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="status">Status:</label>
-                                                    <select class="form-control" required id="status">
-                                                        <option value="">Seleciona uma opção</option>
-                                                        <option>Ativo</option>
-                                                        <option>Inativo</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="reason">Motivo:</label>
-                                                    <input placeholder="Breve descrição do motivo da ativação/desativação" class="form-control" id="reason"/>
-                                                </div>
-
-                                                <div class="col-12 form-group">
-                                                    <label for="synopsis">Sinopse:</label>
-                                                    <textarea type="text" class="form-control" placeholder="Sinopse" required id="synopsis"></textarea>
-                                                </div>
-                                              <div class="form-group col-12">
-                                                <button type="submit" class="btn btn-primary">Cadastrar</button>
-                                              </div>
+                                            <div class="col-lg-4 form-group">
+                                                <label for="amount">Quantidade:</label>
+                                                <input type="text" class="form-control" placeholder="100" required id="amount" disabled>
                                             </div>
-                                          </form>
+
+                                            <div class="col-lg-4 form-group">
+                                                <label for="multiplayer">Multiplayer:</label>
+                                                <select class="form-control" required id="multiplayer" th:field="*{multiplayer}">
+                                                    <option value=1>Sim</option>
+                                                    <option value=0>Não</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-4 form-group">
+                                              <label for="publisher">Distribuidora:</label>
+                                              <select class="form-control" required id="publisher" multiple th:field="*{publisher}">
+                                                <option data-toggle="tooltip" data-placement="top"
+                                                        th:each="publisher : ${publisherList}"
+                                                        th:value="${publisher.id}"
+                                                        th:text="${publisher.name}"
+                                                        th:title="${publisher.name}"></option>
+                                              </select>
+                                            </div>
+
+                                            <div class="col-lg-4 form-group">
+                                                <label for="launchDate">Lançamento:</label>
+                                                <input type="date" class="form-control" required id="launchDate" th:field="*{releaseDate}">
+                                            </div>
+
+                                            <div class="col-lg-4 form-group">
+                                                <label for="platform">Plataforma:</label>
+                                                <select class="form-control" required id="platform" multiple th:field="*{platforms}">
+                                                    <option data-toggle="tooltip" data-placement="top"
+                                                            th:each="platform : ${platformList}"
+                                                            th:value="${platform.id}"
+                                                            th:text="${platform.name}"
+                                                            th:title="${platform.name}"></option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-4 form-group">
+                                                <label for="language">Idioma:</label>
+                                                <select class="form-control" required id="language" multiple th:field="*{languages}">
+                                                    <option data-toggle="tooltip" data-placement="top"
+                                                            th:each="language : ${languageList}"
+                                                            th:value="${language.id}"
+                                                            th:text="${language.name}"
+                                                            th:title="${language.name}"></option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-4 form-group">
+                                                <label for="gender">Genêro:</label>
+                                                <select class="form-control" required id="gender" multiple th:field="*{genders}">
+                                                    <option data-toggle="tooltip" data-placement="top"
+                                                            th:each="gender : ${genderList}"
+                                                            th:value="${gender.id}"
+                                                            th:text="${gender.name}"
+                                                            th:title="${gender.name}"></option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-4 form-group">
+                                                <label for="age">Faixa etária:</label>
+                                                <input type="number" step="1" min="1" th:field="*{age}" id="age" class="form-control"/>
+                                            </div>
+
+                                            <div class="col-lg-4 form-group" th:if="*{null != id}">
+                                                <label for="status">Status:</label>
+                                                <select class="form-control" required id="status">
+                                                    <option value="">Seleciona uma opção</option>
+                                                    <option>Ativo</option>
+                                                    <option>Inativo</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-4 form-group" th:if="*{null != id}">
+                                                <label for="reason">Motivo:</label>
+                                                <input placeholder="Breve descrição do motivo da ativação/desativação" class="form-control" id="reason"/>
+                                            </div>
+
+                                            <div class="col-12 form-group">
+                                                <label for="synopsis">Sinopse:</label>
+                                                <textarea type="text" class="form-control" placeholder="Sinopse" required id="synopsis" th:field="*{sinopsis}"></textarea>
+                                            </div>
+                                          <div class="form-group col-12">
+                                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                                          </div>
+                                        </div>
+                                      </form>
                                 </div>
                             </div>
                         </div>
@@ -188,13 +204,18 @@
 
     <script th:replace="layout/layout :: script"></script>
     <script>
-        $('#value').mask("#.##0,00", {reverse: true});
+        $('#price').mask("#.##0.00", {reverse: true});
 
         $('#inputGroupFile04').change(function() {
             var i = $(this).prev('label').clone();
             var file = $('#inputGroupFile04')[0].files[0].name;
             $(this).prev('label').text(file);
         });
+
+        $('#image').change(function (event) {
+            $("#image_preview").removeAttr("src");
+            $("#image_preview").attr("src", event.target.value)
+        })
     </script>
 </body>
 

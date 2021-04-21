@@ -22,4 +22,8 @@ public abstract class DomainEntity implements Serializable {
     DomainEntity() {
         this.createdAt = new Date();
     }
+
+    public String validate(){
+        return null;
+    };
 }

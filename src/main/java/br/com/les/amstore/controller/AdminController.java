@@ -50,20 +50,6 @@ public class AdminController {
         return mv;
     }
 
-    @GetMapping("/games/new")
-    public ModelAndView newGame() {
-        ModelAndView mv = new ModelAndView("/admin/newGame");
-
-        return mv;
-    }
-
-    @GetMapping("/games/list")
-    public ModelAndView listGames() {
-        ModelAndView mv = new ModelAndView("/admin/listGames");
-
-        return mv;
-    }
-
     @GetMapping("/order_return/list")
     public ModelAndView listOrdersReturned() {
         ModelAndView mv = new ModelAndView("/admin/listReturnedOrders");
