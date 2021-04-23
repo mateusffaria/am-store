@@ -138,7 +138,7 @@
                                                 </td>
                                                 <td th:text="${game.publisher.name}">CDPROJECT</td>
                                                 <td th:text="${game.releaseDate}">2021/06/06</td>
-                                                <td>100</td>
+                                                <td th:text="${game.amount}">100</td>
                                                 <td class="m-auto">
                                                     <a th:href="@{'/admin/games/' + ${game.id} + '/edit'}" class="btn btn-outline-info">
                                                         <i class="fas fa-pencil-alt"></i>

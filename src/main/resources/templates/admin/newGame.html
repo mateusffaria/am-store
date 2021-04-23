@@ -80,7 +80,7 @@
 
                                             <div class="col-lg-4 form-group">
                                                 <label for="amount">Quantidade:</label>
-                                                <input type="text" class="form-control" placeholder="100" required id="amount" disabled>
+                                                <input type="text" class="form-control" placeholder="100" required id="amount" th:field="*{amount}">
                                             </div>
 
                                             <div class="col-lg-4 form-group">
@@ -160,7 +160,7 @@
 
                                             <div class="col-12 form-group">
                                                 <label for="synopsis">Sinopse:</label>
-                                                <textarea type="text" class="form-control" placeholder="Sinopse" required id="synopsis" th:field="*{sinopsis}"></textarea>
+                                                <textarea type="text" class="form-control" placeholder="Sinopse" required id="synopsis" th:field="*{sinopsis}" maxlength="254"></textarea>
                                             </div>
                                           <div class="form-group col-12">
                                             <button type="submit" class="btn btn-primary" th:text="${null == game.id ? 'Cadastrar' : 'Atualizar'}">Cadastrar</button>

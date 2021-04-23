@@ -106,96 +106,22 @@
             </div>
 
             <div class="d-flex flex-wrap justify-content-around">
-              <div class="mt-5 justify-self-center col-12 col-md-6 col-lg-2">
+              <div class="mt-5 justify-self-center col-12 col-md-6 col-lg-2" th:each="game : ${games}">
                 <div class="card col-10 m-auto m-md-0 h-100 col-12">
                   <img
                     class="card-img-top mt-4 card-image"
-                    th:src="@{/images/resident-evil-3-remake-ps4-cover-600x600.jpg}"
+                    th:src="${game.image}"
                     alt="Card image cap"
                   />
                   <div class="card-body">
-                    <h5 class="card-title text-black font-bold">
+                    <h5 class="card-title text-black font-bold" th:text="${game.title}">
                       Resident Evil 3 - PS4
                     </h5>
-                    <p class="card-text text-success text-bold">R$: 300,00</p>
+                    <p class="card-text text-success text-bold" th:text="'R$ ' + ${game.price}">R$: 300,00</p>
                   </div>
                   <a
-                    th:href="@{games/detail/1}"
+                    th:href="'/games/detail/' + ${game.id}"
                     class="btn btn-outline-success btn-block mb-4"
-                    >Comprar</a
-                  >
-                </div>
-              </div>
-
-              <div class="mt-5 justify-self-center col-12 col-md-6 col-lg-2">
-                <div class="card col-10 m-auto m-md-0 h-100 col-12">
-                  <img
-                    class="card-img-top mt-4 card-image"
-                    th:src="@{/images/sucrilhos.jpg}"
-                    alt="Card image cap"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title text-black font-bold">
-                      Sekiro - PS4
-                    </h5>
-                    <p class="card-text text-success text-bold">R$: 300,00</p>
-                  </div>
-                  <a href="#" class="btn btn-outline-success btn-block mb-4"
-                    >Comprar</a
-                  >
-                </div>
-              </div>
-
-              <div class="mt-5 justify-self-center col-12 col-md-6 col-lg-2">
-                <div class="card col-10 m-auto m-md-0 h-100 col-12">
-                  <img
-                    class="card-img-top mt-4 card-image"
-                    th:src="@{/images/mk11.jpg}"
-                    alt="Card image cap"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title text-black font-bold">
-                      Mortal Kombat 10 - PS4
-                    </h5>
-                    <p class="card-text text-success text-bold">R$: 50,00</p>
-                  </div>
-                  <a href="#" class="btn btn-outline-success btn-block mb-4"
-                    >Comprar</a
-                  >
-                </div>
-              </div>
-
-              <div class="mt-5 justify-self-center col-12 col-md-6 col-lg-2">
-                <div class="card col-10 m-auto m-md-0 h-100 col-12">
-                  <img
-                    class="card-img-top mt-4 card-image"
-                    th:src="@{/images/tomraider.jpg}"
-                    alt="Card image cap"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title text-black font-bold">
-                      Tom Raider - PS4
-                    </h5>
-                    <p class="card-text text-success text-bold">R$: 300,00</p>
-                  </div>
-                  <a href="#" class="btn btn-outline-success btn-block mb-4"
-                    >Comprar</a
-                  >
-                </div>
-              </div>
-
-              <div class="mt-5 justify-self-center col-12 col-md-6 col-lg-2">
-                <div class="card col-10 m-auto m-md-0 h-100 col-12">
-                  <img
-                    class="card-img-top mt-4 card-image"
-                    th:src="@{/images/metro.png}"
-                    alt="Card image cap"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title text-black font-bold">Metro - PS4</h5>
-                    <p class="card-text text-success text-bold">R$: 280,00</p>
-                  </div>
-                  <a href="#" class="btn btn-outline-success btn-block mb-4"
                     >Comprar</a
                   >
                 </div>

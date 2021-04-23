@@ -5,10 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 
@@ -25,8 +22,16 @@ public class Customer extends Person {
     @OneToMany(mappedBy = "customer", targetEntity = Address.class)
     private List<Address> address;
 
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Wallet wallet;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Cart cart;
+
     public Customer() {
         this.setRoles("ROLE_CUSTOMER");
         this.setActive(true);
+        this.wallet = new Wallet();
+        this.cart = new Cart();
     }
 }

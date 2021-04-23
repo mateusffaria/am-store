@@ -70,6 +70,8 @@ public class AdminGamesController {
 
         FacadeImpl facade = new FacadeImpl(games, platforms, genders, languages, publishers);
 
+        game.setAmountAvailable(game.getAmount());
+
         facade.save(game);
 
         ModelAndView mv = new ModelAndView("redirect:/admin/games/list");
