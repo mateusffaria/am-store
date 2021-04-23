@@ -57,6 +57,10 @@ public class Game extends DomainEntity {
 
     private boolean active;
 
+    private Integer amount;
+
+    private Integer amountAvailable;
+
     @Transient
     @Override
     public String validate(){

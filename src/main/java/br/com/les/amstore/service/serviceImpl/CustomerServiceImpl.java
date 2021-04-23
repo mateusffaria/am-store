@@ -32,7 +32,7 @@ public class CustomerServiceImpl implements ICustomersService {
 
     @Override
     public Customer saveAndFlush(Customer customer) {
-        if(null != customer.getPassword()) {
+        if(null != customer.getPassword() && customer.getPassword().trim().length() >= 6) {
             customer.setEncryptedPassword(passwordEncoder.encode(customer.getPassword()));
         }
         return customers.saveAndFlush(customer);
