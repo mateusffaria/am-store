@@ -83,18 +83,16 @@
                                                 <th>Código do cupom</th>
                                                 <th>Valor</th>
                                                 <th>Data de criação</th>
-                                                <th>Validade</th>
-                                                <th>Vezes utilizada</th>
+                                                <th>Quantidade disponível</th>
                                                 <th colspan="2"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td>FXJNb4DJ</td>
-                                                <td>R$: 50,00</td>
-                                                <td>20/02/2021 10:53</td>
-                                                <td>25/02/2021 10:53</td>
-                                                <td>10</td>
+                                            <tr th:each="coupon : ${coupons}">
+                                                <td th:text="${coupon.code}">FXJNb4DJ</td>
+                                                <td th:text="${coupon.value}">R$: 50,00</td>
+                                                <td th:text="${coupon.createdAt}">25/02/2021 10:53</td>
+                                                <td th:text="${coupon.amount}">10</td>
                                                 <td class="m-auto">
                                                     <a th:href="@{/admin/coupons/new}" class="btn btn-outline-info">
                                                         <i class="fas fa-pencil-alt"></i>

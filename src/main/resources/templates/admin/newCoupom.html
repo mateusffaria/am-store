@@ -35,29 +35,35 @@
 
                         <div class="row">
                             <div class="col-12 mt-4">
-                                <form>
+                                <form th:object="${coupon}" th:method="POST">
+                                    <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()} ">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <th:block th:each="error : ${#fields.detailedErrors()}">
+                                            <div>
+                                                <i class="fa  fa-exclamation-circle mr-3"></i>
+                                                <span th:text="${error.message}"></span>
+                                            </div>
+                                        </th:block>
+                                    </div>
+
                                     <div class="row">
-                                        <div class="col-lg-3 form-group">
-                                            <label for="expire_at">Data de Validade:</label>
-                                            <input type="date" class="form-control" required id="expire_at">
-                                        </div>
                                         <div class="col-lg-3 form-group">
                                             <label for="value">Valor:</label>
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">R$</span>
                                                 </div>
-                                                <input type="text" class="form-control" placeholder="180,00" required id="value">
+                                                <input type="text" class="form-control" placeholder="180,00" required id="value" th:field="*{value}">
                                             </div>
                                         </div>
                                         <div class="col-lg-3 form-group">
                                             <label for="amount">Quantidade:</label>
-                                            <input type="text" class="form-control" placeholder="100" required id="amount">
+                                            <input type="text" class="form-control" placeholder="100" required id="amount" th:field="*{amount}">
                                         </div>
 
                                         <div class="col-lg-3 form-group">
                                             <label for="code">Código:</label>
-                                            <input type="text" class="form-control" placeholder="VALE10" required id="code">
+                                            <input type="text" class="form-control" placeholder="VALE10" required id="code" th:field="*{code}">
                                         </div>
 
                                         <div class="form-group col-12">
@@ -119,13 +125,7 @@
 
 <script th:replace="layout/layout :: script"></script>
 <script>
-    $('#game_price').mask("#.##0,00", {reverse: true});
-
-    $('#inputGroupFile04').change(function() {
-        var i = $(this).prev('label').clone();
-        var file = $('#inputGroupFile04')[0].files[0].name;
-        $(this).prev('label').text(file);
-    });
+    $('#value').mask("#.##0.00", {reverse: true});
 </script>
 </body>
 
