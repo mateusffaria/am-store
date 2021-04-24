@@ -27,8 +27,6 @@ public class CustomerController {
     @Autowired
     private ICustomerTypeService customerTypes;
 
-    @Autowired
-    private IDocumentTypeService documentTypes;
 
     @GetMapping("/new")
     public ModelAndView newCostumer(Customer customer) {

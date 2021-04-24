@@ -121,7 +121,11 @@ public class AdminGamesController {
     public ModelAndView updateGame(@PathVariable("idGame") Integer idGame, @Valid Game game, BindingResult result, RedirectAttributes attributes) {
         FacadeImpl facade = new FacadeImpl(games, platforms, genders, languages, publishers);
 
+
         game.setId(Long.parseLong(idGame.toString()));
+
+        Game gameSaved = (Game) facade.readOne(game);
+        game.setAmountAvailable(gameSaved.getAmountAvailable());
 
         String save = facade.save(game);
 

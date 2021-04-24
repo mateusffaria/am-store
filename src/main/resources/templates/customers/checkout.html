@@ -23,14 +23,14 @@
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Resident Evil 3</td>
-                <td>PS4</td>
+              <tr th:each="item : ${customer.cart.itemList}">
+                <th scope="row" th:text="${customer.cart.itemList.indexOf(item)}">1</th>
+                <td th:text="${item.game.title}">Resident Evil 3</td>
+                <td th:text="${item.game.platform.name}">PS4</td>
                 <td>
-                  <input class="form-control" type="number" min="1" step="1" value="1">
+                  <input class="form-control" type="number" min="1" step="1" value="1" th:value="${item.amount}" disabled>
                 </td>
-                <td>R$: 350,00</td>
+                <td th:text="${item.amount * item.game.price}">R$: 350,00</td>
                 <td><i class="fas fa-trash"></i> Excluir</td>
               </tr>
               </tbody>

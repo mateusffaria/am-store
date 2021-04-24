@@ -9,4 +9,6 @@ public interface IFacade {
     public String update(DomainEntity domainEntity);
     public String delete(DomainEntity domainEntity);
     public List<DomainEntity> read(DomainEntity domainEntity);
+
+    DomainEntity readOne(DomainEntity domainEntity);
 }

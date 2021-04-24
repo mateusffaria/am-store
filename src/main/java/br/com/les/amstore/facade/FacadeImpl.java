@@ -85,12 +85,20 @@ public class FacadeImpl implements IFacade {
 
     @Override
     public List<DomainEntity> read(DomainEntity domainEntity) {
-        String test = domainEntity.getClass().getName();
         JpaRepository dao = daos.get(domainEntity.getClass().getName());
 
         List<DomainEntity> domainEntities = dao.findAll();
 
         return domainEntities;
+    }
+
+    @Override
+    public DomainEntity readOne(DomainEntity domainEntity) {
+        JpaRepository dao = daos.get(domainEntity.getClass().getName());
+
+        DomainEntity domainEntity2 = (DomainEntity) dao.findById(domainEntity.getId()).get();
+
+        return domainEntity2;
     }
 
     void validateNullString(StringBuilder stringBuilder, String message) {

@@ -41,8 +41,9 @@ public class Game extends DomainEntity {
     @Temporal(TemporalType.DATE)
     private Date releaseDate;
 
-    @ManyToMany
-    private List<Platform> platforms;
+    @ManyToOne
+    @JoinColumn(name = "platform_id")
+    private Platform platform;
 
     @ManyToMany
     private List<Language> languages;

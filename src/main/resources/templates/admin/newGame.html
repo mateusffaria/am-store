@@ -109,7 +109,7 @@
 
                                             <div class="col-lg-4 form-group">
                                                 <label for="platform">Plataforma:</label>
-                                                <select class="form-control" required id="platform" multiple th:field="*{platforms}">
+                                                <select class="form-control" required id="platform" th:field="*{platform}">
                                                     <option data-toggle="tooltip" data-placement="top"
                                                             th:each="platform : ${platformList}"
                                                             th:value="${platform.id}"
