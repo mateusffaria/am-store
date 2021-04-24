@@ -30,7 +30,7 @@
                 <td>
                   <input class="form-control" type="number" min="1" step="1" value="1" th:value="${item.amount}" disabled>
                 </td>
-                <td th:text="${item.amount * item.game.price}">R$: 350,00</td>
+                <td th:text="'R$ ' + ${item.amount * item.game.price}">R$: 350,00</td>
                 <td><i class="fas fa-trash"></i> Excluir</td>
               </tr>
               </tbody>
