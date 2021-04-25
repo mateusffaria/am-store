@@ -34,6 +34,10 @@ public class Order extends DomainEntity {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @ManyToOne
+    @JoinColumn(name = "address_billing_id")
+    private Address addressBilling;
+
     @OneToOne
     private Tracking tracking;
 

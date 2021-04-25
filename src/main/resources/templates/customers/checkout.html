@@ -36,386 +36,94 @@
               </tbody>
           </table>
 
-            <div class="d-flex justify-content-around flex-wrap">
+            <form th:object="${order}" th:method="POST">
+              <input th:field="*{customer}" th:value="${customer.id}" hidden/>
+
               <div class="d-flex justify-content-between flex-wrap col-12">
-                <small th:class="${customer.documents.isEmpty() || customer.address.isEmpty()} ? 'd-block text-justify text-info' : 'd-none'">
-                  Para darmos sequência no pagamento é necessários alguns dados, será rapidinho, prometo :D
-                </small>
-                <div class="p-4 rounded bg-form col-12 col-md-6" id="usuario">
-                  <form class="">
-                    <h5 class="text-center">Dados Pessoais</h5>
-                    <hr />
 
-                    <div class="form-group">
-                      <label for="document">Documento</label>
-                      <select id="document" class="form-control" required>
-                        <option value="">Selecione o documento</option>
-                        <option th:each="document : ${customer.documents}" th:value="${document.id}" th:text="${document.documentType.name} + ': ' + ${document.code}"></option>
-                        <option value="-1">Cadastre um novo</option>
-                      </select>
-                    </div>
+                <div class="p-4 rounded bg-form col-12 col-md-6">
+                  <small th:class="${customer.documents.isEmpty() || customer.address.isEmpty()} ? 'd-block text-justify text-info' : 'd-none'">
+                    Para darmos sequência no pagamento é necessários alguns dados, será rapidinho, prometo :D
+                  </small>
+                  <h5 class="text-center">Dados Pessoais</h5>
+                  <hr />
+                  <div class="form-group">
+                    <label for="document">Documento</label>
+                    <select id="document" class="form-control" required>
+                      <option value="">Selecione o documento</option>
+                      <option th:each="document : ${customer.documents}" th:value="${document.id}" th:text="${document.documentType.name} + ': ' + ${document.code}"></option>
+                      <option value="-1">Cadastre um novo</option>
+                    </select>
+                  </div>
 
-                    <fieldset id="new_document_form" class="d-none" disabled>
-                      <div class="form-group mt-2">
-                        <label for="document_type">Tipo Documento:</label>
-                        <select id="document_type" class="form-control" required>
-                          <option value="">Selecione o tipo</option>
-                          <option th:each="type : ${documentTypes}" th:value="${type.id}" th:text="${type.name}"></option>
-                        </select>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="new_validate">Data expedição:</label>
-                        <input type="date" class="form-control" id="new_validate" placeholder="validade" required>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="new_document_code">Número:</label>
-                        <input type="text" class="form-control" id="new_document_code" placeholder="Número" required>
-                      </div>
-                      <div class="form-group">
-                        <button class="btn btn-success">Salvar Documento</button>
-                      </div>
-                    </fieldset>
-
-                    <div class="form-group">
-                      <label for="name">Nome Completo</label>
-                      <input
-                              type="text"
-                              class="form-control"
-                              id="name"
-                              aria-describedby="logradoutoHelp"
-                              placeholder="Nome exemplo"
-                              th:value="${customer.name}"
-                              disabled
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="telephone"
-                      >Telefone para contato</label
-                      >
-                      <input
-                              type="text"
-                              class="form-control"
-                              id="telephone"
-                              aria-describedby="logradoutoHelp"
-                              placeholder="(11) 91234-5678"
-                              th:value="${customer.telephone}"
-                              disabled
-                      />
-                    </div>
-
-                    <div class="d-flex flex-wrap justify-content-between">
-                      <button type="submit" class="btn btn-warning" disabled>
-                        Voltar
-                      </button>
-
-                      <button
-                              type="submit"
-                              class="btn btn-primary"
-                              onClick="proximoPasso(event)"
-                              id="document_step"
-                              disabled
-                      >
-                        Próximo
-                      </button>
-                    </div>
-                  </form>
-                </div>
-
-                <div class="p-4 rounded bg-form col-12 col-md-6 d-none" id="delivery_address">
-                  <form class="">
-                    <h5 class="text-center">Endereço de Entrega</h5>
-                    <hr />
-                    <div class="form-group">
-                      <label for="delivery_address_selector"
-                        >Selecione um endereço</label
-                      >
-                      <select id="delivery_address_selector" class="form-control" required>
-                        <option value="">Escolha um endereço de entrega</option>
-                        <th:block th:if="${!customer.address.isEmpty()}">
-                          <option data-toggle="tooltip" data-placement="top"
-                                  th:each="address : ${customer.address}"
-                                  th:value="${address.id}"
-                                  th:text="${address.street}"
-                                  th:title="${address.street}"
-                                  th:if="${address.addressType.getId() == 1}"
-                          >
-                          </option>
-                        </th:block>
-                        <option value="-1">
-                          Cadastre um novo endereço
+                  <h5 class="text-center">Endereço de Entrega</h5>
+                  <hr />
+                  <div class="form-group">
+                    <label for="delivery_address_selector">Selecione um endereço</label>
+                    <select id="delivery_address_selector" class="form-control" required th:field="*{address}">
+                      <option value="">Escolha um endereço de entrega</option>
+                      <th:block th:if="${!customer.address.isEmpty()}">
+                        <option data-toggle="tooltip" data-placement="top"
+                                th:each="address : ${customer.address}"
+                                th:value="${address.id}"
+                                th:text="${address.street}"
+                                th:title="${address.street}"
+                                th:if="${address.addressType.getId() == 1}"
+                        >
                         </option>
-                      </select>
-                    </div>
+                      </th:block>
+                      <option value="-1">
+                        Cadastre um novo endereço
+                      </option>
+                    </select>
+                  </div>
 
-                    <fieldset id="new_delivery_address" class="d-none" disabled>
-                      <div class="form-group">
-                        <label for="new_delivery_postalcode">CEP</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="new_delivery_postalcode"
-                          aria-describedby="logradoutoHelp"
-                          placeholder="01234-456"
-                          required
-                        />
-                      </div>
+                  <h5 class="text-center">Endereço de Cobrança</h5>
+                  <hr />
+                  <div class="form-group">
+                    <label for="delivery_address_selector">Selecione um endereço</label>
+                    <select id="billing_address_selector" class="form-control" required th:field="*{addressBilling}">
+                      <option value="">Escolha um endereço de entrega</option>
+                      <th:block th:if="${!customer.address.isEmpty()}">
+                        <option data-toggle="tooltip" data-placement="top"
+                                th:each="address : ${customer.address}"
+                                th:value="${address.id}"
+                                th:text="${address.street}"
+                                th:title="${address.street}"
+                                th:if="${address.addressType.getId() == 2}"></option>
+                      </th:block>
+                      <option value="-1">
+                        Cadastre um novo endereço
+                      </option>
+                    </select>
+                  </div>
 
-                      <div class="form-group">
-                        <label for="new_delivery_street">Logradouro</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="new_delivery_street"
-                          aria-describedby="logradoutoHelp"
-                          placeholder="Avenida Orquídeas, 123"
-                          required
-                        />
-                      </div>
-
-                      <div class="form-group">
-                        <label for="new_delivery_city">Cidade</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="new_delivery_city"
-                          aria-describedby="logradoutoHelp"
-                          placeholder="Mogi das Cruzes"
-                          required
-                        />
-                      </div>
-
-                      <div class="form-group">
-                        <label for="new_delivery_state">Estado</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="new_delivery_state"
-                          aria-describedby="logradoutoHelp"
-                          placeholder="São Paulo"
-                          required
-                        />
-                      </div>
-                      <div class="form-group">
-                        <button class="btn btn-success">Cadastrar endereço de entrega</button>
-                      </div>
-                    </fieldset>
-
-                    <div class="d-flex flex-wrap justify-content-between">
-                      <button type="submit" class="btn btn-warning" onclick="backStep1(event)">
-                        Voltar
-                      </button>
-
-                      <button
-                        type="submit"
-                        class="btn btn-primary"
-                        onclick="proximoPasso2(event)"
-                        id="delivery_address_step"
-                        disabled
-                      >
-                        Próximo
-                      </button>
-                    </div>
-                  </form>
-                </div>
-
-                <div class="p-4 rounded bg-form col-12 col-md-6 d-none" id="billing_address">
-                  <form class="">
-                    <h5 class="text-center">Endereço de Cobrança</h5>
-                    <hr />
-                    <div class="form-group">
-                      <label for="delivery_address_selector"
-                      >Selecione um endereço</label
-                      >
-                      <select id="billing_address_selector" class="form-control" required>
-                        <option value="">Escolha um endereço de entrega</option>
-                        <th:block th:if="${!customer.address.isEmpty()}">
-                          <option data-toggle="tooltip" data-placement="top"
-                                  th:each="address : ${customer.address}"
-                                  th:value="${address.id}"
-                                  th:text="${address.street}"
-                                  th:title="${address.street}"
-                                  th:if="${address.addressType.getId() == 2}"
-                          >
-                          </option>
-                        </th:block>
-                        <option value="-1">
-                          Cadastre um novo endereço
-                        </option>
-                      </select>
-                    </div>
-
-                    <fieldset id="new_billing_address" class="d-none" disabled>
-                      <div class="form-group">
-                        <label for="new_delivery_postalcode">CEP</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="new_billing_postalcode"
-                                aria-describedby="logradoutoHelp"
-                                placeholder="01234-456"
-                                required
-                        />
-                      </div>
-
-                      <div class="form-group">
-                        <label for="new_billing_street">Logradouro</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="new_billing_street"
-                                aria-describedby="logradoutoHelp"
-                                placeholder="Avenida Orquídeas, 123"
-                                required
-                        />
-                      </div>
-
-                      <div class="form-group">
-                        <label for="new_billing_city">Cidade</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="new_billing_city"
-                                aria-describedby="logradoutoHelp"
-                                placeholder="Mogi das Cruzes"
-                                required
-                        />
-                      </div>
-
-                      <div class="form-group">
-                        <label for="new_billing_state">Estado</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="new_billing_state"
-                                aria-describedby="logradoutoHelp"
-                                placeholder="São Paulo"
-                                required
-                        />
-                      </div>
-
-                      <div class="form-group">
-                        <button class="btn btn-success">Cadastrar endereço de cobrança</button>
-                      </div>
-                    </fieldset>
-
-                    <div class="d-flex flex-wrap justify-content-between">
-                      <button type="submit" class="btn btn-warning" onclick="backStep2(event)">
-                        Voltar
-                      </button>
-
-                      <button
-                              type="submit"
-                              class="btn btn-primary"
-                              onclick="proximoPasso3(event)"
-                              id="billing_address_step"
-                              disabled
-                      >
-                        Próximo
-                      </button>
-                    </div>
-                  </form>
-                </div>
-
-                <div class="p-4 rounded bg-form col-12 col-md-6 d-none" id="cartao">
-                  <form class="">
-                    <h5 class="text-center">Cartões</h5>
-                    <hr />
+                  <h5 class="text-center">Cartões</h5>
+                  <hr />
+                  <div id="payment_method_card">
                     <div class="form-group">
                       <label for="credit_card_selector"
-                        >Selecione um cartão</label
+                      >Selecione um cartão</label
                       >
-                      <select class="custom-select" id="credit_card_selector" required>
+                      <select class="custom-select" id="credit_card_selector" required th:field="*{paymentMethodList[0].creditCard.id}">
                         <option value="">Selecione um cartão</option>
-                        <option value="2">cart 1</option>
-                        <option value="3">cart 2</option>
+                        <th:block th:if="${!customer.creditCards.isEmpty()}">
+                          <option data-toggle="tooltip" data-placement="top"
+                                  th:each="creditCard : ${customer.creditCards}"
+                                  th:value="${creditCard.id}"
+                                  th:text="${creditCard.number.substring(creditCard.number.length() - 4)}"
+                                  th:title="${creditCard.number.substring(creditCard.number.length() - 4)}"></option>
+                        </th:block>
                         <option value="-1">Cadastrar Novo</option>
                       </select>
                     </div>
 
-                    <fieldset id="new_credit_card" class="d-none" disabled>
-
-                      <div class="form-group">
-                        <label for="card_number">Número</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="card_number"
-                          aria-describedby="logradoutoHelp"
-                          placeholder="0000-0000-0000-0000"
-                          required
-                        />
-                      </div>
-
-                      <div class="form-group">
-                        <label for="card_name">Nome Impresso</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="card_name"
-                          aria-describedby="logradoutoHelp"
-                          placeholder="Mateus J Faria"
-                          required
-                        />
-                      </div>
-
-                      <div class="form-group">
-                        <label for="card_cvv">CVV</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="card_cvv"
-                                aria-describedby="logradoutoHelp"
-                                placeholder="123"
-                                required
-                        />
-                      </div>
-
-                      <div class="form-group">
-                        <label for="card_cc">Validade</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="card_cc"
-                                aria-describedby="logradoutoHelp"
-                                placeholder="12/29"
-                                required
-                        />
-                      </div>
-
-                      <div class="form-group">
-                        <label for="card_flag">Bandeira</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="card_flag"
-                          aria-describedby="logradoutoHelp"
-                          placeholder="MasterCard"
-                          required
-                        />
-                      </div>
-                      <div class="form-group">
-                        <button class="btn btn-success">Salvar Cartão de Crédito</button>
-                      </div>
-                    </fieldset>
-                    <div class="d-flex flex-wrap justify-content-between">
-                      <button class="btn btn-warning" onclick="backStep3(event)">
-                        Voltar
-                      </button>
-
-                      <button
-                        type="submit"
-                        class="btn btn-success"
-                        onclick="finalizarCompra()"
-                        id="final_step"
-                        disabled
-                      >
-                        Finalizar Compra
-                      </button>
+                    <div class="form-group">
+                      <label for="card[0]">Digite o valor do pagamento:</label>
+                      <input type="number" min="10" class="form-control" id="card[0]" placeholder="10.00" required name="paymentMethodList[0].paymentValue"/>
                     </div>
-                  </form>
+                  </div>
+
                 </div>
 
                 <div class="p-4 rounded bg-form col-12 col-md-5 mt-5 mt-md-0">
@@ -454,6 +162,15 @@
                   </div>
                 </div>
               </div>
+
+              <button type="submit" class="btn btn-success" id="final_step" disabled>
+                Finalizar Compra
+              </button>
+
+
+            </form>
+
+            <div class="d-flex justify-content-around flex-wrap">
             </div>
           </div>
           <!-- /.container-fluid -->
@@ -484,59 +201,6 @@
     <script th:replace="layout/layout :: script"></script>
   </body>
   <script>
-    function proximoPasso(event) {
-      event.preventDefault();
-      $("#usuario").removeClass('d-block')
-      $("#usuario").addClass('d-none')
-
-      $("#delivery_address").removeClass('d-none')
-      $("#delivery_address").addClass('d-block')
-    }
-
-    function proximoPasso2(event) {
-      event.preventDefault();
-      $("#billing_address").removeClass("d-none");
-      $("#billing_address").addClass("d-block");
-
-      $("#delivery_address").removeClass("d-block");
-      $("#delivery_address").addClass("d-none");
-    }
-
-    function proximoPasso3(event) {
-      event.preventDefault();
-      $("#cartao").removeClass("d-none");
-      $("#cartao").addClass("d-block");
-      $("#billing_address").addClass("d-none");
-      $("#billing_address").removeClass("d-block");
-    }
-
-    function backStep3(event) {
-      event.preventDefault();
-      $("#cartao").removeClass("d-block");
-      $("#cartao").addClass("d-none");
-
-      $("#billing_address").addClass("d-block");
-      $("#billing_address").removeClass("d-none");
-    }
-
-    function backStep2(event) {
-      event.preventDefault();
-      $("#billing_address").addClass("d-none");
-      $("#billing_address").removeClass("d-block");
-
-      $("#delivery_address").addClass("d-block");
-      $("#delivery_address").removeClass("d-none");
-    }
-
-    function backStep1(event) {
-      event.preventDefault();
-      $("#delivery_address").addClass("d-none");
-      $("#delivery_address").removeClass("d-block");
-
-      $("#usuario").addClass("d-block");
-      $("#usuario").removeClass("d-none");
-    }
-
     $("#document_type").change(function () {
       switch (this.value){
         case "1":

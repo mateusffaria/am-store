@@ -28,6 +28,9 @@ public class Customer extends Person {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Cart cart;
 
+    @OneToMany(mappedBy = "customer", targetEntity = CreditCard.class)
+    private List<CreditCard> creditCards;
+
     public Customer() {
         this.setRoles("ROLE_CUSTOMER");
         this.setActive(true);

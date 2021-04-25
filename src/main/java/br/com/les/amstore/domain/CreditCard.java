@@ -30,4 +30,8 @@ public class CreditCard extends DomainEntity {
 
     @OneToMany(mappedBy = "creditCard", targetEntity = PaymentMethod.class)
     private List<PaymentMethod> paymentMethodList;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 }
