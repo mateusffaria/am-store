@@ -5,12 +5,14 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,4 +28,7 @@ public class Coupon extends DomainEntity{
 
     @Min(value = 1, message = "O Valor deve ser maior que 0")
     private Double value;
+
+    @OneToMany(mappedBy = "coupon", targetEntity = PaymentMethod.class)
+    private List<PaymentMethod> paymentMethodList;
 }
