@@ -38,7 +38,8 @@
 
             <form th:object="${order}" th:method="POST">
               <input th:field="*{customer}" th:value="${customer.id}" hidden/>
-              <input th:field="*{shippingTax}" value="20" hidden id="shippingTax"/>
+              <input th:field="*{shippingTax}" hidden id="shippingTax"/>
+              <input th:field="*{coupon}" hidden id="coupon"/>
 
               <div class="d-flex justify-content-between flex-wrap col-12">
 
@@ -149,12 +150,15 @@
 
                     <div class="flex-wrap justify-content-between d-none" id="cupom_div">
                       <span>Cupom de desconto:</span>
-                      <div id="cupon_layer"></div>
+                      <div class="d-flex">
+                        <span class="mr-1">R$ </span>
+                        <div id="cupon_layer"></div>
+                      </div>
                     </div>
 
                     <div class="d-flex flex-wrap justify-content-between mt-4">
                       <input class="form-control col-8 mr-3" placeholder="Insira seu cupom aqui" id="cupom_input"/>
-                      <button class="btn btn-outline-success col-3" onclick="cupomVerify()">Aplicar</button>
+                      <button class="btn btn-outline-success col-3" onclick="cupomVerify(event)">Aplicar</button>
                     </div>
                     <hr />
                     <div class="d-flex flex-wrap justify-content-between">
@@ -302,24 +306,69 @@
       if(this.value == "") $("#final_step").prop('disabled', true);
     })
 
-    function cupomVerify() {
-      console.log($("#cupom_input").get(0).value)
-      if($("#cupom_input").get(0).value == 12345) {
-        $("#cupom_div").addClass('d-flex')
-        $("#cupom_div").removeClass('d-none')
-        $("#cupon_layer").append("<span>R$ -" + 10 + ",00</span>");
+    function cupomVerify(event) {
+      event.preventDefault();
+
+      let code = $("#cupom_input").get(0).value
+
+      if(code.length >= 6) {
+
+        $.ajax(window.location.href + "/findcoupon?code=" + code).done((resp) => {
+            console.log(resp)
+
+            let totalCoupon = resp.value
+
+            $("#coupon").val(resp.id)
+
+            if($("#shippingTax").val().length > 0) {
+                $("#total").text(Number($("#shippingTax").val()) + Number(total) - Number(totalCoupon))
+            } else {
+                $("#total").text(Number(total) - totalCoupon)
+            }
+
+            $("#cupom_div").addClass('d-flex')
+            $("#cupom_div").removeClass('d-none')
+            $("#cupon_layer").empty();
+            $("#cupon_layer").append("<span id='couponShow'>" + totalCoupon +"</span>");
+
+        }).fail((resp) => {
+            console.log(resp);
+        });
       } else {
+        if($("#shippingTax").val().length > 0) {
+            $("#total").text(Number(total) + Number($("#shippingTax").val()))
+        } else {
+            $("#total").text(total)
+        }
+
+        $("#coupon").val("")
         $("#cupom_div").removeClass('d-flex')
         $("#cupom_div").addClass('d-none')
       }
     }
 
     $("#delivery_address_selector").on("change", function(event) {
+        console.log("ooie")
+        console.log($(this))
         let cep = $(this).children("option:selected").get(0).attributes.data.value
+
+        if(Number($(this).val()) <=0) {
+            if($("#coupon").val().length > 0){
+                $("#total").text(Number(total) + Number($("#couponShow").text()))
+            } else {
+                $("#total").text(Number(total))
+            }
+        }
+
         $.ajax(window.location.href + "/calculatetax?postalcode=" + cep).done((resp) => {
             $("#shippingTax").val(resp)
             $("#shippingTaxShow").text("R$ " + resp)
-            $("#total").text(Number(resp) + Number(total))
+
+            if($("#coupon").val().length > 0){
+                $("#total").text(Number(resp) + Number(total) + Number($("#couponShow").text()))
+            } else {
+                $("#total").text(Number(resp) + Number(total))
+            }
         }).fail((resp) => {
             console.log(resp);
         });

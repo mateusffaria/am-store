@@ -44,6 +44,10 @@ public class Order extends DomainEntity {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<PaymentMethod> paymentMethodList;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon;
+
     @ManyToMany
     private List<Item> itemList;
 }

@@ -1,13 +1,12 @@
 package br.com.les.amstore.controller;
 
+import br.com.les.amstore.domain.Coupon;
 import br.com.les.amstore.domain.Customer;
 import br.com.les.amstore.domain.Order;
 import br.com.les.amstore.domain.State;
 import br.com.les.amstore.dto.AddressDTO;
-import br.com.les.amstore.service.ICartService;
-import br.com.les.amstore.service.ICustomersService;
-import br.com.les.amstore.service.IDocumentTypeService;
-import br.com.les.amstore.service.IGenericService;
+import br.com.les.amstore.dto.CouponDTO;
+import br.com.les.amstore.service.*;
 import br.com.les.amstore.utils.correiostools.Fretenator;
 import br.com.les.amstore.utils.correiostools.FretenatorResult;
 import br.com.les.amstore.utils.correiostools.FretenatorResultItem;
@@ -36,6 +35,9 @@ public class CheckoutController {
 
     @Autowired
     private IGenericService<Order> orderService;
+
+    @Autowired
+    private ICouponService couponService;
 
     @GetMapping("")
     public ModelAndView getCheckout(@PathVariable("id") Customer customer) {
@@ -98,5 +100,17 @@ public class CheckoutController {
             return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(servico.getValor());
+    }
+
+    @GetMapping("/findcoupon")
+    public ResponseEntity findCoupon(@RequestParam("code") String code) {
+        Coupon coupon = couponService.findByCodeAndAmountGreaterThan(code, 0);
+
+        if(null == coupon)
+            return ResponseEntity.notFound().build();
+
+        CouponDTO couponDTO = new CouponDTO(coupon.getCode(), coupon.getValue(), coupon.getId());
+
+        return ResponseEntity.ok(couponDTO);
     }
 }

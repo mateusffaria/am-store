@@ -11,6 +11,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class Coupon extends DomainEntity{
 
     @NotBlank(message = "O código não pode estar em branco")
     @NotNull(message = "O código não pode estar em branco")
+    @Size(min = 6)
     private String code;
 
     @Min(value = 1, message = "A quantidade deve ser maior que 0")
@@ -29,6 +31,6 @@ public class Coupon extends DomainEntity{
     @Min(value = 1, message = "O Valor deve ser maior que 0")
     private Double value;
 
-    @OneToMany(mappedBy = "coupon", targetEntity = PaymentMethod.class)
-    private List<PaymentMethod> paymentMethodList;
+    @OneToMany(mappedBy = "coupon", targetEntity = Order.class)
+    private List<Order> orderList;
 }
