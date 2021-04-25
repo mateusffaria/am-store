@@ -21,7 +21,7 @@ public class Game extends DomainEntity {
     private String title;
 
     @NotNull(message = "O valor não pode ser nulo")
-    private BigDecimal price;
+    private Double price;
 
     @NotNull(message = "O Jogo deve especificar se possui multiplayer")
     private boolean multiplayer;

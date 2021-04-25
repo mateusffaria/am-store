@@ -15,7 +15,7 @@ import java.util.List;
 public class Order extends DomainEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-    private Date releaseDate;
+    private Date deliveryDate;
 
     private Double total;
 
@@ -41,7 +41,7 @@ public class Order extends DomainEntity {
     @OneToOne
     private Tracking tracking;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<PaymentMethod> paymentMethodList;
 
     @ManyToMany

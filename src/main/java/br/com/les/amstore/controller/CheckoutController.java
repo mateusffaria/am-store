@@ -2,16 +2,24 @@ package br.com.les.amstore.controller;
 
 import br.com.les.amstore.domain.Customer;
 import br.com.les.amstore.domain.Order;
+import br.com.les.amstore.domain.State;
+import br.com.les.amstore.dto.AddressDTO;
 import br.com.les.amstore.service.ICartService;
 import br.com.les.amstore.service.ICustomersService;
 import br.com.les.amstore.service.IDocumentTypeService;
 import br.com.les.amstore.service.IGenericService;
+import br.com.les.amstore.utils.correiostools.Fretenator;
+import br.com.les.amstore.utils.correiostools.FretenatorResult;
+import br.com.les.amstore.utils.correiostools.FretenatorResultItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -33,6 +41,7 @@ public class CheckoutController {
     public ModelAndView getCheckout(@PathVariable("id") Customer customer) {
         ModelAndView mv = new ModelAndView("customers/checkout");
         mv.addObject(customer);
+        mv.addObject("total", customer.getCart().getItemList().stream().mapToDouble(i -> i.getGame().getPrice() * i.getAmount().doubleValue()).sum());
         mv.addObject("documentTypes", documentTypes.findAll());
         mv.addObject("order", new Order());
 
@@ -60,10 +69,34 @@ public class CheckoutController {
     @PostMapping("")
     public ModelAndView finishCheckout(@PathVariable("id") Customer customer, @Valid Order order) {
         ModelAndView mv = new ModelAndView("redirect:/customer/" + customer.getId() + "/my-orders");
+        order.setCustomer(customer);
 
+        orderService.saveAndFlush(order);
         System.out.println(customer);
         System.out.println(order);
 
         return mv;
+    }
+
+    @GetMapping("/calculatetax")
+    public ResponseEntity calculateTax(@RequestParam("postalcode") String postalCode) {
+
+        Fretenator fretenator = new Fretenator();
+        fretenator.codServico("41106");
+        fretenator.codFormato(1);
+        fretenator.altura(11d);
+        fretenator.largura(12d);
+        fretenator.comprimento(16d);
+        fretenator.peso("0,450");
+        fretenator.cepOrigem("01010-010");
+        fretenator.cepDestino(postalCode);
+        FretenatorResult result = fretenator.result();
+        FretenatorResultItem servico = result.getServico(41106);
+
+
+        if(servico.getErro())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(servico.getValor());
     }
 }
