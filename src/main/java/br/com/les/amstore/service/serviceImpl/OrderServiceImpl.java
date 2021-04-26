@@ -43,8 +43,8 @@ public class OrderServiceImpl implements IGenericService<Order> {
         orders.saveAndFlush(object);
 
         object.getCustomer().getCart().getItemList().clear();
-        customers.saveAndFlush(object.getCustomer());
 
+        customers.saveAndFlush(object.getCustomer());
         return object;
     }
 
@@ -61,5 +61,7 @@ public class OrderServiceImpl implements IGenericService<Order> {
             order.setTotal(costs - order.getCustomer().getWallet().getValue() - order.getCoupon().getValue());
             order.getCoupon().setAmount(order.getCoupon().getAmount() - 1);
         }
+
+        order.getItemList().forEach(g -> g.getGame().setAmount(g.getGame().getAmount() - g.getAmount()));
     }
 }
