@@ -78,7 +78,7 @@
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Devoluções</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Pedidos</h6>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -93,21 +93,22 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>000001</td>
-                                            <td>R$: 520,00</td>
-                                            <td>20/02/2021 10:53</td>
-                                            <td class="d-flex flex-column">
-                                                <span class="mb-2">Resident Evil 3 R$: 300,00</span>
-                                                <span class="mb-2">Mortal Kombat 11 R$: 200,00</span>
-                                                <span class="mb-2">Frete R$: 20,00</span>
+                                        <tr th:each="order : ${orders}">
+                                            <td th:text="${order.id}">000001</td>
+                                            <td th:text="${order.total}">R$: 520,00</td>
+                                            <td th:text="${order.createdAt}">20/02/2021 10:53</td>
+                                            <td class="d-flex flex-column" th:each="item : ${order.itemList}">
+                                                <span class="mb-2"
+                                                      th:text="${item.game.title}
+                                                      + 'R$: ' + ${item.game.price} + ' * ' + ${item.amount}"></span>
                                             </td>
                                             <td>
-                                                <select class="form-control">
-                                                    <option>Entregue</option>
-                                                    <option>Em Processo</option>
-                                                    <option>Aprovado</option>
-                                                    <option>Recusado</option>
+                                                <select class="form-control" th:selected="${order.status}">
+                                                    <option data-toggle="tooltip" data-placement="top"
+                                                            th:each="status : ${statuses}"
+                                                            th:value="${status.id}"
+                                                            th:text="${status.status}"
+                                                            th:title="${status.status}"></option>
                                                 </select>
                                             </td>
                                         </tr>

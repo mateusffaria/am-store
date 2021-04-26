@@ -3,6 +3,7 @@ package br.com.les.amstore.service.serviceImpl;
 import br.com.les.amstore.domain.Order;
 import br.com.les.amstore.domain.Status;
 import br.com.les.amstore.repository.CreditCards;
+import br.com.les.amstore.repository.Customers;
 import br.com.les.amstore.repository.Orders;
 import br.com.les.amstore.repository.Statuses;
 import br.com.les.amstore.service.IGenericService;
@@ -22,6 +23,9 @@ public class OrderServiceImpl implements IGenericService<Order> {
     @Autowired
     CreditCards creditCards;
 
+    @Autowired
+    Customers customers;
+
     @Override
     public List<Order> findAll() {
         return orders.findAll();
@@ -36,8 +40,12 @@ public class OrderServiceImpl implements IGenericService<Order> {
     public Order saveAndFlush(Order object) {
 
         fillOrderObject(object);
+        orders.saveAndFlush(object);
 
-        return orders.saveAndFlush(object);
+        object.getCustomer().getCart().getItemList().clear();
+        customers.saveAndFlush(object.getCustomer());
+
+        return object;
     }
 
     public void fillOrderObject(Order order){
@@ -53,7 +61,5 @@ public class OrderServiceImpl implements IGenericService<Order> {
             order.setTotal(costs - order.getCustomer().getWallet().getValue() - order.getCoupon().getValue());
             order.getCoupon().setAmount(order.getCoupon().getAmount() - 1);
         }
-
-        order.getCustomer().getCart().getItemList().clear();
     }
 }

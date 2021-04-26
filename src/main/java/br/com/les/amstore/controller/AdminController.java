@@ -2,6 +2,8 @@ package br.com.les.amstore.controller;
 
 import br.com.les.amstore.domain.Coupon;
 import br.com.les.amstore.domain.Customer;
+import br.com.les.amstore.domain.Order;
+import br.com.les.amstore.domain.Status;
 import br.com.les.amstore.service.ICustomerTypeService;
 import br.com.les.amstore.service.ICustomersService;
 import br.com.les.amstore.service.IGenericService;
@@ -26,6 +28,12 @@ public class AdminController {
 
     @Autowired
     private IGenericService<Coupon> couponService;
+
+    @Autowired
+    private IGenericService<Order> orderService;
+
+    @Autowired
+    private IGenericService<Status> statusService;
 
     @RequestMapping("/")
     public ModelAndView index() {
@@ -72,6 +80,8 @@ public class AdminController {
     @GetMapping("/orders")
     public ModelAndView listOrders() {
         ModelAndView mv = new ModelAndView("/admin/listOrders");
+        mv.addObject("orders", orderService.findAll());
+        mv.addObject("statuses", statusService.findAll());
 
         return mv;
     }
