@@ -1,11 +1,9 @@
 package br.com.les.amstore.controller;
 
-import br.com.les.amstore.domain.Coupon;
-import br.com.les.amstore.domain.Customer;
-import br.com.les.amstore.domain.Order;
-import br.com.les.amstore.domain.State;
+import br.com.les.amstore.domain.*;
 import br.com.les.amstore.dto.AddressDTO;
 import br.com.les.amstore.dto.CouponDTO;
+import br.com.les.amstore.dto.CreditCardDTO;
 import br.com.les.amstore.service.*;
 import br.com.les.amstore.utils.correiostools.Fretenator;
 import br.com.les.amstore.utils.correiostools.FretenatorResult;
@@ -13,6 +11,7 @@ import br.com.les.amstore.utils.correiostools.FretenatorResultItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,6 +38,12 @@ public class CheckoutController {
     @Autowired
     private ICouponService couponService;
 
+    @Autowired
+    private IGenericService<CreditCard> creditCardService;
+
+    @Autowired
+    private IGenericService<Banner> bannerService;
+
     @GetMapping("")
     public ModelAndView getCheckout(@PathVariable("id") Customer customer) {
         ModelAndView mv = new ModelAndView("customers/checkout");
@@ -46,6 +51,8 @@ public class CheckoutController {
         mv.addObject("total", customer.getCart().getItemList().stream().mapToDouble(i -> i.getGame().getPrice() * i.getAmount().doubleValue()).sum());
         mv.addObject("documentTypes", documentTypes.findAll());
         mv.addObject("order", new Order());
+        mv.addObject("creditCard", new CreditCard());
+        mv.addObject("banners", bannerService.findAll());
 
         customers.isCurrentUserLoggedIn(customer.getId(), mv);
         return mv;
@@ -60,7 +67,7 @@ public class CheckoutController {
 
         cartService.addCartItem(customer, idGame, amount);
 
-        ModelAndView mv = new ModelAndView("customers/checkout");
+        ModelAndView mv = new ModelAndView("redirect:/customer/" + customer.getId() + "/checkout");
         mv.addObject(customer);
         mv.addObject("documentTypes", documentTypes.findAll());
 
@@ -112,5 +119,20 @@ public class CheckoutController {
         CouponDTO couponDTO = new CouponDTO(coupon.getCode(), coupon.getValue(), coupon.getId());
 
         return ResponseEntity.ok(couponDTO);
+    }
+
+    @PostMapping("/createcreditcard")
+    public ResponseEntity createCard(@PathVariable("id") Customer customer, @Valid CreditCard creditCard,
+                                     BindingResult result) {
+        if(result.hasErrors()){
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
+
+        creditCard.setCustomer(customer);
+
+        CreditCard creditCardResponse = creditCardService.saveAndFlush(creditCard);
+
+        return ResponseEntity.ok(new CreditCardDTO(creditCardResponse.getId(),
+                creditCardResponse.getNumber().substring(creditCardResponse.getNumber().length() - 4)));
     }
 }

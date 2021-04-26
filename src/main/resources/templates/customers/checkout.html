@@ -36,7 +36,7 @@
               </tbody>
           </table>
 
-            <form th:object="${order}" th:method="POST">
+            <form th:object="${order}" th:method="POST" th:if="${customer.cart.itemList.size() != 0}">
               <input th:field="*{customer}" th:value="${customer.id}" hidden/>
               <input th:field="*{shippingTax}" hidden id="shippingTax"/>
               <input th:field="*{coupon}" hidden id="coupon"/>
@@ -106,7 +106,7 @@
                   <div id="payment_method_card">
                     <div class="form-group">
                       <label>Selecione um cartão</label>
-                      <select class="custom-select credit-card-selector" required th:field="*{paymentMethodList[0].creditCard.id}">
+                      <select class="custom-select credit-card-selector" required th:field="*{paymentMethodList[0].creditCard.id}" onchange="changeCreditCardOption(event)">
                         <option value="">Selecione um cartão</option>
                         <th:block th:if="${!customer.creditCards.isEmpty()}">
                           <option data-toggle="tooltip" data-placement="top"
@@ -177,19 +177,93 @@
                 </div>
               </div>
 
-              <button type="submit" class="btn btn-success" id="final_step" disabled>
-                Finalizar Compra
+              <!-- Button trigger modal -->
+              <button id="create-new-credit-card" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCreditCard" hidden>
+                Cadastrar novo cartão de crédito
               </button>
 
-
+              <button type="submit" class="btn btn-success" id="final_step">
+                Finalizar Compra
+              </button>
             </form>
 
-            <div class="d-flex justify-content-around flex-wrap">
-            </div>
+            <h1 class="text-black-50 text-center" th:if="${customer.cart.itemList.size() == 0}">Seu Carrinho está vazio</h1>
           </div>
           <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalCreditCard" tabindex="-1" role="dialog" aria-labelledby="modalCCard" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalCCard">Adicionar um novo Cartão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <form th:object="${creditCard}" th:method="POST" onsubmit="handleCreditCardSubmit(event)">
+                    <div class="form-group">
+                      <label for="card_number">Número</label>
+                      <input type="text" class="form-control" id="card_number" aria-describedby="numberHelp"
+                             placeholder="0000-0000-0000-0000" required th:field="*{number}"/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_name">Nome Impresso</label>
+                      <input type="text" class="form-control" id="card_name" aria-describedby="ownerHelp"
+                             placeholder="Mateus J Faria" required th:field="*{owner}"/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_owner_doc">CPF do Titular</label>
+                      <input type="text" class="form-control" id="card_owner_doc" aria-describedby="ownerDocHelp"
+                             placeholder="123456798" required th:field="*{ownerDoc}"/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_cvv">CVV</label>
+                      <input type="text" class="form-control"id="card_cvv" aria-describedby="cvvHelp"
+                             placeholder="123" required th:field="*{securityCode}"/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_month">Mês do vencimento</label>
+                      <input type="text" class="form-control" id="card_month" aria-describedby="monthValidHelp"
+                             placeholder="12" th:field="*{validadeMonth}" required/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_year">Ano do vencimento</label>
+                      <input type="text" class="form-control" id="card_year" aria-describedby="yearValidHelp"
+                             placeholder="2030" th:field="*{validadeYear}" required/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_flag">Bandeira</label>
+                      <select id="card_flag" class="custom-select credit-card-selector" th:field="*{banner}">
+                        <option data-toggle="tooltip" data-placement="top"
+                                th:each="flag : ${banners}"
+                                th:value="${flag.id}"
+                                th:text="${flag.name}"
+                                th:title="${flag.name}"></option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <button class="btn btn-success">Salvar Cartão de Crédito</button>
+                    </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
@@ -218,6 +292,40 @@
     var total = $("#total").text();
     var listPayment = 0
 
+    function handleCreditCardSubmit(event){
+        event.preventDefault()
+        var form_data = {
+            number: $("#card_number").val(),
+            owner: $("#card_name").val(),
+            ownerDoc: $("#card_owner_doc").val(),
+            securityCode: $("#card_cvv").val(),
+            validadeMonth: $("#card_month").val(),
+            validadeYear: $("#card_year").val(),
+            banner: $("#card_flag").val(),
+        }
+
+        let url = window.location.href + "/createcreditcard";
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: form_data
+        }).done(function (data) {
+            for(let i = 0; i< $(".credit-card-selector").length; i++){
+                var element = document.createElement("Option")
+                    element.setAttribute("value", data.id);
+
+                var text = document.createTextNode(data.number)
+                element.appendChild(text);
+
+                $(".credit-card-selector")[i].appendChild(element)
+            }
+
+        }).fail((resp) => {
+            console.log(resp);
+        });
+    }
+
     $("#add_payment_method").on("click", function(event) {
         event.preventDefault();
         let payment_dom = $("#payment_method_card")
@@ -236,6 +344,7 @@
             select_dom_credit_card.setAttribute("name", "paymentMethodList[" + i + "].creditCard.id")
             input_dom_credit_card_value.setAttribute("name", "paymentMethodList[" + i + "].paymentValue")
         }
+
         listPayment += 1
     })
 
@@ -311,27 +420,13 @@
       if(this.value == "") $("#billing_address_step").prop('disabled', true);
     })
 
-    $("#credit_card_selector").change(function () {
-      if(this.value == '-1') {
-        $("#new_credit_card").removeClass('d-none')
-        $("#new_credit_card").addClass('d-block')
+    function changeCreditCardOption(event) {
+        if(event.target.value == '-1') {
+            $("#create-new-credit-card").click()
+        }
 
-        $("#card_number").mask('9999 9999 9999 9999')
-        $("#card_cvv").mask('999')
-        $("#card_cc").mask('99/99')
-
-        $("#new_credit_card").prop('disabled', false)
-        $("#final_step").prop('disabled', true)
-      } else {
-        $("#new_credit_card").removeClass('d-block')
-        $("#new_credit_card").addClass('d-none')
-
-        $("#new_credit_card").prop('disabled', true)
-        $("#final_step").prop('disabled', false)
-      }
-
-      if(this.value == "") $("#final_step").prop('disabled', true);
-    })
+        if(this.value == "") $("#final_step").prop('disabled', true);
+    }
 
     function cupomVerify(event) {
       event.preventDefault();

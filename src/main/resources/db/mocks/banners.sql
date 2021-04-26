@@ -3,4 +3,4 @@ INSERT INTO public.banner (id, created_at, name) VALUES (2, '2021-04-25 16:17:01
 INSERT INTO public.banner (id, created_at, name) VALUES (3, '2021-04-25 16:17:06.000000', 'American Express');
 INSERT INTO public.banner (id, created_at, name) VALUES (4, '2021-04-25 16:17:14.000000', 'Discover');
 INSERT INTO public.banner (id, created_at, name) VALUES (5, '2021-04-25 16:17:34.000000', 'Diners Club');
-INSERT INTO public.banner (id, created_at, name) VALUES (6, '2021-04-25 16:18:14.000000', 'Mestro');
+INSERT INTO public.banner (id, created_at, name) VALUES (6, '2021-04-25 16:18:14.000000', 'Maestro');
