@@ -4,7 +4,6 @@ package br.com.les.amstore.controller;
 import br.com.les.amstore.domain.Customer;
 import br.com.les.amstore.service.ICustomerTypeService;
 import br.com.les.amstore.service.ICustomersService;
-import br.com.les.amstore.service.IDocumentTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

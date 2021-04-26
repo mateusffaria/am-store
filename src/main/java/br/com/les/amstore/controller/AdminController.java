@@ -2,7 +2,6 @@ package br.com.les.amstore.controller;
 
 import br.com.les.amstore.domain.Coupon;
 import br.com.les.amstore.domain.Customer;
-import br.com.les.amstore.service.ICouponService;
 import br.com.les.amstore.service.ICustomerTypeService;
 import br.com.les.amstore.service.ICustomersService;
 import br.com.les.amstore.service.IGenericService;

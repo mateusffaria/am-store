@@ -1,7 +1,6 @@
 package br.com.les.amstore.controller;
 
 import br.com.les.amstore.domain.*;
-import br.com.les.amstore.dto.AddressDTO;
 import br.com.les.amstore.dto.CouponDTO;
 import br.com.les.amstore.dto.CreditCardDTO;
 import br.com.les.amstore.service.*;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Controller

@@ -3,7 +3,6 @@ package br.com.les.amstore.facade;
 import br.com.les.amstore.domain.*;
 import br.com.les.amstore.repository.*;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
