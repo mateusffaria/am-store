@@ -110,7 +110,7 @@
             >
                 <i class="fas fa-shopping-cart fa-fw"></i>
                 <!-- Counter - Cart -->
-                <span class="badge badge-danger badge-counter">10</span>
+                <span class="badge badge-danger badge-counter" th:text="${customer.getCart().getItemList().size()}"></span>
             </a>
             <!-- Dropdown - Cart -->
             <div

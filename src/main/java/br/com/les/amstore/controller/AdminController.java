@@ -4,10 +4,13 @@ import br.com.les.amstore.domain.Coupon;
 import br.com.les.amstore.domain.Customer;
 import br.com.les.amstore.domain.Order;
 import br.com.les.amstore.domain.Status;
+import br.com.les.amstore.dto.CouponDTO;
 import br.com.les.amstore.service.ICustomerTypeService;
 import br.com.les.amstore.service.ICustomersService;
 import br.com.les.amstore.service.IGenericService;
+import br.com.les.amstore.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +34,9 @@ public class AdminController {
 
     @Autowired
     private IGenericService<Order> orderService;
+
+    @Autowired
+    private IOrderService orderServiceExclusive;
 
     @Autowired
     private IGenericService<Status> statusService;
@@ -115,5 +121,18 @@ public class AdminController {
         mv.addObject(coupon);
 
         return mv;
+    }
+
+    @PostMapping("/orders/changestatusorder")
+    public ResponseEntity changeStatusOrder(@RequestParam("statusId") Long statusId, Long orderId) {
+        Order order = orderService.findById(orderId);
+        Status status = statusService.findById(statusId);
+
+        if(order != null && status != null)
+            order.setStatus(status);
+
+        orderServiceExclusive.updateOrder(order);
+
+        return ResponseEntity.ok("alterado com sucesso");
     }
 }

@@ -103,12 +103,15 @@
                                                       + 'R$: ' + ${item.game.price} + ' * ' + ${item.amount}"></span>
                                             </td>
                                             <td>
-                                                <select class="form-control" th:selected="${order.status}">
+                                                <select class="form-control"
+                                                        onchange="changeStatusOrder(event)" th:data="${order.id}">
                                                     <option data-toggle="tooltip" data-placement="top"
                                                             th:each="status : ${statuses}"
                                                             th:value="${status.id}"
                                                             th:text="${status.status}"
-                                                            th:title="${status.status}"></option>
+                                                            th:title="${status.status}"
+                                                            th:selected="${order.status.id == status.id}"
+                                                    ></option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -167,6 +170,30 @@
 </div>
 
 <script th:replace="layout/layout :: script"></script>
+
+<script>
+    function changeStatusOrder(event){
+        console.log(event)
+
+        let url = window.location.href + "/changestatusorder";
+
+        let form_data = {
+            statusId: event.target.value,
+            orderId: event.target.attributes.data.value
+        }
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: form_data
+        }).done(function (data) {
+            alert('Alterado com sucesso!')
+        }).fail((resp) => {
+            console.log(resp);
+        });
+    }
+</script>
+
 </body>
 
 </html>

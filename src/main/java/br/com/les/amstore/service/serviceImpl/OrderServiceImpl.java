@@ -7,13 +7,14 @@ import br.com.les.amstore.repository.Customers;
 import br.com.les.amstore.repository.Orders;
 import br.com.les.amstore.repository.Statuses;
 import br.com.les.amstore.service.IGenericService;
+import br.com.les.amstore.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class OrderServiceImpl implements IGenericService<Order> {
+public class OrderServiceImpl implements IGenericService<Order>, IOrderService {
     @Autowired
     Orders orders;
 
@@ -63,5 +64,10 @@ public class OrderServiceImpl implements IGenericService<Order> {
         }
 
         order.getItemList().forEach(g -> g.getGame().setAmount(g.getGame().getAmount() - g.getAmount()));
+    }
+
+    @Override
+    public Order updateOrder(Order order){
+        return orders.saveAndFlush(order);
     }
 }
