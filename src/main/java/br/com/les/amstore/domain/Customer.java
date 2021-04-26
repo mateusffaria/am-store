@@ -31,6 +31,9 @@ public class Customer extends Person {
     @OneToMany(mappedBy = "customer", targetEntity = CreditCard.class)
     private List<CreditCard> creditCards;
 
+    @OneToMany(mappedBy = "customer", targetEntity = Order.class)
+    private List<Order> orderList;
+
     public Customer() {
         this.setRoles("ROLE_CUSTOMER");
         this.setActive(true);

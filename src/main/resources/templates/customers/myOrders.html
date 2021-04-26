@@ -17,7 +17,6 @@
               <table class="table table-hover mt-4 mb-4">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Pedido</th>
                     <th scope="col">Data</th>
                     <th scope="col">Status</th>
@@ -26,46 +25,33 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td><a href="#">0000001</a></td>
-                    <td>22/fevereiro/2021 21:40</td>
-                    <td><span class="badge badge-success">Entregue</span></td>
-                    <td>R$: 370,00</td>
+                  <tr th:each="order : ${customer.orderList}">
+                    <td><a href="#" th:text="${order.id}">0000001</a></td>
+                    <td th:text="${order.createdAt}">22/fevereiro/2021 21:40</td>
                     <td>
-                      <a
-                        href="#"
-                        data-toggle="modal"
-                        data-target="#exampleModal"
-                        ><i class="fas fa-exchange-alt mr-2"></i>Solicitar
-                        Troca</a
-                      >
+                      <th:block th:switch="${order.status.id}">
+                        <div th:case="'1'">
+                          <span class="badge badge-info">EM PROCESSAMENTO</span>
+                        </div>
+                        <div th:case="'2'">
+                          <span class="badge badge-warning">EM TRANSPORTE</span>
+                        </div>
+                        <div th:case="'3'">
+                          <span class="badge badge-success">ENTREGUE</span>
+                        </div>
+                        <div th:case="'4'">
+                          <span class="badge badge-info">EM TRANSPORTE</span>
+                        </div>
+                      </th:block>
+
                     </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td><a href="#">0000002</a></td>
-                    <td>22/fevereiro/2021 21:40</td>
-                    <td><span class="badge badge-warning">Transporte</span></td>
-                    <td>R$: 370,00</td>
+                    <td th:text="${order.total}">R$: 370,00</td>
                     <td>
-                      <span>
+                      <a href="#" data-toggle="modal" data-target="#exampleModal" th:if="${order.status.id == 3}">
                         <i class="fas fa-exchange-alt mr-2"></i>
-                        Produto em envio
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td><a href="#">0000001</a></td>
-                    <td>22/fevereiro/2021 21:40</td>
-                    <td><span class="badge badge-info">Em troca</span></td>
-                    <td>R$: 370,00</td>
-                    <td>
-                      <span>
-                        <i class="fas fa-exchange-alt mr-2"></i>
-                        Troca em andamento
-                      </span>
+                        Solicitar Troca
+                      </a>
+                      <p th:if="${order.status.id != 3}">Em processo de envio</p>
                     </td>
                   </tr>
                 </tbody>
