@@ -48,9 +48,11 @@ public class OrderServiceImpl implements IGenericService<Order> {
         Double costs = order.getShippingTax() + order.getItemList().stream().mapToDouble(i -> i.getGame().getPrice() * i.getAmount().doubleValue()).sum();
 
         order.getPaymentMethodList().forEach(p -> p.setCreditCard(creditCards.findById(p.getCreditCard().getId()).get()));
-
         order.setStatus(status);
         order.setTotal(costs - order.getCustomer().getWallet().getValue());
+        order.getCoupon().setAmount(order.getCoupon().getAmount() - 1);
 
+        if(null != order.getCoupon())
+            order.setTotal(costs - order.getCustomer().getWallet().getValue() - order.getCoupon().getValue());
     }
 }
