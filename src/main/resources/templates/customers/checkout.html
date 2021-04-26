@@ -53,7 +53,8 @@
                     <label for="document">Documento</label>
                     <select id="document" class="form-control" required>
                       <option value="">Selecione o documento</option>
-                      <option th:each="document : ${customer.documents}" th:value="${document.id}" th:text="${document.documentType.name} + ': ' + ${document.code}"></option>
+                      <option th:each="document : ${customer.documents}" th:value="${document.id}"
+                              th:text="${document.documentType.name} + ': ' + ${document.code}"></option>
                       <option value="-1">Cadastre um novo</option>
                     </select>
                   </div>
@@ -106,7 +107,8 @@
                   <div id="payment_method_card">
                     <div class="form-group">
                       <label>Selecione um cartão</label>
-                      <select class="custom-select credit-card-selector" required th:field="*{paymentMethodList[0].creditCard.id}" onchange="changeCreditCardOption(event)">
+                      <select class="custom-select credit-card-selector" required
+                              th:field="*{paymentMethodList[0].creditCard.id}" onchange="changeCreditCardOption(event)">
                         <option value="">Selecione um cartão</option>
                         <th:block th:if="${!customer.creditCards.isEmpty()}">
                           <option data-toggle="tooltip" data-placement="top"
@@ -121,7 +123,8 @@
 
                     <div class="form-group">
                       <label>Digite o valor do pagamento:</label>
-                      <input type="number" min="10" class="form-control credit-card-value"  placeholder="10.00" required name="paymentMethodList[0].paymentValue"/>
+                      <input type="number" min="10" class="form-control credit-card-value"  placeholder="10.00" required
+                             name="paymentMethodList[0].paymentValue" onchange="validationValue(event)"/>
                     </div>
                   </div>
 
@@ -182,7 +185,7 @@
                 Cadastrar novo cartão de crédito
               </button>
 
-              <button type="submit" class="btn btn-success" id="final_step">
+              <button type="submit" class="btn btn-success" id="final_step" disabled>
                 Finalizar Compra
               </button>
             </form>
@@ -291,6 +294,22 @@
   <script>
     var total = $("#total").text();
     var listPayment = 0
+
+    function validationValue(event){
+        console.log(event.target.value)
+
+        let val = 0;
+
+        for(let i = 0; i< $(".credit-card-value").length; i++){
+            val += Number($(".credit-card-value")[i].value)
+        }
+
+        if(val !== Number($("#total").text())){
+            $("#final_step").attr("disabled", true)
+        } else {
+            $("#final_step").removeAttr("disabled")
+        }
+    }
 
     function handleCreditCardSubmit(event){
         event.preventDefault()
