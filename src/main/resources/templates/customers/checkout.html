@@ -31,7 +31,16 @@
                   <input class="form-control" type="number" min="1" step="1" value="1" th:value="${item.amount}" disabled>
                 </td>
                 <td th:text="'R$ ' + ${item.amount * item.game.price}">R$: 350,00</td>
-                <td><i class="fas fa-trash"></i> Excluir</td>
+                <td>
+                  <form th:object="${item}" th:method="delete" th:action="@{checkout/removeitem}">
+                    <input type="hidden" name="_method" value="delete">
+                    <input type="hidden" name="idItem" th:value="${item.id}">
+                    <button class="btn btn-outline-danger">
+                      <i class="fas fa-trash-alt"></i>
+                      <span> excluir</span>
+                    </button>
+                  </form>
+                </td>
               </tr>
               </tbody>
           </table>
@@ -166,7 +175,7 @@
 
                     <div class="d-flex flex-wrap justify-content-between mt-4">
                       <input class="form-control col-8 mr-3" placeholder="Insira seu cupom aqui" id="cupom_input"/>
-                      <button class="btn btn-outline-success col-3" onclick="cupomVerify(event)">Aplicar</button>
+                      <button class="btn btn-outline-success col-3" onclick="cupomVerify(event)" id="apply_coupon">Aplicar</button>
                     </div>
                     <hr />
                     <div class="d-flex flex-wrap justify-content-between">
@@ -185,7 +194,7 @@
                 Cadastrar novo cartão de crédito
               </button>
 
-              <button type="submit" class="btn btn-success" id="final_step" disabled>
+              <button type="submit" class="btn btn-success" id="final_step">
                 Finalizar Compra
               </button>
             </form>
@@ -262,7 +271,7 @@
                 </form>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalButton">Voltar</button>
               </div>
             </div>
           </div>
@@ -295,21 +304,21 @@
     var total = $("#total").text();
     var listPayment = 0
 
-    function validationValue(event){
-        console.log(event.target.value)
-
-        let val = 0;
-
-        for(let i = 0; i< $(".credit-card-value").length; i++){
-            val += Number($(".credit-card-value")[i].value)
-        }
-
-        if(val !== Number($("#total").text())){
-            $("#final_step").attr("disabled", true)
-        } else {
-            $("#final_step").removeAttr("disabled")
-        }
-    }
+    // function validationValue(event){
+    //     console.log(event.target.value)
+    //
+    //     let val = 0;
+    //
+    //     for(let i = 0; i< $(".credit-card-value").length; i++){
+    //         val += Number($(".credit-card-value")[i].value)
+    //     }
+    //
+    //     if(val !== Number($("#total").text())){
+    //         $("#final_step").attr("disabled", true)
+    //     } else {
+    //         $("#final_step").removeAttr("disabled")
+    //     }
+    // }
 
     function handleCreditCardSubmit(event){
         event.preventDefault()
@@ -340,8 +349,11 @@
                 $(".credit-card-selector")[i].appendChild(element)
             }
 
+            alert("Adicionado com sucesso")
+            $("#closeModalButton").click()
         }).fail((resp) => {
             console.log(resp);
+            alert("Falha no processo, revise as informações do cartão")
         });
     }
 

@@ -72,6 +72,23 @@ public class CheckoutController {
         return mv;
     }
 
+    @DeleteMapping("/removeitem")
+    public ModelAndView removeCheckoutItem(@PathVariable("id") Customer customer,
+                                        Long idItem) {
+
+        if(!customers.isCurrentUserLoggedIn(customer.getId()))
+            return new ModelAndView("redirect:/");
+
+        cartService.removeCartItem(customer, idItem);
+
+        ModelAndView mv = new ModelAndView("redirect:/customer/" + customer.getId() + "/checkout");
+        mv.addObject(customer);
+        mv.addObject("documentTypes", documentTypes.findAll());
+
+        return mv;
+    }
+
+
     @PostMapping("")
     public ModelAndView finishCheckout(@PathVariable("id") Customer customer, @Valid Order order) {
         ModelAndView mv = new ModelAndView("redirect:/customer/" + customer.getId() + "/my-orders");

@@ -50,4 +50,19 @@ public class CartServiceImpl implements IGenericService<Cart>, ICartService {
         game.setAmountAvailable(game.getAmountAvailable() - amount);
         games.saveAndFlush(game);
     }
+
+    @Override
+    public void removeCartItem(Customer customer, Long idItem) {
+
+        for (int i = 0; i< customer.getCart().getItemList().size(); i++) {
+            Item item = customer.getCart().getItemList().get(i);
+
+            if(item.getId().equals(idItem)){
+                customer.getCart().getItemList().remove(i);
+                item.getGame().setAmountAvailable(item.getGame().getAmountAvailable() + item.getAmount());
+            }
+        }
+
+        customers.saveAndFlush(customer);
+    }
 }
