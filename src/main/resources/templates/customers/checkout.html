@@ -105,10 +105,8 @@
                   <hr />
                   <div id="payment_method_card">
                     <div class="form-group">
-                      <label for="credit_card_selector"
-                      >Selecione um cartão</label
-                      >
-                      <select class="custom-select" id="credit_card_selector" required th:field="*{paymentMethodList[0].creditCard.id}">
+                      <label>Selecione um cartão</label>
+                      <select class="custom-select credit-card-selector" required th:field="*{paymentMethodList[0].creditCard.id}">
                         <option value="">Selecione um cartão</option>
                         <th:block th:if="${!customer.creditCards.isEmpty()}">
                           <option data-toggle="tooltip" data-placement="top"
@@ -122,9 +120,16 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="card[0]">Digite o valor do pagamento:</label>
-                      <input type="number" min="10" class="form-control" id="card[0]" placeholder="10.00" required name="paymentMethodList[0].paymentValue"/>
+                      <label>Digite o valor do pagamento:</label>
+                      <input type="number" min="10" class="form-control credit-card-value"  placeholder="10.00" required name="paymentMethodList[0].paymentValue"/>
                     </div>
+                  </div>
+
+                  <div class="form-group mt-3">
+                    <button class="btn btn-outline-info btn-block" id="add_payment_method">
+                      <i class="fas fa-plus-circle"></i>
+                      <span> Adicionar mais um método de pagamento</span>
+                    </button>
                   </div>
 
                 </div>
@@ -211,6 +216,28 @@
   </body>
   <script>
     var total = $("#total").text();
+    var listPayment = 0
+
+    $("#add_payment_method").on("click", function(event) {
+        event.preventDefault();
+        let payment_dom = $("#payment_method_card")
+
+        $("#payment_method_card").clone().insertBefore(this)
+        payment_dom.removeAttr("id")
+        payment_dom.attr("id", "payment_method_card" + listPayment)
+
+        for(let i = 0; i< $(".credit-card-selector").length; i++){
+            let select_dom_credit_card = $(".credit-card-selector")[i]
+            let input_dom_credit_card_value = $(".credit-card-value")[i]
+
+            select_dom_credit_card.removeAttribute("name");
+            input_dom_credit_card_value.removeAttribute("name");
+
+            select_dom_credit_card.setAttribute("name", "paymentMethodList[" + i + "].creditCard.id")
+            input_dom_credit_card_value.setAttribute("name", "paymentMethodList[" + i + "].paymentValue")
+        }
+        listPayment += 1
+    })
 
     $("#document_type").change(function () {
       switch (this.value){
