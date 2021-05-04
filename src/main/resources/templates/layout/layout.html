@@ -100,63 +100,14 @@
         <!-- Nav Item - Cart -->
         <li class="nav-item dropdown no-arrow mx-1">
             <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="alertsDropdown"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
+                    class="nav-link"
+                    th:href="@{'/customer/' + ${customer.id} + '/checkout'}"
             >
                 <i class="fas fa-shopping-cart fa-fw"></i>
                 <!-- Counter - Cart -->
                 <span class="badge badge-danger badge-counter" th:text="${customer.getCart().getItemList().size()}"></span>
             </a>
-            <!-- Dropdown - Cart -->
-            <div
-                    class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                    aria-labelledby="alertsDropdown"
-            >
-                <h6 class="dropdown-header">Carrinho</h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="col-3 pl-0">
-                        <img
-                                th:src="@{/images/horizon.jpeg}"
-                                class="img-fluid rounded image-cart"
-                        />
-                    </div>
-                    <div class="col-9">
-                        <span>Horizon Zero Dawn - PS4</span>
-                    </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="col-3 pl-0">
-                        <img
-                                th:src="@{/images/sucrilhos.jpg}"
-                                class="img-fluid rounded image-cart"
-                        />
-                    </div>
-                    <div class="col-9">
-                        <span>Sekiro - PS4</span>
-                    </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="col-3 pl-0">
-                        <img
-                                th:src="@{/images/711lrrvzt+L._SL1496_.jpg}"
-                                class="img-fluid rounded image-cart"
-                        />
-                    </div>
-                    <div class="col-9">
-                        <span>God of War - PS4</span>
-                    </div>
-                </a>
-                <a
-                        class="dropdown-item text-center small text-gray-500"
-                        th:href="@{'/customer/' + ${customer.id} + '/checkout'}"
-                >Mostrar o Carrinho</a
-                >
-            </div>
+
         </li>
 
         <div class="topbar-divider d-none d-sm-block"></div>

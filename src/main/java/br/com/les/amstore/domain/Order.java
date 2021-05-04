@@ -51,4 +51,7 @@ public class Order extends DomainEntity {
 
     @ManyToMany
     private List<Item> itemList;
+
+    @OneToOne
+    private Devolution devolution;
 }

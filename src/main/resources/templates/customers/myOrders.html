@@ -45,9 +45,9 @@
                       </th:block>
 
                     </td>
-                    <td th:text="${order.total}">R$: 370,00</td>
+                    <td th:text="'R$ ' + ${order.total}">R$: 370,00</td>
                     <td>
-                      <a href="#" data-toggle="modal" data-target="#exampleModal" th:if="${order.status.id == 3}">
+                      <a href="#" data-toggle="modal" data-target="#modalDevolution" th:if="${order.status.id == 3}">
                         <i class="fas fa-exchange-alt mr-2"></i>
                         Solicitar Troca
                       </a>
@@ -65,7 +65,7 @@
         <!-- Modal -->
         <div
           class="modal fade"
-          id="exampleModal"
+          id="modalDevolution"
           tabindex="-1"
           role="dialog"
           aria-labelledby="exampleModalLabel"
