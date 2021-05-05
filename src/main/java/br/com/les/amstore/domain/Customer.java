@@ -6,7 +6,9 @@ import lombok.ToString;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -39,5 +41,9 @@ public class Customer extends Person {
         this.setActive(true);
         this.wallet = new Wallet();
         this.cart = new Cart();
+    }
+
+    public List<Order> ordersDelivered() {
+        return this.orderList.stream().filter(order -> order.getStatus().getStatus().equals("ENTREGUE")).collect(Collectors.toList());
     }
 }

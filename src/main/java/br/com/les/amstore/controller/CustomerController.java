@@ -2,6 +2,8 @@ package br.com.les.amstore.controller;
 
 
 import br.com.les.amstore.domain.Customer;
+import br.com.les.amstore.domain.Devolution;
+import br.com.les.amstore.domain.Order;
 import br.com.les.amstore.service.ICustomerTypeService;
 import br.com.les.amstore.service.ICustomersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/customer")
@@ -102,10 +105,15 @@ public class CustomerController {
 
     @GetMapping("/{id}/my-orders")
     public ModelAndView getOrders(@PathVariable("id") Customer customer) {
+        if(!customers.isCurrentUserLoggedIn(customer.getId()))
+            return new ModelAndView("redirect:/");
+
+        List<Order> objectList = customer.ordersDelivered();
         ModelAndView mv = new ModelAndView("customers/myOrders");
         mv.addObject(customer);
+        mv.addObject("devolution", new Devolution());
 
-        customers.isCurrentUserLoggedIn(customer.getId(), mv);
+
         return mv;
     }
 }

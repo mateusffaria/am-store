@@ -304,22 +304,6 @@
     var total = $("#total").text();
     var listPayment = 0
 
-    // function validationValue(event){
-    //     console.log(event.target.value)
-    //
-    //     let val = 0;
-    //
-    //     for(let i = 0; i< $(".credit-card-value").length; i++){
-    //         val += Number($(".credit-card-value")[i].value)
-    //     }
-    //
-    //     if(val !== Number($("#total").text())){
-    //         $("#final_step").attr("disabled", true)
-    //     } else {
-    //         $("#final_step").removeAttr("disabled")
-    //     }
-    // }
-
     function handleCreditCardSubmit(event){
         event.preventDefault()
         var form_data = {
@@ -501,8 +485,6 @@
     }
 
     $("#delivery_address_selector").on("change", function(event) {
-        console.log("ooie")
-        console.log($(this))
         let cep = $(this).children("option:selected").get(0).attributes.data.value
 
         if(Number($(this).val()) <=0) {

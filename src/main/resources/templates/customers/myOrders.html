@@ -21,7 +21,6 @@
                     <th scope="col">Data</th>
                     <th scope="col">Status</th>
                     <th scope="col">Total</th>
-                    <th scope="col" colspan="2">Solicitar Troca</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -46,13 +45,6 @@
 
                     </td>
                     <td th:text="'R$ ' + ${order.total}">R$: 370,00</td>
-                    <td>
-                      <a href="#" data-toggle="modal" data-target="#modalDevolution" th:if="${order.status.id == 3}">
-                        <i class="fas fa-exchange-alt mr-2"></i>
-                        Solicitar Troca
-                      </a>
-                      <p th:if="${order.status.id != 3}">Em processo de envio</p>
-                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -62,67 +54,61 @@
         </div>
         <!-- End of Main Content -->
 
-        <!-- Modal -->
-        <div
-          class="modal fade"
-          id="modalDevolution"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  Solicitar Troca
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Motivo da Troca</label>
-                    <textarea
-                      class="form-control"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      placeholder="Descreva o motivo brevemente"
-                    ></textarea>
-                  </div>
-                  <div class="form-group">
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="exampleInputPassword1"
-                      placeholder="Senha"
-                      hidden
-                    />
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <button type="button" class="btn btn-primary">
-                  Enviar Solicitação
-                </button>
+        <th:block th:if="${customer.ordersDelivered().size > 0}">
+          <hr th:class="text-black-50" />
+
+          <h5 class="text-center">Problemas com as entregas? Solicite a troca aqui</h5>
+
+          <a class="text-center" href="#" data-toggle="modal" data-target="#modalDevolution">
+            <i class="fas fa-exchange-alt mr-2"></i>
+            Solicitar Troca
+          </a>
+
+          <!-- Modal -->
+          <div class="modal fade" id="modalDevolution" tabindex="-1" role="dialog"
+               aria-labelledby="exampleModalLabel"
+               aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Solicitar Troca
+                  </h5>
+
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div class="modal-body">
+                  <form th:object="${devolution}" th:method="POST">
+                    <div class="form-group">
+                      <label for="reason">Motivo da Troca</label>
+                      <textarea class="form-control" id="reason" placeholder="Descreva o motivo brevemente"
+                                th:field="*{reason}" maxlength="254" required></textarea>
+                    </div>
+
+                    <div th:class="form-group">
+                      <label for="orderId">Selecione o Pedido que deseja realizar a troca</label>
+                      <select id="orderId" th:field="*{order}" class="form-control" required>
+                        <option th:each="orderDelivered : ${customer.ordersDelivered()}" th:value="${orderDelivered.id}"
+                                th:text="${orderDelivered.id}"></option>
+                      </select>
+                    </div>
+
+                    <button class="btn btn-primary">
+                      Enviar Solicitação
+                    </button>
+                  </form>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal"> Cancelar </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </th:block>
 
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
