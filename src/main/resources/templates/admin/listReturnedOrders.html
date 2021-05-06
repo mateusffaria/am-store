@@ -100,21 +100,26 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>000001</td>
-                                                <td>R$: 520,00</td>
-                                                <td>20/02/2021 10:53</td>
-                                                <td class="d-flex flex-column">
-                                                    <span class="mb-2">Resident Evil 3 R$: 300,00</span>
-                                                    <span class="mb-2">Mortal Kombat 11 R$: 200,00</span>
-                                                    <span class="mb-2">Frete R$: 20,00</span>
+                                            <tr th:each="devolution : ${devolutions}">
+                                                <td th:text="${devolution.order.id}">000001</td>
+                                                <td th:text="${devolution.order.total}">R$: 520,00</td>
+                                                <td th:text="${devolution.order.createdAt}">20/02/2021 10:53</td>
+                                                <td class="d-flex flex-column" th:each="item : ${devolution.order.itemList}">
+                                                    <span class="mb-2"
+                                                          th:text="${item.game.title} + ' R$: ' + ${item.game.price}">
+                                                        Resident Evil 3 R$: 300,00
+                                                    </span>
                                                 </td>
-                                                <td>O pedido foi entregue com defeito, o jogo se desprendeu do encaixe e veio riscado.</td>
-                                                <td>Aguardando Resposta</td>
+                                                <td th:text="${devolution.reason}">
+                                                    O pedido foi entregue com defeito,
+                                                    o jogo se desprendeu do encaixe e veio riscado.
+                                                </td>
+                                                <td th:text="${devolution.statusDevolution.description}">
+                                                    Aguardando Resposta
+                                                </td>
                                                 <td class="m-auto">
-                                                    <a th:href="@{/admin/order_return/1/edit}">
+                                                    <a th:href="@{'/admin/order_return/' + ${devolution.id} + '/edit'}">
                                                         <i class="fas fa-pencil-alt"></i>
-
                                                         <span> Atualizar Status</span>
                                                     </a>
                                                 </td>

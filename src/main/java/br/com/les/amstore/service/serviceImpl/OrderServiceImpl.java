@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class OrderServiceImpl implements IGenericService<Order>, IOrderService {
+public class OrderServiceImpl implements IOrderService {
     @Autowired
     Orders orders;
 
