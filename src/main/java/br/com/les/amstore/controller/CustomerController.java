@@ -6,6 +6,7 @@ import br.com.les.amstore.domain.Devolution;
 import br.com.les.amstore.domain.Order;
 import br.com.les.amstore.service.ICustomerTypeService;
 import br.com.les.amstore.service.ICustomersService;
+import br.com.les.amstore.service.IDevolutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -29,6 +30,8 @@ public class CustomerController {
     @Autowired
     private ICustomerTypeService customerTypes;
 
+    @Autowired
+    private IDevolutionService devolutionService;
 
     @GetMapping("/new")
     public ModelAndView newCostumer(Customer customer) {
@@ -101,19 +104,25 @@ public class CustomerController {
         return mv;
     }
 
-
-
     @GetMapping("/{id}/my-orders")
     public ModelAndView getOrders(@PathVariable("id") Customer customer) {
         if(!customers.isCurrentUserLoggedIn(customer.getId()))
             return new ModelAndView("redirect:/");
 
-        List<Order> objectList = customer.ordersDelivered();
         ModelAndView mv = new ModelAndView("customers/myOrders");
         mv.addObject(customer);
         mv.addObject("devolution", new Devolution());
 
-
         return mv;
+    }
+
+    @PostMapping("/{id}/my-orders")
+    public ModelAndView devolutionRequest(@PathVariable("id") Customer customer, Devolution devolution) {
+        if(!customers.isCurrentUserLoggedIn(customer.getId()))
+            return new ModelAndView("redirect:/");
+
+        devolutionService.sendDevolutionRequest(devolution);
+
+        return getOrders(customer);
     }
 }
