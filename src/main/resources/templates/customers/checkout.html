@@ -165,6 +165,16 @@
                       <span th:text="'R$ ' + ${customer.wallet.value}">R$ 0,00</span>
                     </div>
 
+                    <div class="d-flex flex-wrap justify-content-between">
+                      <span>Saldo restante na carteira:</span>
+                      <div>
+                        <span>R$ </span>
+                        <span id="walletValue"
+                          th:text="${customer.wallet.value - total > 0 ? customer.wallet.value - total : 0 }">
+                        </span>
+                      </div>
+                    </div>
+
                     <div class="flex-wrap justify-content-between d-none" id="cupom_div">
                       <span>Cupom de desconto:</span>
                       <div class="d-flex">
@@ -182,9 +192,14 @@
                       <h5 class="font-weight-bold">Total:</h5>
                       <div class="d-flex">
                         <span class="font-weight-bold mr-1">R$: </span>
-                        <span class="font-weight-bold" id="total" th:text="${total}">310,00</span>
+                        <span class="font-weight-bold" id="total"
+                              th:text="${total - customer.wallet.value < 0 ? 0 : total - customer.wallet.value}">
+                        </span>
                       </div>
                     </div>
+                    <span class="text-center d-none" id="cupomAlert">
+                      Valor do desconto não pode ser maior que o total
+                    </span>
                   </div>
                 </div>
               </div>
@@ -302,6 +317,7 @@
   </body>
   <script>
     var total = $("#total").text();
+    var totalWallet = $("#walletValue").text();
     var listPayment = 0
 
     function handleCreditCardSubmit(event){
@@ -455,18 +471,23 @@
 
             let totalCoupon = resp.value
 
-            $("#coupon").val(resp.id)
-
-            if($("#shippingTax").val().length > 0) {
-                $("#total").text(Number($("#shippingTax").val()) + Number(total) - Number(totalCoupon))
-            } else {
+            if(Number($("#total").text()) > totalCoupon) {
+                $("#coupon").val(resp.id)
                 $("#total").text(Number(total) - totalCoupon)
-            }
 
-            $("#cupom_div").addClass('d-flex')
-            $("#cupom_div").removeClass('d-none')
-            $("#cupon_layer").empty();
-            $("#cupon_layer").append("<span id='couponShow'>" + totalCoupon +"</span>");
+                if($("#shippingTax").val().length > 0 && Number(total) > totalCoupon) {
+                    $("#coupon").val(resp.id)
+                    $("#total").text(Number($("#shippingTax").val()) + Number(total) - Number(totalCoupon))
+                }
+
+                $("#cupom_div").addClass('d-flex')
+                $("#cupom_div").removeClass('d-none')
+                $("#cupon_layer").empty();
+                $("#cupon_layer").append("<span id='couponShow'>" + totalCoupon +"</span>");
+                $("#cupomAlert").addClass('d-none')
+            } else {
+                $("#cupomAlert").removeClass('d-none')
+            }
 
         }).fail((resp) => {
             console.log(resp);
@@ -489,9 +510,11 @@
 
         if(Number($(this).val()) <=0) {
             if($("#coupon").val().length > 0){
-                $("#total").text(Number(total) + Number($("#couponShow").text()))
+                $("#total").text(Number(total) - Number($("#couponShow").text()))
+                $("#walletValue").text(Number(total) + Number($("#couponShow").text()))
             } else {
                 $("#total").text(Number(total))
+                $("#walletValue").text(totalWallet)
             }
         }
 
