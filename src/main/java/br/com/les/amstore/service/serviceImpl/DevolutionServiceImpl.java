@@ -1,6 +1,9 @@
 package br.com.les.amstore.service.serviceImpl;
 
+import br.com.les.amstore.domain.Customer;
 import br.com.les.amstore.domain.Devolution;
+import br.com.les.amstore.domain.StatusDevolution;
+import br.com.les.amstore.domain.Wallet;
 import br.com.les.amstore.repository.Devolutions;
 import br.com.les.amstore.repository.Orders;
 import br.com.les.amstore.repository.Statuses;
@@ -38,6 +41,32 @@ public class DevolutionServiceImpl implements IDevolutionService {
         devolution.getOrder().setStatus(statuses.findByStatus("EM PROCESSO DE TROCA"));
 
         this.saveAndFlush(devolution);
+        return devolution;
+    }
+
+    @Override
+    public Devolution updateDevolutionRequest(Devolution devolution, Double valueWallet) {
+        switch (devolution.getStatusDevolution()){
+            case REFUSED:
+                devolution.getOrder().setStatus(statuses.findByStatus("TROCA RECUSADA"));
+                break;
+
+            case ACCEPTED:
+                Wallet wallet = devolution.getOrder().getCustomer().getWallet();
+                wallet.setValue(wallet.getValue() + valueWallet);
+                devolution.getOrder().setStatus(statuses.findByStatus("TROCA APROVADA"));
+                break;
+
+            case IN_PROCESS:
+                devolution.getOrder().setStatus(statuses.findByStatus("EM PROCESSO DE TROCA"));
+                break;
+
+            default:
+                break;
+        }
+
+        devolutions.saveAndFlush(devolution);
+
         return devolution;
     }
 }

@@ -35,12 +35,13 @@
 
                             <div class="row">
                                 <div class="col-12 mt-4">
-                                      <form th:object="${devolution}">
+                                      <form th:object="${devolution}" th:method="POST">
                                           <div class="row">
                                             <div class="col-12 form-group">
                                               <label for="orderId">Número do Pedido:</label>
+                                              <p class="form-control text-center" th:text="${devolution.order.id}"></p>
                                               <input type="text" class="form-control" value="000001" id="orderId"
-                                                     disabled required th:text="${devolution.order.id}">
+                                                     hidden required th:field="*{order}">
                                             </div>
 
                                             <div class="col-12 form-group">
@@ -55,26 +56,28 @@
                                             </div>
 
                                               <div class="col-12 form-group">
-                                                  <label for="orderCreatedAt">Data da compra:</label>
-                                                  <input type="text" class="form-control"
-                                                         th:value="${devolution.order.createdAt}" id="orderCreatedAt"
-                                                         th:type="datetime" required disabled>
+                                                <label for="orderCreatedAt">Data da compra:</label>
+                                                <p class="form-control text-center" th:text="${devolution.order.createdAt}"></p>
+                                                <input type="text" class="form-control"
+                                                       th:value="${devolution.order.createdAt}" id="orderCreatedAt"
+                                                       th:type="datetime" required hidden>
                                               </div>
 
-                                              <div class="col-12 form-group" disabled>
-                                                  <label for="game">Conteúdo comprado:</label>
-                                                  <ul th:each="item : ${devolution.order.itemList}" id="game">
-                                                      <li th:text="${item.game.title} + ' R$: ' + ${item.game.price}">
-                                                        Resident Evil 3 R$: 300,00
-                                                      </li>
-                                                  </ul>
+                                              <div class="col-12 form-group">
+                                                <label for="game">Conteúdo comprado:</label>
+                                                <ul th:each="item : ${devolution.order.itemList}" id="game">
+                                                    <li th:text="${item.game.title} + ' R$: ' + ${item.game.price}">
+                                                      Resident Evil 3 R$: 300,00
+                                                    </li>
+                                                </ul>
                                               </div>
 
                                               <div class="col-12 form-group">
                                                   <label for="reason">Descrição do problema:</label>
+                                                  <p class="form-control text-center" th:text="${devolution.reason}"></p>
                                                   <textarea type="text" class="form-control text-center"
-                                                            required disabled id="reason"
-                                                            th:text="${devolution.reason}">
+                                                            required hidden id="reason"
+                                                            th:field="*{reason}">
                                                       O pedido foi entregue com defeito, o jogo se desprendeu do encaixe e veio riscado.
                                                   </textarea>
                                               </div>
@@ -95,10 +98,18 @@
                                               </div>
 
                                               <div class="col-12 form-group">
-                                                  <label for="answer">Descrição:</label>
+                                                  <label for="answer">Resposta:</label>
                                                   <textarea class="form-control" required id="answer"
                                                             th:field="*{answer}" maxlength="254"></textarea>
                                               </div>
+
+                                            <div class="col-12 form-group">
+                                              <label for="amountWallet">Valor a ser devolvido:</label>
+                                              <input class="form-control"
+                                                     th:name="valueWallet" id="amountWallet" type="number"
+                                                     min="1"
+                                              />
+                                            </div>
 
                                             <div class="form-group col-12">
                                               <button type="submit" class="btn btn-primary">Atualizar</button>

@@ -162,7 +162,7 @@
 
                     <div class="d-flex flex-wrap justify-content-between">
                       <span>Saldo na carteira:</span>
-                      <span>R$ 0,00</span>
+                      <span th:text="'R$ ' + ${customer.wallet.value}">R$ 0,00</span>
                     </div>
 
                     <div class="flex-wrap justify-content-between d-none" id="cupom_div">

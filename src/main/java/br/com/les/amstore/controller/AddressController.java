@@ -110,7 +110,8 @@ public class AddressController {
     }
 
     @PostMapping(value = "/{customer_id}/addresses/{id}/edit")
-    public ModelAndView updateAddress(@PathVariable(value = "customer_id") Customer customer, @Valid Address address, BindingResult result, RedirectAttributes attributes) {
+    public ModelAndView updateAddress(@PathVariable(value = "customer_id") Customer customer, @Valid Address address,
+                                      BindingResult result, RedirectAttributes attributes) {
         if(!customers.isCurrentUserLoggedIn(customer.getId()))
             result.addError(new ObjectError("customer", "Você não está autorizado a executar essa ação"));
 

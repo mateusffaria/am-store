@@ -46,10 +46,10 @@ public class OrderController {
     }
 
     @PostMapping("/order_return/{id}/edit")
-    public ModelAndView postOrderReturned() {
-        ModelAndView mv = new ModelAndView("/admin/updateOrderReturned");
+    public ModelAndView postOrderReturned(Devolution devolution, Double valueWallet) {
+        devolutionService.updateDevolutionRequest(devolution, valueWallet);
 
-        return mv;
+        return listOrdersReturned();
     }
 
     @GetMapping("/orders")

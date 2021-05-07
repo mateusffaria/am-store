@@ -11,16 +11,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@AllArgsConstructor
-@Getter
-enum StatusDevolution {
-    WAITING_ANSWER("Aguardando resposta"),
-    ACCEPTED("Aceito"),
-    REFUSED("Recusado");
-
-    private final String description;
-}
-
 @Entity
 @Getter
 @Setter
