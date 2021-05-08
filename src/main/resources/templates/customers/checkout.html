@@ -160,12 +160,12 @@
                       <span id="shippingTaxShow">R$ 0</span>
                     </div>
 
-                    <div class="d-flex flex-wrap justify-content-between">
+                    <div class="d-flex flex-wrap justify-content-between" th:if="${customer.wallet.value > 0}">
                       <span>Saldo na carteira:</span>
-                      <span th:text="'R$ ' + ${customer.wallet.value}">R$ 0,00</span>
+                      <span th:text="'R$ ' + ${customer.wallet.value}" id="wallet">R$ 0,00</span>
                     </div>
 
-                    <div class="d-flex flex-wrap justify-content-between">
+                    <div class="d-flex flex-wrap justify-content-between" th:if="${customer.wallet.value > 0}">
                       <span>Saldo restante na carteira:</span>
                       <div>
                         <span>R$ </span>
@@ -411,26 +411,6 @@
       if(this.value == "") $("#document_step").prop('disabled', true);
     })
 
-    $("#delivery_address_selector").change(function () {
-      $('#new_delivery_postalcode').mask('00000-000');
-
-      if(this.value == '-1') {
-        $("#new_delivery_address").removeClass('d-none')
-        $("#new_delivery_address").addClass('d-block')
-
-        $("#new_delivery_address").prop('disabled', false)
-        $("#delivery_address_step").prop('disabled', true)
-      } else {
-        $("#new_delivery_address").removeClass('d-block')
-        $("#new_delivery_address").addClass('d-none')
-
-        $("#new_delivery_address").prop('disabled', true)
-        $("#delivery_address_step").prop('disabled', false)
-      }
-
-      if(this.value == "") $("#delivery_address_step").prop('disabled', true);
-    })
-
     $("#billing_address_selector").change(function () {
       $('#new_billing_postalcode').mask('00000-000');
 
@@ -508,14 +488,14 @@
     $("#delivery_address_selector").on("change", function(event) {
         let cep = $(this).children("option:selected").get(0).attributes.data.value
 
-        if(Number($(this).val()) <=0) {
-            if($("#coupon").val().length > 0){
-                $("#total").text(Number(total) - Number($("#couponShow").text()))
-                $("#walletValue").text(Number(total) + Number($("#couponShow").text()))
-            } else {
-                $("#total").text(Number(total))
-                $("#walletValue").text(totalWallet)
-            }
+        if($("#coupon").val().length > 0){
+            $("#total").text(Number($("#total").text()) - Number($("#couponShow").text()))
+            $("#walletValue").text(
+                Number($("#wallet").text()) - Number($("#total").text()) > 0 ? Number($("#wallet").text()) - Number($("#total").text()) : 0
+            )
+        } else {
+            $("#total").text(Number(total))
+            $("#walletValue").text(totalWallet)
         }
 
         $.ajax(window.location.href + "/calculatetax?postalcode=" + cep).done((resp) => {
@@ -523,7 +503,7 @@
             $("#shippingTaxShow").text("R$ " + resp)
 
             if($("#coupon").val().length > 0){
-                $("#total").text(Number(resp) + Number(total) + Number($("#couponShow").text()))
+                $("#total").text(Number(resp) + Number(total) - Number($("#couponShow").text()))
             } else {
                 $("#total").text(Number(resp) + Number(total))
             }
