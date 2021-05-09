@@ -1,6 +1,8 @@
 package br.com.les.amstore.controller;
 
 import br.com.les.amstore.domain.*;
+import br.com.les.amstore.dto.AddressDTO;
+import br.com.les.amstore.dto.CityDTO;
 import br.com.les.amstore.dto.CouponDTO;
 import br.com.les.amstore.dto.CreditCardDTO;
 import br.com.les.amstore.service.*;
@@ -27,6 +29,12 @@ public class CheckoutController {
     private IDocumentTypeService documentTypes;
 
     @Autowired
+    private IAddressTypeService addressTypeService;
+
+    @Autowired
+    private IAddressService addressService;
+
+    @Autowired
     private ICartService cartService;
 
     @Autowired
@@ -41,15 +49,21 @@ public class CheckoutController {
     @Autowired
     private IGenericService<Banner> bannerService;
 
+    @Autowired
+    private IStateService states;
+
     @GetMapping("")
     public ModelAndView getCheckout(@PathVariable("id") Customer customer) {
         ModelAndView mv = new ModelAndView("customers/checkout");
         mv.addObject(customer);
         mv.addObject("total", customer.getCart().getItemList().stream().mapToDouble(i -> i.getGame().getPrice() * i.getAmount().doubleValue()).sum());
-        mv.addObject("documentTypes", documentTypes.findAll());
         mv.addObject("order", new Order());
         mv.addObject("creditCard", new CreditCard());
+        mv.addObject("address", new Address());
         mv.addObject("banners", bannerService.findAll());
+        mv.addObject("documentTypes", documentTypes.findAll());
+        mv.addObject("addressesTypes", addressTypeService.findAll());
+        mv.addObject("states", states.findAll());
 
         customers.isCurrentUserLoggedIn(customer.getId(), mv);
         return mv;
@@ -148,5 +162,19 @@ public class CheckoutController {
 
         return ResponseEntity.ok(new CreditCardDTO(creditCardResponse.getId(),
                 creditCardResponse.getNumber().substring(creditCardResponse.getNumber().length() - 4)));
+    }
+
+    @PostMapping("/createaddress")
+    public ResponseEntity createAddress(@PathVariable("id") Customer customer, @Valid Address address,
+                                     BindingResult result) {
+        if(result.hasErrors()){
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
+
+        address.setCustomer(customer);
+
+        Address newAddess = addressService.saveAndFlush(address);
+
+        return ResponseEntity.ok(new AddressDTO(newAddess.getId(), newAddess.getStreet(), newAddess.getPostalCode()));
     }
 }

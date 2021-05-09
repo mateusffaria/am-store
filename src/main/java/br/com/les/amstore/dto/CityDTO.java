@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressDTO {
+public class CityDTO {
+
     public Long id;
-    public String street;
-    public String postalCode;
+    public String description;
 }

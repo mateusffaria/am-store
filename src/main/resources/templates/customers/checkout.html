@@ -91,6 +91,11 @@
                     </select>
                   </div>
 
+                  <button id="create-new-address" type="button" class="btn btn-primary" data-toggle="modal"
+                          data-target="#modalDeliveryAddress" hidden>
+                    Cadastrar novo Endereço
+                  </button>
+
                   <h5 class="text-center mt-5">Endereço de Cobrança</h5>
                   <hr />
                   <div class="form-group">
@@ -292,6 +297,88 @@
           </div>
         </div>
 
+        <div class="modal fade" id="modalDeliveryAddress" tabindex="-1" role="dialog" aria-labelledby="modalCCard" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalDAddress">Adicionar um novo Endereço de Entrega</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <form th:object="${address}" th:method="POST" onsubmit="handleAddressSubmit(event)">
+                  <div class="form-group">
+                    <label for="postalcode">CEP:</label>
+                    <input type="text" class="form-control" id="postalcode" placeholder="08993-123" th:field="*{postalCode}"
+                           onchange="cep_retrieve()" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="street">Logradouro:</label>
+                    <input type="text" class="form-control" id="street" placeholder="Av. Orquídeas" th:field="*{street}" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="number">Número:</label>
+                    <input type="text" class="form-control" id="number" placeholder="Número" th:field="*{number}" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="complement">Complemento:</label>
+                    <input type="text" class="form-control" id="complement" placeholder="Casa" th:field="*{complement}" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="state">Estado:</label>
+                    <select id="state" class="form-control" th:field="*{city.state}">
+                      <option value="">Selecione o Estado</option>
+                      <option data-toggle="tooltip" data-placement="top"
+                              th:each="state : ${states}"
+                              th:value="${state.id}"
+                              th:text="${state.description}"></option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="city">Cidade:</label>
+                    <select id="city" class="form-control" th:field="*{city}">
+                      <option value="">Selecione o Estado Primeiro</option>
+                      <th:block th:if="${null != address.city.state}">
+                        <option data-toggle="tooltip" data-placement="top"
+                                th:each="city : *{city.state.cities}"
+                                th:value="${city.id}"
+                                th:text="${city.description}"
+                                th:title="${city.description}">
+                        </option>
+                      </th:block>
+                    </select>
+
+                  </div>
+
+                  <div class="form-group">
+                    <label for="address_type">Tipo do Endereço:</label>
+                    <select id="address_type" class="form-control" th:field="*{addressType}" >
+                      <option value="">Selecione o tipo</option>
+                      <option data-toggle="tooltip" data-placement="top"
+                              th:each="type : ${addressesTypes}"
+                              th:value="${type.id}"
+                              th:text="${type.name}"
+                              th:title="${type.description}"></option>
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalAddressButton">Voltar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
           <div class="container my-auto">
@@ -320,9 +407,30 @@
     var totalWallet = $("#walletValue").text();
     var listPayment = 0
 
+    $(document).ready(function(){
+        $('#postalcode').mask('00000-000');
+    });
+
+    $('#state').change(function() {
+        $.ajax(window.location.origin + "/customer/edit/state/" + this.value).done((resp) => {
+            let cities = $("#city")
+            cities.empty();
+            $.each(resp, (index, item) => {
+                cities.append(
+                    '<option value=' + item.id + '>' +
+                    item.description +
+                    '</option>'
+                )
+            })
+
+        }).fail((resp) => {
+            console.log(resp);
+        });
+    });
+
     function handleCreditCardSubmit(event){
         event.preventDefault()
-        var form_data = {
+        let form_data = {
             number: $("#card_number").val(),
             owner: $("#card_name").val(),
             ownerDoc: $("#card_owner_doc").val(),
@@ -340,10 +448,10 @@
             data: form_data
         }).done(function (data) {
             for(let i = 0; i< $(".credit-card-selector").length; i++){
-                var element = document.createElement("Option")
+                let element = document.createElement("Option")
                     element.setAttribute("value", data.id);
 
-                var text = document.createTextNode(data.number)
+                let text = document.createTextNode(data.number)
                 element.appendChild(text);
 
                 $(".credit-card-selector")[i].appendChild(element)
@@ -351,6 +459,46 @@
 
             alert("Adicionado com sucesso")
             $("#closeModalButton").click()
+        }).fail((resp) => {
+            console.log(resp);
+            alert("Falha no processo, revise as informações do cartão")
+        });
+    }
+
+    function handleAddressSubmit(event) {
+        event.preventDefault()
+
+        let form_data = {
+            street: $("#street").val(),
+            number: $("#number").val(),
+            postalCode: $("#postalcode").val(),
+            complement: $("#complement").val(),
+            addressType: $("#address_type").val(),
+            city: $("#city").val(),
+        }
+
+        let url = window.location.href + "/createaddress";
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: form_data
+        }).done(function (data) {
+            let element = document.createElement("Option")
+            element.setAttribute("value", data.id);
+            element.setAttribute("data", data.postalCode);
+
+            let text = document.createTextNode(data.street)
+            element.appendChild(text);
+
+            if($("#address_type").val() === "1"){
+                $("#delivery_address_selector").get(0).appendChild(element)
+            } else {
+                $("#billing_address_selector").get(0).appendChild(element)
+            }
+
+            alert("Adicionado com sucesso")
+            $("#closeModalAddressButton").click()
         }).fail((resp) => {
             console.log(resp);
             alert("Falha no processo, revise as informações do cartão")
@@ -412,23 +560,10 @@
     })
 
     $("#billing_address_selector").change(function () {
-      $('#new_billing_postalcode').mask('00000-000');
-
-      if(this.value == '-1') {
-        $("#new_billing_address").removeClass('d-none')
-        $("#new_billing_address").addClass('d-block')
-
-        $("#new_billing_address").prop('disabled', false)
-        $("#billing_address_step").prop('disabled', true);
-      } else {
-        $("#new_billing_address").removeClass('d-block')
-        $("#new_billing_address").addClass('d-none')
-
-        $("#new_billing_address").prop('disabled', true)
-        $("#billing_address_step").prop('disabled', false);
-      }
-
-      if(this.value == "") $("#billing_address_step").prop('disabled', true);
+        if($(this).val() < 0) {
+            $("#create-new-address").click()
+            return
+        }
     })
 
     function changeCreditCardOption(event) {
@@ -486,6 +621,12 @@
     }
 
     $("#delivery_address_selector").on("change", function(event) {
+
+        if($(this).val() < 0) {
+            $("#create-new-address").click()
+            return
+        }
+
         let cep = $(this).children("option:selected").get(0).attributes.data.value
 
         if($("#coupon").val().length > 0){

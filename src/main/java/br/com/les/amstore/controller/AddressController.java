@@ -3,7 +3,7 @@ package br.com.les.amstore.controller;
 import br.com.les.amstore.domain.Address;
 import br.com.les.amstore.domain.Customer;
 import br.com.les.amstore.domain.State;
-import br.com.les.amstore.dto.AddressDTO;
+import br.com.les.amstore.dto.CityDTO;
 import br.com.les.amstore.service.IAddressService;
 import br.com.les.amstore.service.IAddressTypeService;
 import br.com.les.amstore.service.ICustomersService;
@@ -40,12 +40,12 @@ public class AddressController {
     @GetMapping("/state/{id}")
     public ResponseEntity getAddress(@PathVariable("id") State state) {
 
-        List<AddressDTO> addressDTOList = new ArrayList<>();
+        List<CityDTO> cityDTOList = new ArrayList<>();
 
-        state.getCities().forEach(city -> addressDTOList.add(new AddressDTO(city.getId(), city.getDescription())));
+        state.getCities().forEach(city -> cityDTOList.add(new CityDTO(city.getId(), city.getDescription())));
 
         if(null != state.getId())
-            return ResponseEntity.ok(addressDTOList);
+            return ResponseEntity.ok(cityDTOList);
         else
             return ResponseEntity.notFound().build();
     }
