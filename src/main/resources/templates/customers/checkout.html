@@ -580,19 +580,16 @@
       let code = $("#cupom_input").get(0).value
 
       if(code.length >= 6) {
-
-        $.ajax(window.location.href + "/findcoupon?code=" + code).done((resp) => {
-            console.log(resp)
-
+          $.ajax(window.location.href + "/findcoupon?code=" + code).done((resp) => {
             let totalCoupon = resp.value
 
             if(Number($("#total").text()) > totalCoupon) {
                 $("#coupon").val(resp.id)
-                $("#total").text(Number(total) - totalCoupon)
+                $("#total").text(Number(Number(total) - totalCoupon).toFixed(2))
 
                 if($("#shippingTax").val().length > 0 && Number(total) > totalCoupon) {
                     $("#coupon").val(resp.id)
-                    $("#total").text(Number($("#shippingTax").val()) + Number(total) - Number(totalCoupon))
+                    $("#total").text(Number(Number($("#shippingTax").val()) + Number(total) - Number(totalCoupon)).toFixed(2))
                 }
 
                 $("#cupom_div").addClass('d-flex')
@@ -609,7 +606,7 @@
         });
       } else {
         if($("#shippingTax").val().length > 0) {
-            $("#total").text(Number(total) + Number($("#shippingTax").val()))
+            $("#total").text(Number(Number(total) + Number($("#shippingTax").val())).toFixed(2))
         } else {
             $("#total").text(total)
         }
@@ -630,7 +627,7 @@
         let cep = $(this).children("option:selected").get(0).attributes.data.value
 
         if($("#coupon").val().length > 0){
-            $("#total").text(Number($("#total").text()) - Number($("#couponShow").text()))
+            $("#total").text(Number(Number($("#total").text()) - Number($("#couponShow").text())).toFixed(2))
             $("#walletValue").text(
                 Number($("#wallet").text()) - Number($("#total").text()) > 0 ? Number($("#wallet").text()) - Number($("#total").text()) : 0
             )
@@ -644,9 +641,9 @@
             $("#shippingTaxShow").text("R$ " + resp)
 
             if($("#coupon").val().length > 0){
-                $("#total").text(Number(resp) + Number(total) - Number($("#couponShow").text()))
+                $("#total").text(Number(Number(resp) + Number(total) - Number($("#couponShow").text())).toFixed(2))
             } else {
-                $("#total").text(Number(resp) + Number(total))
+                $("#total").text(Number(Number(resp) + Number(total)).toFixed(2))
             }
         }).fail((resp) => {
             console.log(resp);
