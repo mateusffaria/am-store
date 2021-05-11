@@ -46,6 +46,16 @@
           </table>
 
             <form th:object="${order}" th:method="POST" th:if="${customer.cart.itemList.size() != 0}">
+              <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()} ">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <th:block th:each="error : ${#fields.detailedErrors()}">
+                  <div>
+                    <i class="fa  fa-exclamation-circle mr-3"></i>
+                    <span th:text="${error.message}"></span>
+                  </div>
+                </th:block>
+              </div>
+
               <input th:field="*{customer}" th:value="${customer.id}" hidden/>
               <input th:field="*{shippingTax}" hidden id="shippingTax"/>
               <input th:field="*{coupon}" hidden id="coupon"/>
@@ -137,7 +147,7 @@
 
                     <div class="form-group">
                       <label>Digite o valor do pagamento:</label>
-                      <input type="number" min="10" class="form-control credit-card-value"  placeholder="10.00" required
+                      <input type="number" min="10" step="0.01" class="form-control credit-card-value"  placeholder="10.00" required
                              name="paymentMethodList[0].paymentValue" onchange="validationValue(event)"/>
                     </div>
                   </div>

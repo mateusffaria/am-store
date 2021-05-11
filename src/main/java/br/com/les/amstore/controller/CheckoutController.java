@@ -38,7 +38,7 @@ public class CheckoutController {
     private ICartService cartService;
 
     @Autowired
-    private IGenericService<Order> orderService;
+    private IOrderService orderService;
 
     @Autowired
     private ICouponService couponService;
@@ -53,11 +53,11 @@ public class CheckoutController {
     private IStateService states;
 
     @GetMapping("")
-    public ModelAndView getCheckout(@PathVariable("id") Customer customer) {
+    public ModelAndView getCheckout(@PathVariable("id") Customer customer, Order order) {
         ModelAndView mv = new ModelAndView("customers/checkout");
         mv.addObject(customer);
         mv.addObject("total", customer.getCart().getItemList().stream().mapToDouble(i -> i.getGame().getPrice() * i.getAmount().doubleValue()).sum());
-        mv.addObject("order", new Order());
+        mv.addObject("order", order);
         mv.addObject("creditCard", new CreditCard());
         mv.addObject("address", new Address());
         mv.addObject("banners", bannerService.findAll());
@@ -104,11 +104,15 @@ public class CheckoutController {
 
 
     @PostMapping("")
-    public ModelAndView finishCheckout(@PathVariable("id") Customer customer, @Valid Order order) {
+    public ModelAndView finishCheckout(@PathVariable("id") Customer customer, @Valid Order order, BindingResult result) {
         ModelAndView mv = new ModelAndView("redirect:/customer/" + customer.getId() + "/my-orders");
         order.setCustomer(customer);
 
-        orderService.saveAndFlush(order);
+        orderService.saveAndFlush(order, result);
+
+        if(result.hasErrors())
+            return getCheckout(customer, order);
+
         System.out.println(customer);
         System.out.println(order);
 
