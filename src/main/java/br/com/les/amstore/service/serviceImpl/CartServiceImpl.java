@@ -48,6 +48,10 @@ public class CartServiceImpl implements IGenericService<Cart>, ICartService {
         customers.saveAndFlush(customer);
 
         game.setAmountAvailable(game.getAmountAvailable() - amount);
+
+        if(game.getAmountAvailable() <= 0)
+            game.setActive(false);
+
         games.saveAndFlush(game);
     }
 

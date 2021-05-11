@@ -69,7 +69,9 @@
                   </div>
                 </div>
                 <div class="d-md-flex flex-wrap justify-content-around mt-5">
-                  <form th:method="POST" th:action="@{${null != customer ? '/customer/' + customer.id + '/checkout/additem' : '/login'}}">
+                  <form th:method="POST"
+                        th:action="@{${null != customer ? '/customer/' + customer.id + '/checkout/additem' : '/login'}}"
+                        th:if="${game.amountAvailable > 0}">
                     <input type="hidden" name="idGame" th:value="${game.id}">
                     <div class="d-flex">
                       <div class="mr-3">
@@ -81,6 +83,7 @@
                       </button>
                     </div>
                   </form>
+                  <p class="alert alert-success" th:if="${game.amountAvailable <= 0}" >Sem estoque disponível</p>
                 </div>
               </div>
             </div>

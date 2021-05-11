@@ -3,6 +3,7 @@ package br.com.les.amstore.controller;
 import br.com.les.amstore.domain.*;
 import br.com.les.amstore.facade.FacadeImpl;
 import br.com.les.amstore.repository.*;
+import br.com.les.amstore.service.IStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,9 @@ public class AdminGamesController {
 
     @Autowired
     Publishers publishers;
+
+    @Autowired
+    IStockService stockService;
 
     @GetMapping("/new")
     public ModelAndView newGame(Game game) {
@@ -138,5 +142,26 @@ public class AdminGamesController {
         ModelAndView mv = new ModelAndView("redirect:/admin/games/list");
 
         return mv;
+    }
+
+    @GetMapping("/stock")
+    public ModelAndView newStock(Stock stock) {
+        ModelAndView mv = new ModelAndView("/admin/newStock");
+
+        mv.addObject("stock", stock);
+        mv.addObject("games", games.findAll());
+        return mv;
+    }
+
+    @PostMapping("/stock")
+    public ModelAndView createStock(@Valid Stock stock, BindingResult result, RedirectAttributes attributes) {
+        if(result.hasErrors())
+            return newStock(stock);
+
+        stockService.saveAndFlush(stock);
+
+        attributes.addFlashAttribute("message", "Endereço atualizado com sucesso!");
+
+        return new ModelAndView("redirect:/admin/games/list");
     }
 }
