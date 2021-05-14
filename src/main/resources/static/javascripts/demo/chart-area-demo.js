@@ -27,6 +27,45 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   return s.join(dec);
 }
 
+function filter_orders(data) {
+  $.ajax({
+    url: "filterdata",
+    method: "GET",
+    data: data,
+    success: (response) => {
+      console.log(response)
+      let games = []
+      let values = []
+
+      response.forEach((element) => {
+        games.push(Object.keys(element))
+        values.push(Object.values(element)[0])
+      })
+
+      myLineChart.data.labels = games
+      myLineChart.data.datasets[0].data = values
+
+      myLineChart.update()
+    }
+  })
+}
+
+filter_orders()
+
+function handleSearch(event) {
+  event.preventDefault();
+
+  let searchParam = {
+    initialDateParam: $("#initialDate").val(),
+    finalDateParam: $("#finalDate").val(),
+    searchType: $("#searchType").val(),
+  }
+
+  console.log(searchParam);
+
+  filter_orders(searchParam)
+}
+
 // Area Chart Example
 var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
@@ -34,7 +73,7 @@ var myLineChart = new Chart(ctx, {
   data: {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [{
-      label: "Earnings",
+      label: "Vendas",
       lineTension: 0.3,
       backgroundColor: "rgba(78, 115, 223, 0.05)",
       borderColor: "rgba(78, 115, 223, 1)",
