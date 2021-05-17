@@ -53,6 +53,8 @@ public class AdminController {
         mv.addObject("ordersFilteres", orders);
         mv.addObject("cards", cards);
 
+        mv.addObject("admin", customers.currentUserLoggedIn());
+
         return mv;
     }
 
@@ -90,6 +92,7 @@ public class AdminController {
     @GetMapping("/customer/list")
     public ModelAndView listCustomer() {
         ModelAndView mv = new ModelAndView("/admin/listCustomer");
+        mv.addObject("admin", customers.currentUserLoggedIn());
         mv.addObject("customers", customers.findAll());
         mv.addObject("customerTypes", customerTypes.findAll());
         return mv;

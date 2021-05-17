@@ -3,6 +3,7 @@ package br.com.les.amstore.controller;
 import br.com.les.amstore.domain.*;
 import br.com.les.amstore.facade.FacadeImpl;
 import br.com.les.amstore.repository.*;
+import br.com.les.amstore.service.ICustomersService;
 import br.com.les.amstore.service.IStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,9 @@ public class AdminGamesController {
     @Autowired
     IStockService stockService;
 
+    @Autowired
+    private ICustomersService customers;
+
     @GetMapping("/new")
     public ModelAndView newGame(Game game) {
         FacadeImpl facade = new FacadeImpl(games, platforms, genders, languages, publishers);
@@ -60,6 +64,8 @@ public class AdminGamesController {
         mv.addObject(genderList);
         mv.addObject(languageList);
         mv.addObject(publisherList);
+
+        mv.addObject("admin", customers.currentUserLoggedIn());
         return mv;
     }
 
@@ -91,6 +97,7 @@ public class AdminGamesController {
         List<Game> games = (List<Game>)(List<?>) facade.read(new Game());
 
         mv.addObject("games", games);
+        mv.addObject("admin", customers.currentUserLoggedIn());
         return mv;
     }
 
@@ -115,6 +122,7 @@ public class AdminGamesController {
         mv.addObject(genderList);
         mv.addObject(languageList);
         mv.addObject(publisherList);
+        mv.addObject("admin", customers.currentUserLoggedIn());
         return mv;
     }
 
@@ -150,6 +158,7 @@ public class AdminGamesController {
 
         mv.addObject("stock", stock);
         mv.addObject("games", games.findAll());
+        mv.addObject("admin", customers.currentUserLoggedIn());
         return mv;
     }
 

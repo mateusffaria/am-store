@@ -130,7 +130,7 @@ public class OrderServiceImpl implements IOrderService {
         Double totalSingleCreditCard = 0d;
         Double totalMultipleCreditCard = 0d;
 
-        totalOrder.put("total", allOrders.stream().mapToDouble(o -> o.getTotal()).sum());
+        totalOrder.put("total das vendas", allOrders.stream().mapToDouble(o -> o.getTotal()).sum());
 
         for (Order order : allOrders) {
             if(order.getPaymentMethodList().size() > 1){
