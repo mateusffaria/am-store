@@ -23,7 +23,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/customer")
-public abstract class CustomerController implements IDevolutionService {
+public class CustomerController {
     @Autowired
     private ICustomersService customers;
 
