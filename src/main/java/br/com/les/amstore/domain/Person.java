@@ -5,10 +5,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Where(clause = "deleted_at is null")
+@Table(name = "_person")
 public class Person extends DomainEntity {
 
     @NotNull

@@ -3,14 +3,12 @@ package br.com.les.amstore.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
+@Table(name = "_payment_method")
 public class PaymentMethod extends DomainEntity {
 
     private Double paymentValue;

@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Table(name = "_game")
 public class Game extends DomainEntity {
 
     @NotNull

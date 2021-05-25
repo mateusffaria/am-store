@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(name = "_credit_card")
 public class CreditCard extends DomainEntity {
 
     @Column(unique = true)

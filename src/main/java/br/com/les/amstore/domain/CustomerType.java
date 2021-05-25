@@ -5,11 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@Table(name = "_customer_type")
 public class CustomerType extends DomainEntity{
     private String title;
     private String description;

@@ -155,16 +155,18 @@ public class OrderServiceImpl implements IOrderService {
         order.setItemList(order.getCustomer().getCart().getItemList());
         Double costs = order.getShippingTax() + order.getItemList().stream()
                 .mapToDouble(i -> i.getGame().getPrice() * i.getAmount().doubleValue()).sum();
+        Wallet wallet = order.getCustomer().getWallet();
 
         order.getPaymentMethodList().forEach(p -> p.setCreditCard(creditCards.findById(p.getCreditCard().getId()).get()));
+
         order.setStatus(status);
-        order.setTotal(BigDecimal.valueOf(costs - order.getCustomer().getWallet().getValue())
+        order.setTotal(BigDecimal.valueOf(costs - wallet.getValue())
                 .setScale(2, RoundingMode.FLOOR)
                 .doubleValue());
 
 
         if(null != order.getCoupon()){
-            order.setTotal(BigDecimal.valueOf(costs - order.getCustomer().getWallet().getValue() - order.getCoupon().getValue())
+            order.setTotal(BigDecimal.valueOf(costs - wallet.getValue() - order.getCoupon().getValue())
                     .setScale(2, RoundingMode.FLOOR)
                     .doubleValue());
         }
@@ -176,9 +178,16 @@ public class OrderServiceImpl implements IOrderService {
             return order;
         }
 
-        order.getCustomer().getWallet().setValue(0);
-        order.getCoupon().setAmount(order.getCoupon().getAmount() - 1);
         order.getItemList().forEach(g -> g.getGame().setAmount(g.getGame().getAmount() - g.getAmount()));
+
+        if(costs > wallet.getValue()){
+            wallet.setValue(0);
+        } else {
+            wallet.setValue(wallet.getValue() - costs);
+        }
+
+        if(null != order.getCoupon())
+            order.getCoupon().setAmount(order.getCoupon().getAmount() - 1);
 
         return order;
     }

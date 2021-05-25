@@ -1,4 +1,4 @@
-INSERT INTO "city" ("id", "created_at", "description", "state_id") VALUES
+INSERT INTO "_city" ("id", "created_at", "description", "state_id") VALUES
 (1,  now(), 'Afonso Cláudio', 8),
 (2,  now(), 'Água Doce do Norte', 8),
 (3,  now(), 'Águia Branca', 8),
@@ -2066,7 +2066,7 @@ INSERT INTO "city" ("id", "created_at", "description", "state_id") VALUES
 (2065,  now(), 'Montes Claros', 11),
 (2066,  now(), 'Montezuma', 11),
 (2067,  now(), 'Morada Nova de Minas', 11);
-INSERT INTO "city" ("id", "created_at", "description", "state_id") VALUES
+INSERT INTO "_city" ("id", "created_at", "description", "state_id") VALUES
 (2068,  now(), 'Morro da Garça', 11),
 (2069,  now(), 'Morro do Pilar', 11),
 (2070,  now(), 'Munhoz', 11),
@@ -3976,7 +3976,7 @@ INSERT INTO "city" ("id", "created_at", "description", "state_id") VALUES
 (3974,  now(), 'Cruz Alta', 23),
 (3975,  now(), 'Cruzaltense', 23),
 (3976,  now(), 'Cruzeiro do Sul', 23);
-INSERT INTO "city" ("id", "created_at", "description", "state_id") VALUES
+INSERT INTO "_city" ("id", "created_at", "description", "state_id") VALUES
 (3977,  now(), 'David Canabarro', 23),
 (3978,  now(), 'Derrubadas', 23),
 (3979,  now(), 'Dezesseis de Novembro', 23),

@@ -1,4 +1,4 @@
-INSERT INTO "state" ("id", "created_at", "description", "uf") VALUES
+INSERT INTO "_state" ("id", "created_at", "description", "uf") VALUES
 (1,  now(), 'Acre', 'AC'),
 (2,  now(), 'Alagoas', 'AL'),
 (3,  now(), 'Amazonas', 'AM'),

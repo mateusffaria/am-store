@@ -15,6 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Where(clause = "deleted_at is null")
+@Table(name = "_document")
 public class Document extends DomainEntity{
     @NotBlank(message = "Número do documento não pode ser estar em branco")
     @NotNull(message = "Número do documento não pode ser nulo")
