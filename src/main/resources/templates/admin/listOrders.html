@@ -155,14 +155,15 @@
 
 <script>
     function changeStatusOrder(event){
-        console.log(event)
-
         let url = window.location.href + "/changestatusorder";
 
         let form_data = {
             statusId: event.target.value,
             orderId: event.target.attributes.data.value
         }
+
+        console.log(url)
+        console.log(form_data)
 
         $.ajax({
             method: "POST",

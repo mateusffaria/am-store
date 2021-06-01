@@ -9,6 +9,7 @@ import br.com.les.amstore.repository.Orders;
 import br.com.les.amstore.repository.Statuses;
 import br.com.les.amstore.service.IDevolutionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class DevolutionServiceImpl implements IDevolutionService {
 
     @Override
     public List<Devolution> findAll() {
-        return devolutions.findAll();
+        return devolutions.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     @Override

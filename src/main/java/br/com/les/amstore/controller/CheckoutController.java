@@ -143,7 +143,7 @@ public class CheckoutController {
 
     @GetMapping("/findcoupon")
     public ResponseEntity findCoupon(@RequestParam("code") String code) {
-        Coupon coupon = couponService.findByCodeAndAmountGreaterThan(code, 0);
+        Coupon coupon = couponService.findByCodeAndAmountGreaterThan(code, 0).get(0);
 
         if(null == coupon)
             return ResponseEntity.notFound().build();

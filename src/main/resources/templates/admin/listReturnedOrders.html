@@ -92,7 +92,7 @@
                                             <tr>
                                                 <th>Numero do Pedido</th>
                                                 <th>Valor da compra</th>
-                                                <th>Data da compra</th>
+                                                <th>Data da solicitação</th>
                                                 <th>Conteúdo comprado</th>
                                                 <th>Descrição do problema</th>
                                                 <th>Status</th>
@@ -103,7 +103,7 @@
                                             <tr th:each="devolution : ${devolutions}">
                                                 <td th:text="${devolution.order.id}">000001</td>
                                                 <td th:text="${devolution.order.total}">R$: 520,00</td>
-                                                <td th:text="${devolution.order.createdAt}">20/02/2021 10:53</td>
+                                                <td th:text="${devolution.createdAt}">20/02/2021 10:53</td>
                                                 <td class="d-flex flex-column" th:each="item : ${devolution.order.itemList}">
                                                     <span class="mb-2"
                                                           th:text="${item.game.title} + ' R$: ' + ${item.game.price}">

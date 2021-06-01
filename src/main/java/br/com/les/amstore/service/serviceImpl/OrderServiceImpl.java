@@ -4,6 +4,7 @@ import br.com.les.amstore.domain.*;
 import br.com.les.amstore.repository.*;
 import br.com.les.amstore.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -37,7 +38,8 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public List<Order> findAll() {
-        return orders.findAll();
+
+        return orders.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     @Override

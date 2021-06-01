@@ -92,7 +92,7 @@
                                                 <th>Valor</th>
                                                 <th>Data de criação</th>
                                                 <th>Quantidade disponível</th>
-                                                <th colspan="2"></th>
+                                                <th ></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -101,12 +101,12 @@
                                                 <td th:text="${coupon.value}">R$: 50,00</td>
                                                 <td th:text="${coupon.createdAt}">25/02/2021 10:53</td>
                                                 <td th:text="${coupon.amount}">10</td>
-                                                <td class="m-auto">
-                                                    <a th:href="@{/admin/coupons/new}" class="btn btn-outline-info">
-                                                        <i class="fas fa-pencil-alt"></i>
-                                                        <span> editar</span>
-                                                    </a>
-                                                </td>
+<!--                                                <td class="m-auto">-->
+<!--                                                    <a th:href="@{/admin/coupons/new}" class="btn btn-outline-info">-->
+<!--                                                        <i class="fas fa-pencil-alt"></i>-->
+<!--                                                        <span> editar</span>-->
+<!--                                                    </a>-->
+<!--                                                </td>-->
                                                 <td class="m-auto">
                                                     <a class="btn btn-outline-danger">
                                                         <i class="fas fa-trash-alt"></i>

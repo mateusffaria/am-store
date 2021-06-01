@@ -30,7 +30,7 @@ public class CouponServiceImpl implements IGenericService<Coupon>, ICouponServic
     }
 
     @Override
-    public Coupon findByCodeAndAmountGreaterThan(String code, Integer amount) {
+    public List<Coupon> findByCodeAndAmountGreaterThan(String code, Integer amount) {
         return coupons.findByCodeAndAmountGreaterThan(code, amount = 0);
     }
 }
