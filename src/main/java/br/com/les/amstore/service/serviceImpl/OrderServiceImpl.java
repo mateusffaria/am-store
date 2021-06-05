@@ -11,10 +11,9 @@ import org.springframework.validation.ObjectError;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements IOrderService {
@@ -76,6 +75,10 @@ public class OrderServiceImpl implements IOrderService {
         List<Order> ordersFiltered = orders.findAllByCreatedAtBetween(dateInitial, dateFinal);
 
         List<HashMap<String, Double>> orderValue = new ArrayList<>();
+
+        Map<Date, List<Order>> groupedByDate = ordersFiltered.stream()
+                .collect(Collectors.groupingBy(order -> Date.from(order.getCreatedAt().toInstant().truncatedTo(ChronoUnit.DAYS))));
+
 
         if(searchType.equals(0)){
             List<Game> allGames = games.findAll();
