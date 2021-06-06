@@ -9,5 +9,5 @@ import java.util.Date;
 import java.util.List;
 
 public interface Orders extends JpaRepository<Order, Long> {
-    List<Order> findAllByCreatedAtBetween(Date dateInitial, Date dateFinal);
+    List<Order> findAllByCreatedAtBetweenOrderByCreatedAt(Date dateInitial, Date dateFinal);
 }

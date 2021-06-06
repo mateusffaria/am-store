@@ -34,16 +34,9 @@ function filter_orders(data) {
     data: data,
     success: (response) => {
       console.log(response)
-      let games = []
-      let values = []
 
-      response.forEach((element) => {
-        games.push(Object.keys(element))
-        values.push(Object.values(element)[0])
-      })
-
-      myLineChart.data.labels = games
-      myLineChart.data.datasets[0].data = values
+      myLineChart.data.labels = response?.label
+      myLineChart.data.datasets = response?.datasets
 
       myLineChart.update()
     }
@@ -130,7 +123,8 @@ var myLineChart = new Chart(ctx, {
       }],
     },
     legend: {
-      display: false
+      display: true,
+      position: "bottom"
     },
     tooltips: {
       backgroundColor: "rgb(255,255,255)",

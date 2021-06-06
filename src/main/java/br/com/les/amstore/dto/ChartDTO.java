@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChartDTO {
-    private String label;
+    private List<String> label;
     private List<DataSetDTO> datasets;
 }

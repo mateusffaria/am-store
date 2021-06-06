@@ -54,4 +54,7 @@ public class Order extends DomainEntity {
 
     @OneToOne(mappedBy = "order")
     private Devolution devolution;
+
+    @Transient
+    private Integer amount;
 }

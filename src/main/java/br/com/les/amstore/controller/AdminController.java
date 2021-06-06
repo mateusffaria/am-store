@@ -4,6 +4,7 @@ import br.com.les.amstore.domain.Coupon;
 import br.com.les.amstore.domain.Customer;
 import br.com.les.amstore.domain.Order;
 import br.com.les.amstore.domain.Status;
+import br.com.les.amstore.dto.ChartDTO;
 import br.com.les.amstore.dto.CouponDTO;
 import br.com.les.amstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class AdminController {
         inital = Date.from(LocalDateTime.now().minusMonths(3).toInstant(ZoneOffset.UTC));
         finalDate = Date.from(LocalDateTime.now().plusMonths(3).toInstant(ZoneOffset.UTC));
 
-        List<HashMap<String, Double>> orders = orderService.findAllByCreatedAtBetween(inital, finalDate, 0);
+        ChartDTO orders = orderService.findAllByCreatedAtBetween(inital, finalDate, 0);
         List<HashMap<String, Double>> cards = orderService.fillCardsIndex();
 
         mv.addObject("ordersFilteres", orders);
@@ -59,7 +60,7 @@ public class AdminController {
     }
 
     @GetMapping("/filterdata")
-    public @ResponseBody List<HashMap<String, Double>> getOrdersFiltered(
+    public @ResponseBody ChartDTO getOrdersFiltered(
             String initialDateParam, String finalDateParam, Integer searchType) throws ParseException {
         Date inital;
         Date finalDate;

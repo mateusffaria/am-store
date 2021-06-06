@@ -1,6 +1,8 @@
 package br.com.les.amstore.service.serviceImpl;
 
 import br.com.les.amstore.domain.*;
+import br.com.les.amstore.dto.ChartDTO;
+import br.com.les.amstore.dto.DataSetDTO;
 import br.com.les.amstore.repository.*;
 import br.com.les.amstore.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,9 @@ import org.springframework.validation.ObjectError;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -68,36 +73,44 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public List<HashMap<String, Double>> findAllByCreatedAtBetween(Date dateInitial, Date dateFinal, Integer searchType) {
+    public ChartDTO findAllByCreatedAtBetween(Date dateInitial, Date dateFinal, Integer searchType) {
         if(null == searchType)
             searchType = 0;
 
-        List<Order> ordersFiltered = orders.findAllByCreatedAtBetween(dateInitial, dateFinal);
+        List<Order> ordersFiltered = orders.findAllByCreatedAtBetweenOrderByCreatedAt(dateInitial, dateFinal);
 
         List<HashMap<String, Double>> orderValue = new ArrayList<>();
 
-        Map<Date, List<Order>> groupedByDate = ordersFiltered.stream()
-                .collect(Collectors.groupingBy(order -> Date.from(order.getCreatedAt().toInstant().truncatedTo(ChronoUnit.DAYS))));
+        Map<LocalDate, List<Order>> groupedByDate = ordersFiltered.stream()
+                .collect(Collectors.groupingBy(order ->
+                        Date.from(order.getCreatedAt().toInstant().truncatedTo(ChronoUnit.DAYS)).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
 
+        ChartDTO chartDTO = new ChartDTO();
+        List<DataSetDTO> listDataSetDTOS = new ArrayList<>();
 
         if(searchType.equals(0)){
             List<Game> allGames = games.findAll();
 
-            for (Game game : allGames) {
-                Double value = 0d;
 
-                for (Order order : ordersFiltered) {
-                    for (Item item : order.getItemList()) {
-                        if(game.getId().equals(item.getGame().getId()))
-                            value += BigDecimal.valueOf(order.getTotal()).setScale(2, RoundingMode.FLOOR)
-                                    .doubleValue();
+            for (Game game : allGames) {
+                DataSetDTO dataSetDTO = new DataSetDTO();
+                List<Double> doubleList = new ArrayList<>();
+                dataSetDTO.setLabel(game.getTitle());
+
+
+                for(List<Order> order : groupedByDate.values()) {
+                    Integer amount = 0;
+                    for(Order orderValueGroup : order) {
+                        for (Item item : orderValueGroup.getItemList()) {
+                            if(item.getGame().equals(game))
+                                amount++;
+                        }
                     }
+                    doubleList.add(amount * game.getPrice());
                 }
 
-                HashMap<String, Double> gameOrder = new HashMap<>();
-                gameOrder.put(game.getTitle(), value);
-
-                orderValue.add(gameOrder);
+                dataSetDTO.setData(doubleList);
+                listDataSetDTOS.add(dataSetDTO);
             }
         } else {
             List<Gender> allGenders = genders.findAll();
@@ -120,7 +133,10 @@ public class OrderServiceImpl implements IOrderService {
             }
         }
 
-        return orderValue;
+        chartDTO.setLabel(groupedByDate.keySet().stream().map(localDate -> localDate.toString()).collect(Collectors.toList()));
+        chartDTO.setDatasets(listDataSetDTOS);
+
+        return chartDTO;
     }
 
     @Override
