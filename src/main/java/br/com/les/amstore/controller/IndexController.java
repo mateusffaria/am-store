@@ -3,6 +3,7 @@ package br.com.les.amstore.controller;
 import br.com.les.amstore.domain.Customer;
 import br.com.les.amstore.domain.Game;
 import br.com.les.amstore.service.ICustomersService;
+import br.com.les.amstore.service.IGameService;
 import br.com.les.amstore.service.IGenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,14 +20,14 @@ public class IndexController {
     ICustomersService customerService;
 
     @Autowired
-    IGenericService<Game> gameService;
+    IGameService gameService;
 
     @RequestMapping
     public ModelAndView index() {
         ModelAndView mv = new ModelAndView("/index");
 
         Customer customer = customerService.currentUserLoggedIn();
-        List<Game> games = gameService.findAll();
+        List<Game> games = gameService.findAllByActiveTrue();
 
         if(null != customer)
             mv.addObject(customer);
