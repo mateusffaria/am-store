@@ -116,20 +116,28 @@ public class OrderServiceImpl implements IOrderService {
             List<Gender> allGenders = genders.findAll();
 
             for (Gender gender : allGenders) {
-                Double value = 0d;
+                DataSetDTO dataSetDTO = new DataSetDTO();
+                List<Double> doubleList = new ArrayList<>();
+                dataSetDTO.setLabel(gender.getName());
 
-                for (Order order : ordersFiltered) {
-                    for (Item item : order.getItemList()) {
-                        if(item.getGame().getGenders().contains(gender))
-                            value += BigDecimal.valueOf(order.getTotal()).setScale(2, RoundingMode.FLOOR)
-                                    .doubleValue();
+
+                for(List<Order> order : groupedByDate.values()) {
+                    Integer amount = 0;
+                    Game game = null;
+                    for(Order orderValueGroup : order) {
+                        for (Item item : orderValueGroup.getItemList()) {
+                            if(item.getGame().getGenders().contains(gender)){
+                                amount++;
+                            }
+                            game = item.getGame();
+                        }
                     }
+                    if(null != game)
+                        doubleList.add(amount * game.getPrice());
                 }
 
-                HashMap<String, Double> genderOrder = new HashMap<>();
-                genderOrder.put(gender.getName(), value);
-
-                orderValue.add(genderOrder);
+                dataSetDTO.setData(doubleList);
+                listDataSetDTOS.add(dataSetDTO);
             }
         }
 
