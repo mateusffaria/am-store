@@ -61,6 +61,8 @@ public class Game extends DomainEntity {
 
     private Integer amountAvailable;
 
+    private String reason;
+
     @Transient
     @Override
     public String validate(){
@@ -80,6 +82,9 @@ public class Game extends DomainEntity {
 
         if(age < 0)
             stringBuilder.append("Faixa etária inválida, ");
+
+        if(!isActive() && reason.trim().length() < 5)
+            stringBuilder.append("Para desativar um jogo é necessário uma justificativa(5 caractéres minimo)");
 
         return stringBuilder.toString();
     }

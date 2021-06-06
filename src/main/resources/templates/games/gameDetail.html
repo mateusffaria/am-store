@@ -75,7 +75,7 @@
                     <input type="hidden" name="idGame" th:value="${game.id}">
                     <div class="d-flex">
                       <div class="mr-3">
-                        <input type="number" th:name="amount" id="amount" class="form-control" min=1 value=1 required/>
+                        <input type="number" th:name="amount" id="amount" class="form-control" min=1 value=1 th:max="${game.amountAvailable}" required/>
                       </div>
                       <button class="btn btn-outline-success">
                         <i class="fas fa-cart-plus"></i>

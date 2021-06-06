@@ -11,6 +11,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 @Getter
@@ -38,6 +40,12 @@ public class Person extends DomainEntity {
             if(null == this.password || this.password.length() <= 0)
                 return false;
         return true;
+    }
+
+    public boolean validatePassword() {
+        Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 
     @OneToMany(mappedBy = "person", targetEntity = Document.class)

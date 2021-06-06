@@ -48,6 +48,10 @@ public class CustomerController {
         if(!customer.hasPasswordSet())
             result.addError(new ObjectError("customer", "Senha é obrigatória"));
 
+        if(!customer.validatePassword())
+            result.addError(new ObjectError("customer", "A senha deve conter ao menos numero," +
+                    " letra maiuscula, letra minuscula, caracter especial e a quantidade entre 6 e 20"));
+
         if(result.hasErrors()){
             return newCostumer(customer);
         }
@@ -84,6 +88,10 @@ public class CustomerController {
 
         if(!customer.hasPasswordSet())
             result.addError(new ObjectError("customer", "Senha é obrigatória"));
+
+        if(!customer.validatePassword())
+            result.addError(new ObjectError("customer", "A senha deve conter ao menos numero," +
+                    " letra maiuscula, letra minuscula, caracter especial e a quantidade entre 8 e 20"));
 
         if(result.hasErrors()){
             return editCustomer(customer);

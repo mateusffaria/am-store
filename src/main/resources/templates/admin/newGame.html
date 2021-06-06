@@ -155,7 +155,7 @@
 
                                             <div class="col-lg-4 form-group" th:if="*{null != id}">
                                                 <label for="reason">Motivo:</label>
-                                                <input placeholder="Breve descrição do motivo da ativação/desativação" class="form-control" id="reason"/>
+                                                <input placeholder="Breve descrição do motivo da ativação/desativação" class="form-control" id="reason" th:field="*{reason}"/>
                                             </div>
 
                                             <div class="col-12 form-group">
