@@ -1,5 +1,5 @@
 # A.M. STORE
----
+
 ## Objectives
 This project is an e-commerce of LES class of FATEC - Mogi das Cruzes. Here we have conduction use case, analisis and tests.
 
@@ -15,3 +15,4 @@ This project is an e-commerce of LES class of FATEC - Mogi das Cruzes. Here we h
     ```
     AM_DB_NAME=amstore_development;AM_DB_USER=db_user;AM_DB_PASSWORD=db_password
     ```
+- **Remember to install dependencies before running the project.**
