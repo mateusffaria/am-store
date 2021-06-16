@@ -75,14 +75,14 @@ public class DocumentsController {
             return newCustomerDocuments(customer, document);
         }
 
+        System.out.println(customer);
+
         document.setPerson(customer);
         documents.saveAndFlush(document);
 
-        ModelAndView mv = new ModelAndView("redirect:/customer/edit/" + customer.getId() + "/documents");
-
         attributes.addFlashAttribute("message", "Documento criado com sucesso!");
 
-        return mv;
+        return newCustomerDocuments(customer, document);
     }
 
 
