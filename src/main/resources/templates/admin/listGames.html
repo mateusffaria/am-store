@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="layout/layout :: head(${'A.M. Admin | Listagem Clientes'})">
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul th:replace="layout/layout-admin :: sidebar"></ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav th:insert="layout/layout-admin :: navbar"></nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Lista de Jogos</h1>
+                    <p class="mb-4">Controle de estoque dos jogos disponiveis</p>
+
+                    <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(message)}">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div>
+                            <i class="fa  fa-exclamation-circle mr-3"></i>
+                            <span th:text="${message}"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap">
+                        <div class="col-12 col-md-3 mb-3">
+                            <div class="card shadow">
+                                <div class="card-header py-3 d-flex flex-wrap justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Filtro</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label>Título do Jogo:</label>
+                                            <input class="form-control" placeholder="Call of Duty" id="title">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Plataforma:</label>
+                                            <select class="form-control" id="platform" multiple>
+                                                <option>PS4</option>
+                                                <option>PC</option>
+                                                <option>Xbox</option>
+                                                <option>Nintendo Switch</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Valor até:</label>
+                                            <input class="form-control" placeholder="500" id="price">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Multiplayer:</label>
+                                            <select class="form-control" id="multiplayer">
+                                                <option>Selecione</option>
+                                                <option>Sim</option>
+                                                <option>Não</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Gênero:</label>
+                                            <select class="form-control" required id="gender" multiple>
+                                                <option>Ação</option>
+                                                <option>Aventura</option>
+                                                <option>Corrida</option>
+                                                <option>FPS</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Distribuidora:</label>
+                                            <input class="form-control" placeholder="Activision" id="publisher">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Lançamento:</label>
+                                            <input class="form-control" type="date" id="launch_date">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Quantidade em estoque:</label>
+                                            <input class="form-control" placeholder="10" type="number" id="amount">
+                                        </div>
+
+                                        <button class="btn btn-block btn-success">Pesquisar</button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col col-md-9">
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Jogos</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome</th>
+                                                <th>Valor</th>
+                                                <th>Genêro</th>
+                                                <th>Distribuidora</th>
+                                                <th>Lançamento</th>
+                                                <th>Estoque</th>
+                                                <th>Edição</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="game : ${games}">
+                                                <td th:text="${game.title}">Cyberpunk</td>
+                                                <td th:text="'R$' + ${game.price}">R$320.80</td>
+                                                <td>
+                                                    <ul th:each="gender: ${game.genders}" class="list-group list-group-flush">
+                                                        <li th:text="${gender.name}" class="list-group-item"></li>
+                                                    </ul>
+                                                </td>
+                                                <td th:text="${game.publisher.name}">CDPROJECT</td>
+                                                <td th:text="${game.releaseDate}">2021/06/06</td>
+                                                <td th:text="${game.amount}">100</td>
+                                                <td class="m-auto">
+                                                    <a th:href="@{'/admin/games/' + ${game.id} + '/edit'}" class="btn btn-outline-info">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                        <span> Editar</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; A.M Store 2021</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+<div th:replace="layout/layout :: modal_logout"></div>
+
+    <script th:replace="layout/layout :: script"></script>
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="layout/layout :: head(${'A.M. Admin | Endereços'})">
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:insert="layout/layout :: navbar"></nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Cadastar novo Endereço</h1>
+                <hr>
+
+                <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(message)}">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div>
+                        <i class="fa  fa-exclamation-circle mr-3"></i>
+                        <span th:text="${message}"></span>
+                    </div>
+                </div>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-wrap justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${customer.id.equals(null)}">Cliente Novo</h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:unless="${customer.id.equals(null)}">
+                            <a th:href="@{'/customer/edit/' + ${customer.id}}" th:unless="${customer.id.equals(null)}">
+                                Detalhes do Cliente
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <a th:href="@{'/customer/edit/' + ${customer.id} + '/documents'}">
+                                Documentos
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
+                            <a th:href="@{'/customer/edit/' + ${customer.id} + '/addresses'}">
+                                Endereços
+                            </a>
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" th:object="${address}">
+                            <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()} ">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <th:block th:each="error : ${#fields.detailedErrors()}">
+                                    <div>
+                                        <i class="fa  fa-exclamation-circle mr-3"></i>
+                                        <span th:text="${error.message}"></span>
+                                    </div>
+                                </th:block>
+                            </div>
+                            <div class="form-group">
+                                <label for="postalcode">CEP:</label>
+                                <input type="text" class="form-control" id="postalcode" placeholder="08993-123" th:field="*{postalCode}"
+                                       onchange="cep_retrieve()" >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="street">Logradouro:</label>
+                                <input type="text" class="form-control" id="street" placeholder="Av. Orquídeas" th:field="*{street}" >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="number">Número:</label>
+                                <input type="text" class="form-control" id="number" placeholder="Número" th:field="*{number}" >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="complement">Complemento:</label>
+                                <input type="text" class="form-control" id="complement" placeholder="Casa" th:field="*{complement}" >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="state">Estado:</label>
+                                <select id="state" class="form-control" th:field="*{city.state}">
+                                    <option value="">Selecione o Estado</option>
+                                    <option data-toggle="tooltip" data-placement="top"
+                                            th:each="state : ${states}"
+                                            th:value="${state.id}"
+                                            th:text="${state.description}"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="city">Cidade:</label>
+                                <select id="city" class="form-control" th:field="*{city}">
+                                    <option value="">Selecione o Estado Primeiro</option>
+                                    <th:block th:if="${null != address.city.state}">
+                                        <option data-toggle="tooltip" data-placement="top"
+                                                th:each="city : *{city.state.cities}"
+                                                th:value="${city.id}"
+                                                th:text="${city.description}"
+                                                th:title="${city.description}">
+                                        </option>
+                                    </th:block>
+                                </select>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address_type">Tipo do Endereço:</label>
+                                <select id="address_type" class="form-control" th:field="*{addressType}" >
+                                    <option value="">Selecione o tipo</option>
+                                    <option data-toggle="tooltip" data-placement="top"
+                                            th:each="type : ${addressesTypes}"
+                                            th:value="${type.id}"
+                                            th:text="${type.name}"
+                                            th:title="${type.description}"></option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" th:text="${null == address.city.id} ? 'Cadastrar' : 'Atualizar'">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; A.M Store 2021</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<th:block th:insert="layout/layout :: modal_logout"></th:block>
+
+<script th:replace="layout/layout :: script"></script>
+<script>
+    $(document).ready(function(){
+        $('#postalcode').mask('00000-000');
+    });
+
+    $('#state').change(function() {
+        $.ajax(window.location.origin + "/customer/edit/state/" + this.value).done((resp) => {
+            let cities = $("#city")
+            cities.empty();
+            $.each(resp, (index, item) => {
+                cities.append(
+                    '<option value=' + item.id + '>' +
+                        item.description +
+                    '</option>'
+                )
+            })
+
+        }).fail((resp) => {
+            console.log(resp);
+        });
+    });
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="layout/layout :: head(${'A.M. Store | Documentos'})">
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:insert="layout/layout :: navbar"></nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Lista de Documentos</h1>
+                <hr>
+
+                <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(message)}">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div>
+                        <i class="fa  fa-exclamation-circle mr-3"></i>
+                        <span th:text="${message}"></span>
+                    </div>
+                </div>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-wrap justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${customer.id.equals(null)}">Cliente Novo</h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:unless="${customer.id.equals(null)}">
+                            <a th:href="@{'/customer/edit/' + ${customer.id}}" th:unless="${customer.id.equals(null)}">
+                                Detalhes do Cliente
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <a th:href="@{'/customer/edit/' + ${customer.id} + '/documents'}">
+                                Documentos
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
+                            <a th:href="@{'/customer/edit/' + ${customer.id} + '/addresses'}">
+                                Endereços
+                            </a>
+                        </h6>
+                        <a class="btn btn-primary" th:href="@{'documents/new'}" th:if="${customer.documents.size() < 3}">Cadastrar Novo Documento para o Cliente</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Tipo</th>
+                                    <th>Nome do Cliente</th>
+                                    <th colspan="1"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="document : ${customer.documents}">
+                                    <td th:text="${document.code}"></td>
+                                    <td th:text="${document.documentType.name}"></td>
+                                    <td th:text="${document.getPerson().name}"></td>
+                                    <td class="m-auto">
+                                        <form th:object="${customer}" th:method="delete">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <input type="hidden" name="id" th:value="${customer.id}">
+                                            <input type="hidden" name="document_id" th:value="${document.id}">
+                                            <button class="btn btn-outline-danger">
+                                                <i class="fas fa-trash-alt"></i>
+                                                <span> excluir</span>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <tr th:if="${customer.documents.isEmpty()}">
+                                    <td colspan="6" class="text-center">Nenhum cadastro de Documento</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; A.M Store 2021</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<th:block th:insert="layout/layout :: modal_logout"></th:block>
+
+<script th:replace="layout/layout :: script"></script>
+</body>
+
+</html>

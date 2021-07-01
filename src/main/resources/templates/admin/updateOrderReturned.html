@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="layout/layout :: head(${'A.M. Admin | Atualizar Troca'})"></head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul th:replace="layout/layout-admin :: sidebar"></ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav th:insert="layout/layout-admin :: navbar"></nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Atualizar Devolução</h1>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Formulário</h6>
+
+                            <div class="row">
+                                <div class="col-12 mt-4">
+                                      <form th:object="${devolution}" th:method="POST">
+                                          <div class="row">
+                                            <div class="col-12 form-group">
+                                              <label for="orderId">Número do Pedido:</label>
+                                              <p class="form-control text-center" th:text="${devolution.order.id}"></p>
+                                              <input type="text" class="form-control" value="000001" id="orderId"
+                                                     hidden required th:field="*{order}">
+                                            </div>
+
+                                            <div class="col-12 form-group">
+                                              <label for="orderAmount">Valor da compra:</label>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">R$</span>
+                                                </div>
+                                                <input type="text" class="form-control" id="orderAmount"
+                                                       required disabled th:value="${devolution.order.total}">
+                                            </div>
+                                            </div>
+
+                                              <div class="col-12 form-group">
+                                                <label for="orderCreatedAt">Data da compra:</label>
+                                                <p class="form-control text-center" th:text="${devolution.order.createdAt}"></p>
+                                                <input type="text" class="form-control"
+                                                       th:value="${devolution.order.createdAt}" id="orderCreatedAt"
+                                                       th:type="datetime" required hidden>
+                                              </div>
+
+                                              <div class="col-12 form-group">
+                                                <label for="game">Conteúdo comprado:</label>
+                                                <ul th:each="item : ${devolution.order.itemList}" id="game">
+                                                    <li th:text="${item.game.title} + ' R$: ' + ${item.game.price}">
+                                                      Resident Evil 3 R$: 300,00
+                                                    </li>
+                                                </ul>
+                                              </div>
+
+                                              <div class="col-12 form-group">
+                                                  <label for="reason">Descrição do problema:</label>
+                                                  <p class="form-control text-center" th:text="${devolution.reason}"></p>
+                                                  <textarea type="text" class="form-control text-center"
+                                                            required hidden id="reason"
+                                                            th:field="*{reason}">
+                                                      O pedido foi entregue com defeito, o jogo se desprendeu do encaixe e veio riscado.
+                                                  </textarea>
+                                              </div>
+
+                                              <div class="col-12 form-group">
+                                                  <label for="status">Status:</label>
+                                                  <select class="form-control" required id="status" th:field="*{statusDevolution}">
+                                                      <option th:value="${devolution.statusDevolution.ACCEPTED}"
+                                                              th:text="${devolution.statusDevolution.ACCEPTED.description}"
+                                                      ></option>
+                                                      <option th:value="${devolution.statusDevolution.REFUSED}"
+                                                              th:text="${devolution.statusDevolution.REFUSED.description}"
+                                                      ></option>
+                                                      <option th:value="${devolution.statusDevolution.WAITING_ANSWER}"
+                                                              th:text="${devolution.statusDevolution.WAITING_ANSWER.description}"
+                                                      ></option>
+                                                  </select>
+                                              </div>
+
+                                              <div class="col-12 form-group">
+                                                  <label for="answer">Resposta:</label>
+                                                  <textarea class="form-control" required id="answer"
+                                                            th:field="*{answer}" maxlength="254"></textarea>
+                                              </div>
+
+                                            <div class="col-12 form-group">
+                                              <label for="amountWallet">Valor a ser devolvido:</label>
+                                              <input class="form-control"
+                                                     th:name="valueWallet" id="amountWallet" type="number"
+                                                     min="1"
+                                              />
+                                            </div>
+
+                                            <div class="form-group col-12">
+                                              <button type="submit" class="btn btn-primary">Atualizar</button>
+                                            </div>
+                                          </div>
+                                        </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; A.M Store 2021</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+<div th:replace="layout/layout :: modal_logout"></div>
+
+    <script th:replace="layout/layout :: script"></script>
+    <script>
+        $('#game_price').mask("#.##0,00", {reverse: true});
+
+        $('#inputGroupFile04').change(function() {
+            var i = $(this).prev('label').clone();
+            var file = $('#inputGroupFile04')[0].files[0].name;
+            $(this).prev('label').text(file);
+        });
+    </script>
+</body>
+
+</html>

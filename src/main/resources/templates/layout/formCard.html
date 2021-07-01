@@ -1,0 +1,108 @@
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div className="banner" th:fragment="form_card">
+    <div className="row">
+        <div className="header">
+            <h1>Creditly.js</h1>
+            <h2>Intuitive credit card form</h2>
+            <div className="theme-navigation">
+                <ul className="nav nav-pills">
+                    <li className="active"><a className="blue-theme-switch" data-target="blue-theme-wrapper" href="#">Blue
+                        Theme</a></li>
+                    <li><a className="gray-theme-switch" data-target="gray-theme-wrapper" href="#">Gray Theme</a></li>
+                </ul>
+            </div>
+        </div>
+        <form className="creditly-card-form">
+            <div className="top-level-wrapper gray-theme-wrapper" style="display:none;">
+                <section className="creditly-wrapper gray-theme">
+                    <h3>Credit Card</h3>
+                    <i>
+                        <div className="card-type"
+                             style="text-align:right;margin-top:10px;margin-right:10px;min-height:20px;margin-bottom:-15px"></div>
+                    </i>
+                    <div className="credit-card-wrapper">
+                        <div className="first-row form-group">
+                            <div className="col-sm-8 controls">
+                                <label className="control-label">Card Number</label>
+                                <input className="number credit-card-number form-control"
+                                       type="text" name="number"
+                                       pattern="(\d*\s){3}\d*"
+                                       inputMode="numeric" autoComplete="cc-number" autocompletetype="cc-number"
+                                       x-autocompletetype="cc-number"
+                                       placeholder="&#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149;">
+                            </div>
+                            <div className="col-sm-4 controls">
+                                <label className="control-label">CVV</label>
+                                <input className="security-code form-control" ·
+                                       inputmode="numeric"
+                                       pattern="\d*"
+                                       type="text" name="security-code"
+                                       placeholder="&#149;&#149;&#149;">
+                            </div>
+                        </div>
+                        <div className="second-row form-group">
+                            <div className="col-sm-8 controls">
+                                <label className="control-label">Name on Card</label>
+                                <input className="billing-address-name form-control"
+                                       type="text" name="name"
+                                       placeholder="John Smith">
+                            </div>
+                            <div className="col-sm-4 controls">
+                                <label className="control-label">Expiration</label>
+                                <input className="expiration-month-and-year form-control"
+                                       type="text" name="expiration-month-and-year"
+                                       placeholder="MM / YY">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <button className="creditly-gray-theme-submit"><span>Submit</span></button>
+            </div>
+            <div className="top-level-wrapper blue-theme-wrapper">
+                <section className="creditly-wrapper blue-theme">
+                    <div className="credit-card-wrapper">
+                        <div className="first-row form-group">
+                            <div className="col-sm-8 controls">
+                                <label className="control-label">Card Number</label>
+                                <input className="number credit-card-number form-control"
+                                       type="text" name="number"
+                                       pattern="(\d*\s){3}\d*"
+                                       inputMode="numeric" autoComplete="cc-number" autocompletetype="cc-number"
+                                       x-autocompletetype="cc-number"
+                                       placeholder="&#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149;">
+                            </div>
+                            <div className="col-sm-4 controls">
+                                <label className="control-label">CVV</label>
+                                <input className="security-code form-control" ·
+                                       inputmode="numeric"
+                                       pattern="\d*"
+                                       type="text" name="security-code"
+                                       placeholder="&#149;&#149;&#149;">
+                            </div>
+                        </div>
+                        <div className="second-row form-group">
+                            <div className="col-sm-8 controls">
+                                <label className="control-label">Name on Card</label>
+                                <input className="billing-address-name form-control"
+                                       type="text" name="name"
+                                       placeholder="John Smith">
+                            </div>
+                            <div className="col-sm-4 controls">
+                                <label className="control-label">Expiration</label>
+                                <input className="expiration-month-and-year form-control"
+                                       type="text" name="expiration-month-and-year"
+                                       placeholder="MM / YY">
+                            </div>
+                        </div>
+                        <div className="card-type"></div>
+                    </div>
+                </section>
+                <button className="creditly-blue-theme-submit"><span>Submit</span></button>
+            </div>
+        </form>
+    </div>
+    <div className="footer">
+        Powered by <a href="http://zinc.io">Zinc</a>
+    </div>
+</div>

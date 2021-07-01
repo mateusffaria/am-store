@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="layout/layout :: head(${'A.M. Admin | Documentos'})">
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:insert="layout/layout :: navbar"></nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Cadastar novo Cliente</h1>
+                <p class="mb-4">Cadastrar novo cliente na plataforma</p>
+
+                <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(message)}">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div>
+                        <i class="fa  fa-exclamation-circle mr-3"></i>
+                        <span th:text="${message}"></span>
+                    </div>
+                </div>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-wrap justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${customer.id.equals(null)}">Cliente Novo</h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:unless="${customer.id.equals(null)}">
+                            <a th:href="@{'/customer/edit/' + ${customer.id}}" th:unless="${customer.id.equals(null)}">
+                                Detalhes do Cliente
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <a th:href="@{'/customer/edit/' + ${customer.id} + '/documents'}">
+                                Documentos
+                            </a>
+                        </h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:if="${null != customer.id}">
+                            <a th:href="@{'/customer/edit/' + ${customer.id} + '/addresses'}">
+                                Endereços
+                            </a>
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" th:object="${document}">
+                            <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()} ">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <th:block th:each="error : ${#fields.detailedErrors()}">
+                                    <div>
+                                        <i class="fa  fa-exclamation-circle mr-3"></i>
+                                        <span th:text="${error.message}"></span>
+                                    </div>
+                                </th:block>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="code">Tipo Documento:</label>
+                                <select id="type" class="form-control" th:field="*{documentType}" required>
+                                    <option value="">Selecione o tipo</option>
+                                    <option th:each="type : ${documentTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="validate">Data expedição:</label>
+                                <input type="date" class="form-control" id="validate" placeholder="validade" th:field="*{validate}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="code">Número:</label>
+                                <input type="text" class="form-control" id="code" placeholder="Número" th:field="*{code}" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; A.M Store 2021</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<th:block th:insert="layout/layout :: modal_logout"></th:block>
+
+<script th:replace="layout/layout :: script"></script>
+<script>
+
+    $("#type").change(function () {
+        console.log(this.value)
+        switch (this.value){
+            case "1":
+                $("#code").mask('00.000.000-0')
+                break;
+            case "2":
+                $("#code").mask('000.000.000-00')
+                break;
+            case "3":
+                $("#code").mask('00.000.000/0000-00')
+                break;
+        }
+
+    })
+</script>
+</body>
+
+</html>

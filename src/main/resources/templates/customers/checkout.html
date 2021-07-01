@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="layout/layout :: head(${'A.M. Store | Checkout'})">
+  </head>
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="container-fluid">
+      <div id="content-wrapper" class="d-flex flex-column">
+        <nav th:insert="layout/layout :: navbar"></nav>
+        <!-- Main Content -->
+        <div id="content">
+          <!-- Begin Page Content -->
+          <div class="container">
+            <table class="table-responsive w-100 table d-block d-md-table table-hover mt-4 mb-4">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome do Jogo</th>
+                <th scope="col">Plataforma</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col" colspan="2">Valor</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="item : ${customer.cart.itemList}">
+                <th scope="row" th:text="${customer.cart.itemList.indexOf(item)}">1</th>
+                <td th:text="${item.game.title}">Resident Evil 3</td>
+                <td th:text="${item.game.platform.name}">PS4</td>
+                <td>
+                  <input class="form-control" type="number" min="1" step="1" value="1" th:value="${item.amount}" disabled>
+                </td>
+                <td th:text="'R$ ' + ${item.amount * item.game.price}">R$: 350,00</td>
+                <td>
+                  <form th:object="${item}" th:method="delete" th:action="@{checkout/removeitem}">
+                    <input type="hidden" name="_method" value="delete">
+                    <input type="hidden" name="idItem" th:value="${item.id}">
+                    <button class="btn btn-outline-danger">
+                      <i class="fas fa-trash-alt"></i>
+                      <span> excluir</span>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              </tbody>
+          </table>
+
+            <form th:object="${order}" th:method="POST" th:if="${customer.cart.itemList.size() != 0}">
+              <div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${#fields.hasAnyErrors()} ">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <th:block th:each="error : ${#fields.detailedErrors()}">
+                  <div>
+                    <i class="fa  fa-exclamation-circle mr-3"></i>
+                    <span th:text="${error.message}"></span>
+                  </div>
+                </th:block>
+              </div>
+
+              <input th:field="*{customer}" th:value="${customer.id}" hidden/>
+              <input th:field="*{shippingTax}" hidden id="shippingTax"/>
+              <input th:field="*{coupon}" hidden id="coupon"/>
+
+              <div class="d-flex justify-content-between flex-wrap col-12">
+
+                <div class="p-4 rounded bg-form col-12 col-md-6">
+                  <small th:class="${customer.documents.isEmpty() || customer.address.isEmpty()} ? 'd-block text-justify text-info' : 'd-none'">
+                    Para darmos sequência no pagamento é necessários alguns dados, será rapidinho, prometo :D
+                  </small>
+                  <h5 class="text-center">Dados Pessoais</h5>
+                  <hr />
+                  <div class="form-group">
+                    <label for="document">Documento</label>
+                    <select id="document" class="form-control" required>
+                      <option value="">Selecione o documento</option>
+                      <option th:each="document : ${customer.documents}" th:value="${document.id}"
+                              th:text="${document.documentType.name} + ': ' + ${document.code}"></option>
+                      <option value="-1">Cadastre um novo</option>
+                    </select>
+                  </div>
+
+                  <h5 class="text-center mt-5">Endereço de Entrega</h5>
+                  <hr />
+                  <div class="form-group">
+                    <label for="delivery_address_selector">Selecione um endereço</label>
+                    <select id="delivery_address_selector" class="form-control" required th:field="*{address}">
+                      <option value="">Escolha um endereço de entrega</option>
+                      <th:block th:if="${!customer.address.isEmpty()}">
+                        <option data-toggle="tooltip" data-placement="top"
+                                th:each="address : ${customer.address}"
+                                th:value="${address.id}"
+                                th:text="${address.street}"
+                                th:title="${address.street}"
+                                th:if="${address.addressType.getId() == 1}"
+                                th:data="${address.postalCode}"
+                        >
+                        </option>
+                      </th:block>
+                      <option value="-1">
+                        Cadastre um novo endereço
+                      </option>
+                    </select>
+                  </div>
+
+                  <button id="create-new-address" type="button" class="btn btn-primary" data-toggle="modal"
+                          data-target="#modalDeliveryAddress" hidden>
+                    Cadastrar novo Endereço
+                  </button>
+
+                  <h5 class="text-center mt-5">Endereço de Cobrança</h5>
+                  <hr />
+                  <div class="form-group">
+                    <label for="delivery_address_selector">Selecione um endereço</label>
+                    <select id="billing_address_selector" class="form-control" required th:field="*{addressBilling}">
+                      <option value="">Escolha um endereço de entrega</option>
+                      <th:block th:if="${!customer.address.isEmpty()}">
+                        <option data-toggle="tooltip" data-placement="top"
+                                th:each="address : ${customer.address}"
+                                th:value="${address.id}"
+                                th:text="${address.street}"
+                                th:title="${address.street}"
+                                th:if="${address.addressType.getId() == 2}"></option>
+                      </th:block>
+                      <option value="-1">
+                        Cadastre um novo endereço
+                      </option>
+                    </select>
+                  </div>
+
+                  <h5 class="text-center mt-5">Cartões</h5>
+                  <hr />
+                  <div id="payment_method_card">
+                    <div class="form-group">
+                      <label>Selecione um cartão</label>
+                      <select class="custom-select credit-card-selector" required
+                              th:field="*{paymentMethodList[0].creditCard.id}" onchange="changeCreditCardOption(event)">
+                        <option value="">Selecione um cartão</option>
+                        <th:block th:if="${!customer.creditCards.isEmpty()}">
+                          <option data-toggle="tooltip" data-placement="top"
+                                  th:each="creditCard : ${customer.creditCards}"
+                                  th:value="${creditCard.id}"
+                                  th:text="${creditCard.number.substring(creditCard.number.length() - 4)}"
+                                  th:title="${creditCard.number.substring(creditCard.number.length() - 4)}"></option>
+                        </th:block>
+                        <option value="-1">Cadastrar Novo</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Digite o valor do pagamento:</label>
+                      <input type="number" min="10" step="0.01" class="form-control credit-card-value"  placeholder="10.00" required
+                             name="paymentMethodList[0].paymentValue" onchange="validationValue(event)"/>
+                    </div>
+                  </div>
+
+                  <div class="form-group mt-3">
+                    <button class="btn btn-outline-info btn-block" id="add_payment_method">
+                      <i class="fas fa-plus-circle"></i>
+                      <span> Adicionar mais um método de pagamento</span>
+                    </button>
+                  </div>
+
+                </div>
+
+                <div class="p-4 rounded bg-form col-12 col-md-5 mt-5 mt-md-0">
+                  <div class="">
+                    <h5 class="text-center">Resumo do pedido</h5>
+                    <hr />
+                    <div class="d-flex flex-wrap justify-content-between">
+                      <span th:text="${customer.cart.itemList.size()} + ' produtos'">1 produto</span>
+                      <span th:text="'R$ ' + ${total}">R$ 300,00</span>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+                      <span>Frete</span>
+                      <span id="shippingTaxShow">R$ 0</span>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between" th:if="${customer.wallet.value > 0}">
+                      <span>Saldo na carteira:</span>
+                      <span th:text="'R$ ' + ${customer.wallet.value}" id="wallet">R$ 0,00</span>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between" th:if="${customer.wallet.value > 0}">
+                      <span>Saldo restante na carteira:</span>
+                      <div>
+                        <span>R$ </span>
+                        <span id="walletValue"
+                          th:text="${customer.wallet.value - total > 0 ? customer.wallet.value - total : 0 }">
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="flex-wrap justify-content-between d-none" id="cupom_div">
+                      <span>Cupom de desconto:</span>
+                      <div class="d-flex">
+                        <span class="mr-1">R$ </span>
+                        <div id="cupon_layer"></div>
+                      </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-between mt-4">
+                      <input class="form-control col-8 mr-3" placeholder="Insira seu cupom aqui" id="cupom_input"/>
+                      <button class="btn btn-outline-success col-3" onclick="cupomVerify(event)" id="apply_coupon">Aplicar</button>
+                    </div>
+                    <hr />
+                    <div class="d-flex flex-wrap justify-content-between">
+                      <h5 class="font-weight-bold">Total:</h5>
+                      <div class="d-flex">
+                        <span class="font-weight-bold mr-1">R$: </span>
+                        <span class="font-weight-bold" id="total"
+                              th:text="${total - customer.wallet.value < 0 ? 0 : total - customer.wallet.value}">
+                        </span>
+                      </div>
+                    </div>
+                    <span class="text-center d-none" id="cupomAlert">
+                      Valor do desconto não pode ser maior que o total
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Button trigger modal -->
+              <button id="create-new-credit-card" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCreditCard" hidden>
+                Cadastrar novo cartão de crédito
+              </button>
+
+              <button type="submit" class="btn btn-success" id="final_step">
+                Finalizar Compra
+              </button>
+            </form>
+
+            <h1 class="text-black-50 text-center" th:if="${customer.cart.itemList.size() == 0}">Seu Carrinho está vazio</h1>
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalCreditCard" tabindex="-1" role="dialog" aria-labelledby="modalCCard" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalCCard">Adicionar um novo Cartão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <form th:object="${creditCard}" th:method="POST" onsubmit="handleCreditCardSubmit(event)">
+                    <div class="form-group">
+                      <label for="card_number">Número</label>
+                      <input type="text" class="form-control" id="card_number" aria-describedby="numberHelp"
+                             placeholder="0000-0000-0000-0000" required th:field="*{number}"/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_name">Nome Impresso</label>
+                      <input type="text" class="form-control" id="card_name" aria-describedby="ownerHelp"
+                             placeholder="Mateus J Faria" required th:field="*{owner}"/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_owner_doc">CPF do Titular</label>
+                      <input type="text" class="form-control" id="card_owner_doc" aria-describedby="ownerDocHelp"
+                             placeholder="123456798" required th:field="*{ownerDoc}"/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_cvv">CVV</label>
+                      <input type="text" class="form-control"id="card_cvv" aria-describedby="cvvHelp"
+                             placeholder="123" required th:field="*{securityCode}"/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_month">Mês do vencimento</label>
+                      <input type="text" class="form-control" id="card_month" aria-describedby="monthValidHelp"
+                             placeholder="12" th:field="*{validadeMonth}" required/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_year">Ano do vencimento</label>
+                      <input type="text" class="form-control" id="card_year" aria-describedby="yearValidHelp"
+                             placeholder="2030" th:field="*{validadeYear}" required/>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="card_flag">Bandeira</label>
+                      <select id="card_flag" class="custom-select credit-card-selector" th:field="*{banner}">
+                        <option data-toggle="tooltip" data-placement="top"
+                                th:each="flag : ${banners}"
+                                th:value="${flag.id}"
+                                th:text="${flag.name}"
+                                th:title="${flag.name}"></option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <button class="btn btn-success">Salvar Cartão de Crédito</button>
+                    </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalButton">Voltar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="modalDeliveryAddress" tabindex="-1" role="dialog" aria-labelledby="modalCCard" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalDAddress">Adicionar um novo Endereço de Entrega</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <form th:object="${address}" th:method="POST" onsubmit="handleAddressSubmit(event)">
+                  <div class="form-group">
+                    <label for="postalcode">CEP:</label>
+                    <input type="text" class="form-control" id="postalcode" placeholder="08993-123" th:field="*{postalCode}"
+                           onchange="cep_retrieve()" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="street">Logradouro:</label>
+                    <input type="text" class="form-control" id="street" placeholder="Av. Orquídeas" th:field="*{street}" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="number">Número:</label>
+                    <input type="text" class="form-control" id="number" placeholder="Número" th:field="*{number}" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="complement">Complemento:</label>
+                    <input type="text" class="form-control" id="complement" placeholder="Casa" th:field="*{complement}" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="state">Estado:</label>
+                    <select id="state" class="form-control" th:field="*{city.state}">
+                      <option value="">Selecione o Estado</option>
+                      <option data-toggle="tooltip" data-placement="top"
+                              th:each="state : ${states}"
+                              th:value="${state.id}"
+                              th:text="${state.description}"></option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="city">Cidade:</label>
+                    <select id="city" class="form-control" th:field="*{city}">
+                      <option value="">Selecione o Estado Primeiro</option>
+                      <th:block th:if="${null != address.city.state}">
+                        <option data-toggle="tooltip" data-placement="top"
+                                th:each="city : *{city.state.cities}"
+                                th:value="${city.id}"
+                                th:text="${city.description}"
+                                th:title="${city.description}">
+                        </option>
+                      </th:block>
+                    </select>
+
+                  </div>
+
+                  <div class="form-group">
+                    <label for="address_type">Tipo do Endereço:</label>
+                    <select id="address_type" class="form-control" th:field="*{addressType}" >
+                      <option value="">Selecione o tipo</option>
+                      <option data-toggle="tooltip" data-placement="top"
+                              th:each="type : ${addressesTypes}"
+                              th:value="${type.id}"
+                              th:text="${type.name}"
+                              th:title="${type.description}"></option>
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalAddressButton">Voltar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright &copy; A.M Store 2021</span>
+            </div>
+          </div>
+        </footer>
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <th:block th:insert="layout/layout :: modal_logout"></th:block>
+
+    <script th:replace="layout/layout :: script"></script>
+  </body>
+  <script>
+    var total = $("#total").text();
+    var totalWallet = $("#walletValue").text();
+    var listPayment = 0
+
+    $(document).ready(function(){
+        $('#postalcode').mask('00000-000');
+    });
+
+    $('#state').change(function() {
+        $.ajax(window.location.origin + "/customer/edit/state/" + this.value).done((resp) => {
+            let cities = $("#city")
+            cities.empty();
+            $.each(resp, (index, item) => {
+                cities.append(
+                    '<option value=' + item.id + '>' +
+                    item.description +
+                    '</option>'
+                )
+            })
+
+        }).fail((resp) => {
+            console.log(resp);
+        });
+    });
+
+    function handleCreditCardSubmit(event){
+        event.preventDefault()
+        let form_data = {
+            number: $("#card_number").val(),
+            owner: $("#card_name").val(),
+            ownerDoc: $("#card_owner_doc").val(),
+            securityCode: $("#card_cvv").val(),
+            validadeMonth: $("#card_month").val(),
+            validadeYear: $("#card_year").val(),
+            banner: $("#card_flag").val(),
+        }
+
+        let url = window.location.href + "/createcreditcard";
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: form_data
+        }).done(function (data) {
+            for(let i = 0; i< $(".credit-card-selector").length; i++){
+                let element = document.createElement("Option")
+                    element.setAttribute("value", data.id);
+
+                let text = document.createTextNode(data.number)
+                element.appendChild(text);
+
+                $(".credit-card-selector")[i].appendChild(element)
+            }
+
+            alert("Adicionado com sucesso")
+            $("#closeModalButton").click()
+        }).fail((resp) => {
+            console.log(resp);
+            alert("Falha no processo, revise as informações do cartão")
+        });
+    }
+
+    function handleAddressSubmit(event) {
+        event.preventDefault()
+
+        let form_data = {
+            street: $("#street").val(),
+            number: $("#number").val(),
+            postalCode: $("#postalcode").val(),
+            complement: $("#complement").val(),
+            addressType: $("#address_type").val(),
+            city: $("#city").val(),
+        }
+
+        let url = window.location.href + "/createaddress";
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: form_data
+        }).done(function (data) {
+            let element = document.createElement("Option")
+            element.setAttribute("value", data.id);
+            element.setAttribute("data", data.postalCode);
+
+            let text = document.createTextNode(data.street)
+            element.appendChild(text);
+
+            if($("#address_type").val() === "1"){
+                $("#delivery_address_selector").get(0).appendChild(element)
+            } else {
+                $("#billing_address_selector").get(0).appendChild(element)
+            }
+
+            alert("Adicionado com sucesso")
+            $("#closeModalAddressButton").click()
+        }).fail((resp) => {
+            console.log(resp);
+            alert("Falha no processo, revise as informações do cartão")
+        });
+    }
+
+    $("#add_payment_method").on("click", function(event) {
+        event.preventDefault();
+        let payment_dom = $("#payment_method_card")
+
+        $("#payment_method_card").clone().insertBefore(this)
+        payment_dom.removeAttr("id")
+        payment_dom.attr("id", "payment_method_card" + listPayment)
+
+        for(let i = 0; i< $(".credit-card-selector").length; i++){
+            let select_dom_credit_card = $(".credit-card-selector")[i]
+            let input_dom_credit_card_value = $(".credit-card-value")[i]
+
+            select_dom_credit_card.removeAttribute("name");
+            input_dom_credit_card_value.removeAttribute("name");
+
+            select_dom_credit_card.setAttribute("name", "paymentMethodList[" + i + "].creditCard.id")
+            input_dom_credit_card_value.setAttribute("name", "paymentMethodList[" + i + "].paymentValue")
+        }
+
+        listPayment += 1
+    })
+
+    $("#document_type").change(function () {
+      switch (this.value){
+        case "1":
+          $("#new_document_code").mask('00.000.000-0')
+          break;
+        case "2":
+          $("#new_document_code").mask('000.000.000-00')
+          break;
+        case "3":
+          $("#new_document_code").mask('00.000.000/0000-00')
+          break;
+      }
+    })
+
+    $("#document").change(function () {
+      if(this.value == "-1") {
+        $("#new_document_form").removeClass('d-none');
+        $("#new_document_form").addClass('d-block');
+
+        $("#new_document_form").prop('disabled', false);
+        $("#document_step").prop('disabled', true);
+      } else {
+        $("#new_document_form").removeClass('d-block');
+        $("#new_document_form").addClass('d-none');
+
+        $("#new_document_form").prop('disabled', true);
+        $("#document_step").prop('disabled', false);
+      }
+
+      if(this.value == "") $("#document_step").prop('disabled', true);
+    })
+
+    $("#billing_address_selector").change(function () {
+        if($(this).val() < 0) {
+            $("#create-new-address").click()
+            return
+        }
+    })
+
+    function changeCreditCardOption(event) {
+        if(event.target.value == '-1') {
+            $("#create-new-credit-card").click()
+        }
+
+        if(this.value == "") $("#final_step").prop('disabled', true);
+    }
+
+    function cupomVerify(event) {
+      event.preventDefault();
+
+      let code = $("#cupom_input").get(0).value
+
+      if(code.length >= 6) {
+          $.ajax(window.location.href + "/findcoupon?code=" + code).done((resp) => {
+            let totalCoupon = resp.value
+
+            if(Number($("#total").text()) > totalCoupon) {
+                $("#coupon").val(resp.id)
+                $("#total").text(Number(Number(total) - totalCoupon).toFixed(2))
+
+                if($("#shippingTax").val().length > 0 && Number(total) > totalCoupon) {
+                    $("#coupon").val(resp.id)
+                    $("#total").text(Number(Number($("#shippingTax").val()) + Number(total) - Number(totalCoupon)).toFixed(2))
+                }
+
+                $("#cupom_div").addClass('d-flex')
+                $("#cupom_div").removeClass('d-none')
+                $("#cupon_layer").empty();
+                $("#cupon_layer").append("<span id='couponShow'>" + totalCoupon +"</span>");
+                $("#cupomAlert").addClass('d-none')
+            } else {
+                $("#cupomAlert").removeClass('d-none')
+            }
+
+        }).fail((resp) => {
+            console.log(resp);
+        });
+      } else {
+        if($("#shippingTax").val().length > 0) {
+            $("#total").text(Number(Number(total) + Number($("#shippingTax").val())).toFixed(2))
+        } else {
+            $("#total").text(total)
+        }
+
+        $("#coupon").val("")
+        $("#cupom_div").removeClass('d-flex')
+        $("#cupom_div").addClass('d-none')
+      }
+    }
+
+    $("#delivery_address_selector").on("change", function(event) {
+
+        if($(this).val() < 0) {
+            $("#create-new-address").click()
+            return
+        }
+
+        let cep = $(this).children("option:selected").get(0).attributes.data.value
+
+        if($("#coupon").val().length > 0){
+            $("#total").text(Number(Number($("#total").text()) - Number($("#couponShow").text())).toFixed(2))
+            $("#walletValue").text(
+                Number($("#wallet").text()) - Number($("#total").text()) > 0 ? Number($("#wallet").text()) - Number($("#total").text()) : 0
+            )
+        } else {
+            $("#total").text(Number(total))
+            $("#walletValue").text(totalWallet)
+        }
+
+        $.ajax(window.location.href + "/calculatetax?postalcode=" + cep).done((resp) => {
+            $("#shippingTax").val(resp)
+            $("#shippingTaxShow").text("R$ " + resp)
+
+            if($("#coupon").val().length > 0){
+                $("#total").text(Number(Number(resp) + Number(total) - Number($("#couponShow").text())).toFixed(2))
+            } else {
+                $("#total").text(Number(Number(resp) + Number(total)).toFixed(2))
+            }
+        }).fail((resp) => {
+            console.log(resp);
+        });
+    })
+  </script>
+</html>

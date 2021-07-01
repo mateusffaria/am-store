@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="layout/layout :: head(${'A.M. Admin'})">
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul th:replace="layout/layout-admin :: sidebar"></ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav th:insert="layout/layout-admin :: navbar"></nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4 d-none">
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> exportar csv</a>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-4 col-md-6 mb-4" th:each="card : ${cards}">
+                            <div th:class="${cards.get(0).equals(card) ? 'card border-left-success shadow h-100 py-2' : 'card border-left-info shadow h-100 py-2'}">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"
+                                                 th:text="${card.keySet().toArray()[0]}">
+                                                Ganhos (Mensais)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                                 th:text="${cards.get(0).equals(card) ? 'R$ ' + card.values().toArray()[0] : card.values().toArray()[0]}">$100,000</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i th:class="${cards.get(0).equals(card) ? 'fas fa-dollar-sign fa-2x text-gray-300' : 'fas fa-credit-card fa-2x text-gray-300'}"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <form class="d-flex justify-content-between align-items-end flex-wrap" onsubmit="handleSearch(event)">
+                                <div class="form-group col pl-0">
+                                    <label for="initialDate">Data início: </label>
+                                    <input class="form-control" id="initialDate" type="date"/>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="finalDate">Data fim: </label>
+                                    <input class="form-control" id="finalDate" type="date"/>
+                                </div>
+
+                                <div class="form-group col">
+                                    <label for="searchType">Selecione o tipo: </label>
+                                    <select id="searchType" class="form-control">
+                                        <option required value="">Selecione uma opção</option>
+                                        <option value="0">Jogos</option>
+                                        <option value="1">Categorias</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <button class="btn btn-success">
+                                        <i class="fas fa-search"></i>
+                                        <span>Pesquisar</span>
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- Area Chart -->
+                        <div class="col-12">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Visão Geral de Ganhos</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; A.M Store 2021</span>
+                </div>
+            </div>
+        </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <div th:replace="layout/layout :: modal_logout"></div>
+
+    <script th:replace="layout/layout :: script"></script>
+    <script th:src="@{/vendor/chart.js/Chart.min.js}"></script>
+    <script th:src="@{/javascripts/demo/chart-area-demo.js}"></script>
+    <script th:src="@{/javascripts/demo/chart-pie-demo.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="layout/layout :: head(${'A.M. Admin | Trocas'})">
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul th:replace="layout/layout-admin :: sidebar"></ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav th:insert="layout/layout-admin :: navbar"></nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Lista de Devoluções</h1>
+                    <p class="mb-4">Controle de devoluções solicitadas</p>
+
+                    <div class="d-flex flex-wrap">
+                        <div class="col-12 col-md-3 mb-3">
+                            <div class="card shadow">
+                                <div class="card-header py-3 d-flex flex-wrap justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Filtro</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label>Numero do Pedido</label>
+                                            <input class="form-control" placeholder="000001">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Valor da compra até:</label>
+                                            <input class="form-control" placeholder="500">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Data da compra</label>
+                                            <input class="form-control" placeholder="São Paulo" type="date">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Conteúdo comprado contém:</label>
+                                            <input class="form-control" placeholder="Resident Evil 3">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Descrição do problema contém:</label>
+                                            <input class="form-control" placeholder="Riscado">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Status:</label>
+                                            <select class="form-control">
+                                                <option>Aguardando resposta</option>
+                                                <option>Em Processo</option>
+                                                <option>Aprovado</option>
+                                                <option>Recusado</option>
+                                            </select>
+                                        </div>
+
+                                        <button class="btn btn-block btn-success">Pesquisar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col col-md-9">
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Devoluções</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Numero do Pedido</th>
+                                                <th>Valor da compra</th>
+                                                <th>Data da solicitação</th>
+                                                <th>Conteúdo comprado</th>
+                                                <th>Descrição do problema</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="devolution : ${devolutions}">
+                                                <td th:text="${devolution.order.id}">000001</td>
+                                                <td th:text="${devolution.order.total}">R$: 520,00</td>
+                                                <td th:text="${devolution.createdAt}">20/02/2021 10:53</td>
+                                                <td class="d-flex flex-column" th:each="item : ${devolution.order.itemList}">
+                                                    <span class="mb-2"
+                                                          th:text="${item.game.title} + ' R$: ' + ${item.game.price}">
+                                                        Resident Evil 3 R$: 300,00
+                                                    </span>
+                                                </td>
+                                                <td th:text="${devolution.reason}">
+                                                    O pedido foi entregue com defeito,
+                                                    o jogo se desprendeu do encaixe e veio riscado.
+                                                </td>
+                                                <td th:text="${devolution.statusDevolution.description}">
+                                                    Aguardando Resposta
+                                                </td>
+                                                <td class="m-auto">
+                                                    <a th:href="@{'/admin/order_return/' + ${devolution.id} + '/edit'}">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                        <span> Atualizar Status</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; A.M Store 2021</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+<div th:replace="layout/layout :: modal_logout"></div>
+
+    <script th:replace="layout/layout :: script"></script>
+</body>
+
+</html>
