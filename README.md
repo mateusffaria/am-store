@@ -22,14 +22,14 @@ This project is an e-commerce of LES class of FATEC - Mogi das Cruzes. Here we h
 
 ## Prints
 
-![adminIndex](https://github.com/MateusFaria-TGG/am-store/blob/main/readmeImages/adminIndex.png)
+![home](https://github.com/MateusFaria-TGG/am-store/blob/main/readmeImages/home.png)
 
 ![search](https://github.com/MateusFaria-TGG/am-store/blob/main/readmeImages/search.png)
 
-![checkout](https://github.com/MateusFaria-TGG/am-store/blob/main/readmeImages/checkout.png)
-
 ![gameDetail](https://github.com/MateusFaria-TGG/am-store/blob/main/readmeImages/gameDetail.png)
 
-![home](https://github.com/MateusFaria-TGG/am-store/blob/main/readmeImages/home.png)
-
 ![login](https://github.com/MateusFaria-TGG/am-store/blob/main/readmeImages/login.png)
+
+![checkout](https://github.com/MateusFaria-TGG/am-store/blob/main/readmeImages/checkout.png)
+
+![adminIndex](https://github.com/MateusFaria-TGG/am-store/blob/main/readmeImages/adminIndex.png)
